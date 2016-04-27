@@ -3,7 +3,7 @@
 PORT=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cp -f $DIR/../hinclude.js $DIR/assets/
+cp -f $DIR/../h-include.js $DIR/assets/
 
 cd $DIR/assets
 

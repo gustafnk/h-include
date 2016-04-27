@@ -1,13 +1,17 @@
 {
-    "name": "Hinclude",
-    "version": "1.0.1",
+    "name": "h-include",
+    "version": "2.0.0",
     "author": "Mark Nottingham <mnot@mnot.com>",
-    "description": "Declarative client-side inclusion for the Web",
+    "description": "Declarative client-side inclusion for the Web using Custom Elements",
     "contributors": [ 
       {
         "name": "Fabio Fabbrucci",
         "email": "fabio.fabbrucci@gmail.com"
-      } 
+      },
+      {
+        "name": "Gustaf Nilsson Kotte",
+        "email": "gustaf.nk@gmail.com"
+      }
     ],
      "dependencies" : {
         "jslint"   :  "*"

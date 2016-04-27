@@ -13,7 +13,7 @@ small_media: server
 large_media: server
 	phantomjs large_media.js $(test_port)
 lint:
-	node ../node_modules/jslint/bin/jslint.js ../hinclude.js
+	node ../node_modules/jslint/bin/jslint.js ../h-include.js
 
 server:
 	./serve.sh $(test_port)
