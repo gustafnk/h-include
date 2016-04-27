@@ -1,5 +1,5 @@
 /*
-hinclude.js -- HTML Includes (version 0.9.5)
+h-include.js -- HTML Includes (version 0.9.5)
 
 Copyright (c) 2005-2012 Mark Nottingham <mnot@mnot.net>
 
@@ -23,7 +23,7 @@ SOFTWARE.
 
 ------------------------------------------------------------------------------
 
-See http://mnot.github.com/hinclude/ for documentation.
+See http://gustafnk.github.com/h-include/ for documentation.
 */
 
 /*jslint indent: 2, browser: true, vars: true, nomen: true */
