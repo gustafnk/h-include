@@ -135,7 +135,7 @@ var hinclude;
 
   var proto = Object.create(window.HTMLElement.prototype);
 
-  proto.createdCallback = function () {
+  proto.attachedCallback = function () {
 
     var mode = hinclude.get_meta("include_mode", "buffered");
     var callback;
