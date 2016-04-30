@@ -1,20 +1,20 @@
 {
     "name": "h-include",
-    "version": "2.0.0",
-    "author": "Mark Nottingham <mnot@mnot.com>",
-    "description": "Declarative client-side inclusion for the Web using Custom Elements",
-    "contributors": [ 
+    "version": "1.0.0",
+    "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
+    "description": "Declarative client-side inclusion for the web using Custom Elements",
+    "contributors": [
+      {
+        "name": "Mark Nottingham",
+        "email": "mnot@mnot.com"
+      },
       {
         "name": "Fabio Fabbrucci",
         "email": "fabio.fabbrucci@gmail.com"
-      },
-      {
-        "name": "Gustaf Nilsson Kotte",
-        "email": "gustaf.nk@gmail.com"
       }
     ],
-     "dependencies" : {
-        "jslint"   :  "*"
+     "dependencies": {
+        "jslint":  "*"
       },
     "engines": {
         "node": ">= 0.6.0"
