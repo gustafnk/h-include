@@ -1,6 +1,9 @@
 /*
 h-include.js -- HTML Includes (version 1.0.0)
 
+MIT License
+
+Copyright (c) 2016 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
 Copyright (c) 2005-2012 Mark Nottingham <mnot@mnot.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
