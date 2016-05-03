@@ -13,6 +13,8 @@ more cacheable, and easier to maintain.
 See [the demo page](http://gustafnk.github.com/h-include/) for documentation and
 examples.
 
+Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
+
 ## Dependencies
 
 HInclude provides a custom element `<h-include>`. This means that you have
