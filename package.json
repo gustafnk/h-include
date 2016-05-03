@@ -1,22 +1,30 @@
 {
-    "name": "h-include",
-    "version": "1.0.0",
-    "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
-    "description": "Declarative client-side inclusion for the web using Custom Elements",
-    "contributors": [
-      {
-        "name": "Mark Nottingham",
-        "email": "mnot@mnot.com"
-      },
-      {
-        "name": "Fabio Fabbrucci",
-        "email": "fabio.fabbrucci@gmail.com"
-      }
-    ],
-     "dependencies": {
-        "jslint":  "*"
-      },
-    "engines": {
-        "node": ">= 0.6.0"
+  "name": "h-include",
+  "version": "1.0.0",
+  "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
+  "description": "Declarative client-side inclusion for the web using Custom Elements",
+  "contributors": [
+    {
+      "name": "Mark Nottingham",
+      "email": "mnot@mnot.com"
+    },
+    {
+      "name": "Fabio Fabbrucci",
+      "email": "fabio.fabbrucci@gmail.com"
     }
+  ],
+  "dependencies": {
+    "copyfiles": "^0.2.1",
+    "jslint": "*",
+    "simplehttpserver": "0.0.6"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "copy": "copyfiles h-include.js test/assets/",
+    "server": "simplehttpserver -p $PORT test/assets",
+    "test": "npm run copy; cd test; make test_port=$PORT",
+    "test_killall": "npm test; killall node"
+  }
 }
