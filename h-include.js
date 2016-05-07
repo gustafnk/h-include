@@ -41,12 +41,33 @@ var hinclude;
   hinclude = {
     classprefix: "include_",
 
-    set_content_async: function (element, req) {
-      if (req.readyState === 4) {
-        if (req.status === 200 || req.status === 304) {
+    show_content: function (element, req) {
+      var fragment = element.getAttribute('fragment');
+      if (req.status === 200 || req.status === 304) {
+        if (fragment) {
+          var container = document.implementation.createHTMLDocument().documentElement;
+          container.innerHTML = req.responseText;
+          var nodeList = container.querySelectorAll(fragment);
+
+          if (nodeList === 0) {
+            console.warning("Did not find fragment in response");
+            return;
+          }
+
+          var wrap = document.createElement('div');
+          wrap.appendChild(nodeList[0].cloneNode(true));
+
+          element.innerHTML = wrap.innerHTML;
+        } else {
           element.innerHTML = req.responseText;
         }
-        element.className = hinclude.classprefix + req.status;
+      }
+      element.className = hinclude.classprefix + req.status;
+    },
+
+    set_content_async: function (element, req) {
+      if (req.readyState === 4) {
+        hinclude.show_content(element, req);
       }
     },
 
@@ -65,10 +86,7 @@ var hinclude;
       var include;
       while (hinclude.buffer.length > 0) {
         include = hinclude.buffer.pop();
-        if (include[1].status === 200 || include[1].status === 304) {
-          include[0].innerHTML = include[1].responseText;
-        }
-        include[0].className = hinclude.classprefix + include[1].status;
+        hinclude.show_content(include[0], include[1]);
       }
     },
 

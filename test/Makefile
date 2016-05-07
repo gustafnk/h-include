@@ -1,7 +1,10 @@
-test: basic none small_media large_media lint
+test: basic basic_async none small_media large_media fragment lint
 
 basic: server
 	phantomjs basic.js $(test_port)
+
+basic_async: server
+	phantomjs basic-async.js $(test_port)
 
 none: server
 	phantomjs none.js $(test_port)
@@ -11,6 +14,10 @@ small_media: server
 
 large_media: server
 	phantomjs large_media.js $(test_port)
+
+fragment: server
+	phantomjs fragment.js $(test_port)
+
 lint:
 	node ../node_modules/jslint/bin/jslint.js ../h-include.js
 
