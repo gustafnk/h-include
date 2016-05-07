@@ -28,15 +28,15 @@ function runTests(page_loc, tests, viewport) {
       console.log('BROWSER CONSOLE: ' + msg);
   };
 
-  setTimeout(function(){
-    page.open('http://localhost:' + port + '/' + page_loc, function (status) {
-      if (status === "success") {
-        console.log("testing " + port + "...");
-      } else {
-        console.error("Open problem; bailing\n");
-        phantom.exit(2);
-      }
+  page.open('http://localhost:' + port + '/' + page_loc, function (status) {
+    if (status === "success") {
+      console.log("testing " + port + "...");
+    } else {
+      console.error("Open problem; bailing\n");
+      phantom.exit(2);
+    }
 
+    setTimeout(function(){
       var i = 0;
       while (i < tests.length) {
         checkContent(tests[i][0], tests[i][1]);
@@ -44,15 +44,15 @@ function runTests(page_loc, tests, viewport) {
       }
 
       if (errors.length > 0) {
-        console.error(errors.join("\n"));
+        console.log(errors.join("\n"));
         page.render("error.png");
         phantom.exit(1);
       } else {
         console.log("Ok.");
         phantom.exit(0);
       }
-    });
-  }, 1000);
+    }, 100);
+  });
 }
 
 exports.runTests = runTests;

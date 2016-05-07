@@ -1,5 +1,5 @@
 
-test: basic basic_async none small_media large_media fragment success_callback lint
+test: basic basic_async none small_media large_media fragment success_callback update_src lint
 
 basic: server
 	phantomjs basic.js $(test_port)
@@ -21,6 +21,9 @@ fragment: server
 
 success_callback: server
 	phantomjs success-callback.js $(test_port)
+
+update_src: server
+	phantomjs update-src.js $(test_port)
 
 lint:
 	jshint ../h-include.js
