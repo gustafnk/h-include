@@ -61,6 +61,8 @@ var hinclude;
         } else {
           element.innerHTML = req.responseText;
         }
+        
+        element.onSuccess && element.onSuccess();
       }
       element.className = hinclude.classprefix + req.status;
     },
