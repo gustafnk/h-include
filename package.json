@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "copyfiles": "^0.2.1",
-    "jslint": "*",
+    "jshint": "*",
     "simplehttpserver": "0.0.6"
   },
   "engines": {
