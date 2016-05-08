@@ -170,6 +170,12 @@ var hinclude;
 
   var proto = Object.create(window.HTMLElement.prototype);
 
+  proto.attributeChangedCallback = function (attrName) {
+    if (attrName === 'src') {
+      this.refresh();
+    }
+  };
+
   proto.attachedCallback = function () {
 
     var mode = hinclude.get_meta("include_mode", "buffered");

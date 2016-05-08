@@ -5,4 +5,7 @@ var tests = [
   ["#b", "this text overwrote what was just there."]
 ];
 
-runTests("basic.html", tests);
+// TODO: Find cleaner solution
+setTimeout(function(){
+  runTests("basic.html", tests);
+}, 1000);
