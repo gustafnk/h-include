@@ -10,10 +10,52 @@ h-include is declarative client-side inclusion for the Web; it allows easy
 composition of Web pages using the browser -- making your pages more modular,
 more cacheable, and easier to maintain. 
 
-See [the demo page](http://gustafnk.github.com/h-include/) for documentation and
-examples.
-
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
+
+## Usage
+
+Include a document
+
+```
+<h-include src="/other/document/here.html"></h-include>
+```
+
+Include a document and extract a fragment
+
+```
+<h-include src="/other/document/here.html" fragment=".container"></h-include>
+```
+
+Include a document on another origin (needs CORS)
+
+```
+<h-include src="http://other-origin.org/some/document/here.html"></h-include>
+```
+
+Refresh an h-include element
+
+```
+document.getElementsByTagName('h-include')[0].refresh()
+```
+
+Attach an onSuccess callback
+
+```
+var onSuccess = function(){
+  // ...
+}
+
+document.getElementsByTagName('h-include')[0].onSuccess = onSuccess;
+```
+
+Other features:
+
+ - Supports sync mode (batch include, timeout based) and async mode (insert on response)
+ - Changing the @src attribute works as expected and includes a new resource
+ - Throws if caught in an infinite include loop, avoiding the [Droste effect](https://en.wikipedia.org/wiki/Droste_effect).
+
+See [the demo page](http://gustafnk.github.com/h-include/) for more documentation and
+examples.
 
 ## Installation
 
