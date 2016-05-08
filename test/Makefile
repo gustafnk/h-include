@@ -1,5 +1,4 @@
-
-test: basic basic_async none small_media large_media fragment success_callback lint
+test: basic basic_async none small_media large_media fragment recursion_not_allowed success_callback lint
 
 basic: server
 	phantomjs basic.js $(test_port)
@@ -21,6 +20,9 @@ fragment: server
 
 success_callback: server
 	phantomjs success-callback.js $(test_port)
+
+recursion_not_allowed: server
+	phantomjs recursion-not-allowed.js $(test_port)
 
 lint:
 	jshint ../h-include.js
