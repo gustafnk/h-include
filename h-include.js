@@ -42,11 +42,23 @@ var hinclude;
     classprefix: "include_",
 
     show_content: function (element, req) {
-      var fragment = element.getAttribute('fragment');
+      var i, include, message, fragment = element.getAttribute('fragment');
       if (req.status === 200 || req.status === 304) {
+        var container = document.implementation.createHTMLDocument().documentElement;
+        container.innerHTML = req.responseText;
+
+        var includes = container.getElementsByTagName('h-include');
+        for (i = 0; i < includes.length; i = i + 1) {
+          include = includes[i];
+
+          if (include.getAttribute('src') === element.getAttribute('src')) {
+            message = "Saw nested h-include with same src as ancestor (recursion).";
+            element.innerHTML = message;
+            throw new Error(message);
+          }
+        }
+
         if (fragment) {
-          var container = document.implementation.createHTMLDocument().documentElement;
-          container.innerHTML = req.responseText;
           var nodeList = container.querySelectorAll(fragment);
 
           if (nodeList === 0) {
