@@ -69,11 +69,19 @@ var hinclude;
           var wrap = document.createElement('div');
           wrap.appendChild(nodeList[0].cloneNode(true));
 
-          element.innerHTML = wrap.innerHTML;
+          if (element.customUpdate) {
+            element.customUpdate(wrap.innerHTML);
+          } else {
+            element.innerHTML = wrap.innerHTML;
+          }
         } else {
-          element.innerHTML = req.responseText;
+          if (element.customUpdate) {
+            element.customUpdate(req.responseText);
+          } else {
+            element.innerHTML = req.responseText;
+          }
         }
-        
+
         element.onSuccess && element.onSuccess();
       }
       element.className = hinclude.classprefix + req.status;
