@@ -6,7 +6,7 @@
 	<link type="text/css" rel="stylesheet" href="style.css">
 	<script type="text/javascript" src="document-register-element.js"></script>
 	<script type="text/javascript" src="h-include.js"></script>
-	<script type="text/javascript" src="https://fast-tundra-5509.herokuapp.com/krumelur.min.js"></script>
+	<script type="text/javascript" src="https://cdn.gitcdn.link/cdn/hallgren/krumelur/ee41d6af418906fb6a10cf76c6bfe3222e4be76c/public/krumelur.js"></script>
 	<style type="text/css">
 	.error_text { display: none; }
 	.include_404 .error_404 { display: inline; text-decoration: underline; }
@@ -18,13 +18,12 @@
 
 <h2 id="h">customUpdate callback</h2>
 
-<p><h-include src="hole_element_included"></h-include></p>
+<p><h-include src="included"></h-include></p>
 <p id="a" name="a"></p>
 
 <script>
 window.customUpdate = function(html){
-	//At the moment Krumelur can only apply on the outherHTML.
-	Krumelur.apply(html, document.getElementById('a'))
+	Krumelur.applyInner(html, document.getElementById('a'))
 }
 
 var element = document.getElementsByTagName('h-include')[0];
