@@ -47,17 +47,6 @@ var hinclude;
         var container = document.implementation.createHTMLDocument().documentElement;
         container.innerHTML = req.responseText;
 
-        var includes = container.getElementsByTagName('h-include');
-        for (i = 0; i < includes.length; i = i + 1) {
-          include = includes[i];
-
-          if (include.getAttribute('src') === element.getAttribute('src')) {
-            message = "Saw nested h-include with same src as ancestor (recursion).";
-            element.innerHTML = message;
-            throw new Error(message);
-          }
-        }
-
         if (fragment) {
           var nodeList = container.querySelectorAll(fragment);
 
@@ -107,6 +96,25 @@ var hinclude;
     outstanding: 0,
 
     include: function (element, url, media, incl_cb) {
+
+      // Check for recursion against current browser location
+      if(element.getAttribute('src') === document.location.href) {
+        throw new Error('Recursion not allowed');
+      }
+
+      // Check for recursion is ascendents
+      var elementToCheck = element.parentNode;
+      while (elementToCheck.parentNode) {
+        if (elementToCheck.nodeName === 'H-INCLUDE') {
+
+          if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
+            throw new Error('Recursion not allowed');
+          }
+        }
+
+        elementToCheck = elementToCheck.parentNode;
+      }
+
       if (media && window.matchMedia && !window.matchMedia(media).matches) {
         return;
       }
