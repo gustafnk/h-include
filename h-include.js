@@ -58,15 +58,14 @@ var hinclude;
           }
         }
 
-        var nodeList = container.querySelectorAll(fragment);
+        var node = container.querySelector(fragment);
 
-        if (nodeList === 0) {
-          console.warning("Did not find fragment in response");
+        if (!node) {
+          console.warn("Did not find fragment in response");
           return;
         }
 
-        // Use the innerHTML of the first element matching the fragment selector
-        element.innerHTML = nodeList[0].innerHTML;
+        element.innerHTML = node.innerHTML;
         
         element.onSuccess && element.onSuccess();
       }
