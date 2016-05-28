@@ -74,18 +74,19 @@ var hinclude;
     on_end: function (element, req) {
       element.className = 'included ' + hinclude.classprefix + req.status;
     },
+
     show_content: function (element, req) {
       var fragment = element.getAttribute('fragment') || 'body';
       if (req.status === 200 || req.status === 304) {
-        var createContainer = (element.createContainer || hinclude.create_container);
+        var createContainer = element.createContainer || hinclude.create_container;
         var container = createContainer(req);
 
         hinclude.check_recursion(container, element);
 
-        var extractFragment = (element.extractFragment || hinclude.extract_fragment);
+        var extractFragment = element.extractFragment || hinclude.extract_fragment;
         var node = extractFragment(container, fragment, req);
 
-        var replaceContent = (element.replaceContent || hinclude.replace_content);
+        var replaceContent = element.replaceContent || hinclude.replace_content;
         replaceContent(element, node);
         
         element.onSuccess && element.onSuccess();
