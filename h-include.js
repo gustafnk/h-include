@@ -53,6 +53,15 @@ var hinclude;
         }
       }
     },
+    extract_fragment: function (container, fragment, req) {
+      var node = container.querySelector(fragment);
+
+      if (!node) {
+        throw new Error("Did not find fragment in response");
+      }
+
+      return node;
+    },
     onEnd: function (element, req) {
       element.className = hinclude.classprefix + req.status;
     },
@@ -64,12 +73,8 @@ var hinclude;
 
         hinclude.check_recursion(container, element);
 
-        var node = container.querySelector(fragment);
-
-        if (!node) {
-          console.warn("Did not find fragment in response");
-          return;
-        }
+        var extractFragment = (element.extractFragment || hinclude.extract_fragment);
+        var node = extractFragment(container, fragment, req);
 
         element.innerHTML = node.innerHTML;
         
