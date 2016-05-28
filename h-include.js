@@ -62,6 +62,9 @@ var hinclude;
 
       return node;
     },
+    replace_content: function (element, node) {
+      element.innerHTML = node.innerHTML;
+    },
     on_end: function (element, req) {
       element.className = 'included ' + hinclude.classprefix + req.status;
     },
@@ -76,7 +79,8 @@ var hinclude;
         var extractFragment = (element.extractFragment || hinclude.extract_fragment);
         var node = extractFragment(container, fragment, req);
 
-        element.innerHTML = node.innerHTML;
+        var replaceContent = (element.replaceContent || hinclude.replace_content);
+        replaceContent(element, node);
         
         element.onSuccess && element.onSuccess();
       }
