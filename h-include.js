@@ -42,7 +42,7 @@ var hinclude;
     classprefix: "include_",
 
     show_content: function (element, req) {
-      var i, include, message, fragment = element.getAttribute('fragment');
+      var i, include, message, fragment = element.getAttribute('fragment') || 'body';
       if (req.status === 200 || req.status === 304) {
         var container = document.implementation.createHTMLDocument().documentElement;
         container.innerHTML = req.responseText;
@@ -58,21 +58,14 @@ var hinclude;
           }
         }
 
-        if (fragment) {
-          var nodeList = container.querySelectorAll(fragment);
+        var node = container.querySelector(fragment);
 
-          if (nodeList === 0) {
-            console.warning("Did not find fragment in response");
-            return;
-          }
-
-          var wrap = document.createElement('div');
-          wrap.appendChild(nodeList[0].cloneNode(true));
-
-          element.innerHTML = wrap.innerHTML;
-        } else {
-          element.innerHTML = req.responseText;
+        if (!node) {
+          console.warn("Did not find fragment in response");
+          return;
         }
+
+        element.innerHTML = node.innerHTML;
         
         element.onSuccess && element.onSuccess();
       }

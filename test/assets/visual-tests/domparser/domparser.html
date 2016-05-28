@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://rawgit.com/WebReflection/document-register-element/master/build/document-register-element.js"></script>
+<!--
+<script src="http://rawgit.com/gustafnk/h-include/master/h-include.js"></script>
+-->
+<script src="../../h-include.js"></script>
+<style>
+h-include { 
+	display: block;
+	border: 2px solid orange; 
+}
+h-include[status=pass] {
+	border-color: green;
+}
+h-include[status=fail] {
+	border-color: red;
+}
+</style>
+</head>
+<body>
+<h1>DOMParser test</h1>
+<p>This is a visual test page for using a DOMParser for all included content (even partial HTML documents).</p>
+<p>Visual inspection isn't sufficient. 
+<ul>
+<li>
+Check in the DOM Inspector that all expected content is inserted and no unexpected content is (e.g. &lt;body&gt; or &lt;main&gt; elements).
+</li>
+<li>
+Check in the Console that no unexpected errors are thrown,
+and that appropriate warnings are logged.
+</li>
+</ul>
+
+<hr />
+
+<script>
+var hIncludes = document.getElementsByTagName('h-include');
+var hIncludeIndex = 0;
+</script>
+
+<h2>Partial HTML document</h2>
+<p>
+<small>This is the backwards-compatibility case.</small>
+<small>It should NOT insert a &lt;body&gt; element</small>
+</p>
+<p><h-include src="partial.html"></h-include></p>
+
+<script>
+hIncludes[hIncludeIndex].onSuccess = function() {
+	var className = this.querySelector('body') ? 'fail' : 'pass';
+	this.setAttribute('status', className);
+}
+hIncludeIndex++;
+</script>
+
+<hr />
+
+<h2>Full HTML document</h2>
+<p>
+<small>It should insert "document.body.innerHTML"</small>
+<small>It should NOT insert a &lt;body&gt; element</small>
+</p>
+<p><h-include src="body.html"></h-include></p>
+
+<script>
+hIncludes[hIncludeIndex].onSuccess = function() {
+	var className = this.querySelector('body') ? 'fail' : 'pass';
+	this.setAttribute('status', className);
+}
+hIncludeIndex++;
+</script>
+
+<hr />
+
+<h2>Full HTML document with fragment</h2>
+<p>
+<small>It should insert "document.querySelector('main').innerHTML"</small>
+<small>It should NOT insert a &lt;main&gt; element</small>
+</p>
+<p><h-include src="main.html" fragment="main"></h-include></p>
+
+<script>
+hIncludes[hIncludeIndex].onSuccess = function() {
+	var className = this.querySelector('main') ? 'fail' : 'pass';
+	this.setAttribute('status', className);
+}
+hIncludeIndex++;
+</script>
+
+<hr />
+
+<h2>Full HTML document with fragment that is not found</h2>
+<p>
+<small>It should NOT insert ANYTHING because it fails to find the fragment</small>
+</p>
+<p><h-include src="body.html" fragment="main"></h-include></p>
+
+<script>
+hIncludes[hIncludeIndex].onSuccess = function() {
+	var className = 'fail';
+	this.setAttribute('status', className);
+}
+hIncludes[hIncludeIndex].setAttribute('status', 'pass');
+hIncludeIndex++;
+</script>
+
+</body>
+</html>
+
