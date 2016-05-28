@@ -48,15 +48,22 @@ var hinclude;
       return container;
     },
     check_recursion: function (container, element) {
-      var i, message, includes = container.getElementsByTagName('h-include'), include;
-      for (i = 0; i < includes.length; i = i + 1) {
-        include = includes[i];
+      // Check for recursion against current browser location
+      if(element.getAttribute('src') === document.location.href) {
+        throw new Error('Recursion not allowed');
+      }
 
-        if (include.getAttribute('src') === element.getAttribute('src')) {
-          message = "Saw nested h-include with same src as ancestor (recursion).";
-          element.innerHTML = message;
-          throw new Error(message);
+      // Check for recursion is ascendents
+      var elementToCheck = element.parentNode;
+      while (elementToCheck.parentNode) {
+        if (elementToCheck.nodeName === 'H-INCLUDE') {
+
+          if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
+            throw new Error('Recursion not allowed');
+          }
         }
+
+        elementToCheck = elementToCheck.parentNode;
       }
     },
     extract_fragment: function (container, fragment, req) {
