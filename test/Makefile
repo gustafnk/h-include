@@ -28,7 +28,7 @@ recursion_not_allowed: server
 	phantomjs recursion-not-allowed.js $(test_port)
 
 lint:
-	jshint ../h-include.js
+	npm run lint
 
 server:
 	npm run server &

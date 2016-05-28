@@ -23,6 +23,7 @@
   },
   "scripts": {
     "copy": "copyfiles h-include.js test/assets/",
+    "lint": "jshint h-include.js",
     "server": "simplehttpserver -p $PORT test/assets",
     "test": "npm run copy; cd test; make test_port=$PORT",
     "test_killall": "npm test; killall node"
