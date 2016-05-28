@@ -41,26 +41,28 @@ var hinclude;
   hinclude = {
     classprefix: "include_",
 
+    check_recursion: function (container, element) {
+      var i, message, includes = container.getElementsByTagName('h-include'), include;
+      for (i = 0; i < includes.length; i = i + 1) {
+        include = includes[i];
+
+        if (include.getAttribute('src') === element.getAttribute('src')) {
+          message = "Saw nested h-include with same src as ancestor (recursion).";
+          element.innerHTML = message;
+          throw new Error(message);
+        }
+      }
+    },
     onEnd: function (element, req) {
       element.className = hinclude.classprefix + req.status;
     },
     show_content: function (element, req) {
-      var i, include, message, fragment = element.getAttribute('fragment') || 'body';
+      var fragment = element.getAttribute('fragment') || 'body';
       if (req.status === 200 || req.status === 304) {
         var container = document.implementation.createHTMLDocument().documentElement;
         container.innerHTML = req.responseText;
 
-        // Recursion check
-        var includes = container.getElementsByTagName('h-include');
-        for (i = 0; i < includes.length; i = i + 1) {
-          include = includes[i];
-
-          if (include.getAttribute('src') === element.getAttribute('src')) {
-            message = "Saw nested h-include with same src as ancestor (recursion).";
-            element.innerHTML = message;
-            throw new Error(message);
-          }
-        }
+        hinclude.check_recursion(container, element);
 
         var node = container.querySelector(fragment);
 
