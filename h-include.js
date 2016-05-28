@@ -41,6 +41,12 @@ var hinclude;
   hinclude = {
     classprefix: "include_",
 
+    create_container: function (req) {
+      var container = document.implementation.createHTMLDocument().documentElement;
+      container.innerHTML = req.responseText;
+
+      return container;
+    },
     check_recursion: function (container, element) {
       var i, message, includes = container.getElementsByTagName('h-include'), include;
       for (i = 0; i < includes.length; i = i + 1) {
@@ -71,8 +77,8 @@ var hinclude;
     show_content: function (element, req) {
       var fragment = element.getAttribute('fragment') || 'body';
       if (req.status === 200 || req.status === 304) {
-        var container = document.implementation.createHTMLDocument().documentElement;
-        container.innerHTML = req.responseText;
+        var createContainer = (element.createContainer || hinclude.create_container);
+        var container = createContainer(req);
 
         hinclude.check_recursion(container, element);
 
