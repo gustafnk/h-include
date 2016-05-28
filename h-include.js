@@ -62,7 +62,7 @@ var hinclude;
 
       return node;
     },
-    onEnd: function (element, req) {
+    on_end: function (element, req) {
       element.className = 'included ' + hinclude.classprefix + req.status;
     },
     show_content: function (element, req) {
@@ -81,7 +81,7 @@ var hinclude;
         element.onSuccess && element.onSuccess();
       }
 
-      (element.onEnd || hinclude.onEnd)(element, req);
+      (element.onEnd || hinclude.on_end)(element, req);
     },
 
     set_content_async: function (element, req) {
