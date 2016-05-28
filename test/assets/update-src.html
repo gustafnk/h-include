@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>h-include Tests</title>
-	<link type="text/css" rel="stylesheet" href="style.css">
-	<script type="text/javascript" src="document-register-element.js"></script>
-	<script type="text/javascript" src="h-include.js"></script>
-	<style type="text/css">
-	.error_text { display: none; }
-	.include_404 .error_404 { display: inline; text-decoration: underline; }
-	</style>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>h-include Tests</title>
+  <link type="text/css" rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="document-register-element.js"></script>
+  <script type="text/javascript" src="h-include.js"></script>
+  <style type="text/css">
+  .error_text { display: none; }
+  .include_404 .error_404 { display: inline; text-decoration: underline; }
+  </style>
 </head>
 <body>
 
@@ -21,7 +21,8 @@
 
 <script>
 var element = document.getElementsByTagName('h-include')[0];
-element.onSuccess = function(){
+element.onEnd = function(element, req){
+  hinclude.on_end(element, req);
   element.setAttribute('src', 'new');
 }
 </script>

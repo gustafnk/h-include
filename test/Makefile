@@ -1,4 +1,4 @@
-test: basic basic_async none small_media large_media fragment recursion_not_allowed success_callback update_src lint
+test: basic basic_async none small_media large_media fragment recursion_not_allowed update_src lint
 
 basic: server
 	phantomjs basic.js $(test_port)
@@ -17,9 +17,6 @@ large_media: server
 
 fragment: server
 	phantomjs fragment.js $(test_port)
-
-success_callback: server
-	phantomjs success-callback.js $(test_port)
 
 update_src: server
 	phantomjs update-src.js $(test_port)

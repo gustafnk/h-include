@@ -88,8 +88,6 @@ var hinclude;
 
         var replaceContent = element.replaceContent || hinclude.replace_content;
         replaceContent(element, node);
-        
-        element.onSuccess && element.onSuccess();
       }
 
       (element.onEnd || hinclude.on_end)(element, req);
