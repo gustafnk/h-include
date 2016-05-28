@@ -63,7 +63,7 @@ var hinclude;
       return node;
     },
     onEnd: function (element, req) {
-      element.className = hinclude.classprefix + req.status;
+      element.className = 'included ' + hinclude.classprefix + req.status;
     },
     show_content: function (element, req) {
       var fragment = element.getAttribute('fragment') || 'body';
