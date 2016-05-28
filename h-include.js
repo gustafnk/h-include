@@ -90,7 +90,8 @@ var hinclude;
         replaceContent(element, node);
       }
 
-      (element.onEnd || hinclude.on_end)(element, req);
+      var onEnd = element.onEnd || hinclude.on_end;
+      onEnd(element, req);
     },
 
     set_content_async: function (element, req) {
