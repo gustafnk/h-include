@@ -41,12 +41,16 @@ var hinclude;
   hinclude = {
     classprefix: "include_",
 
+    onEnd: function (element, req) {
+      element.className = hinclude.classprefix + req.status;
+    },
     show_content: function (element, req) {
       var i, include, message, fragment = element.getAttribute('fragment') || 'body';
       if (req.status === 200 || req.status === 304) {
         var container = document.implementation.createHTMLDocument().documentElement;
         container.innerHTML = req.responseText;
 
+        // Recursion check
         var includes = container.getElementsByTagName('h-include');
         for (i = 0; i < includes.length; i = i + 1) {
           include = includes[i];
@@ -69,7 +73,8 @@ var hinclude;
         
         element.onSuccess && element.onSuccess();
       }
-      element.className = hinclude.classprefix + req.status;
+
+      (element.onEnd || hinclude.onEnd)(element, req);
     },
 
     set_content_async: function (element, req) {
