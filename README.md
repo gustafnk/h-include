@@ -78,6 +78,32 @@ to use a polyfill for enabling [W3C Custom Elements](http://w3c.github.io/webcom
 
 We recommend using [document-register-element](https://github.com/WebReflection/document-register-element) (3KB) as the polyfill for [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/).
 
+## How to avoid a brief flash of fallback content
+
+Put this code before the first `h-include` or in the `<head>` element.
+
+```
+<script>
+  <!-- https://gist.github.com/egeorjon/6755681 -->
+  document.documentElement.className = document.documentElement.className.replace( /(?:^|\s)no-script(?!\S)/g , '' )
+</script>
+
+<style>
+  h-include:not(.included) {
+    display: none;
+  }
+  .no-script h-include, h-include.included {
+    display: block;
+  }
+</style>
+```
+
+The `display: block` could be a limitation for you in some situations, so adapt the code to fit your scenarios.
+
+## Does this break SEO?
+
+No, not if you use a link to fallback content (for browsers without javascript or for failed network connections, i.e. train tunnels). But it's up to you to add that fallback link. h-include should work well with the principles of Progressive Enhancement (otherwise, file a bug).
+
 ## On HTTP/2
 
 Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
