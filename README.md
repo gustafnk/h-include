@@ -108,6 +108,16 @@ The `display: block` could be a limitation for you in some situations, so adapt 
 
 No, not if you use a link to fallback content (for browsers without javascript or for failed network connections, i.e. train tunnels). But it's up to you to add that fallback link. h-include should work well with the principles of Progressive Enhancement (*otherwise, file a bug*).
 
+## Why not HTML Imports?
+
+- HTML Imports and h-include have different intended usages:
+  - HTML Imports is mainly for loading web components
+  - h-include is for HTML transclusion
+- HTML Imports don't support declarative transclusion of content, you would have to build it yourself
+- HTML Imports polyfills need to use eval for script execution, which breaks the [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/Security/CSP), if used
+- h-include *doesn't* load scripts it finds in the response (it's a feature)
+- The common [polyfill for HTML Imports]() is 38 KB (20 KB minified) and h-include.js is 7 KB (3 KB minified)
+
 ## On HTTP/2
 
 Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
