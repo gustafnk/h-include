@@ -71,6 +71,10 @@ Install using bower:
 $ bower install h-include
 ```
 
+## Another demo: Static site web shop
+
+Here is another demo: a [static site web shop](https://github.com/gustafnk/static-web-shop-example) deployed on a CDN, which uses a shopping cart running on Heroku.
+
 ## Dependencies
 
 h-include provides a custom element `<h-include>`. This means that you have
@@ -100,9 +104,9 @@ Put this code before the first `h-include` or in the `<head>` element.
 
 The `display: block` could be a limitation for you in some situations, so adapt the code to fit your scenarios.
 
-## Does this break SEO?
+## Does this break SEO or violate Progressive Enhancement?
 
-No, not if you use a link to fallback content (for browsers without javascript or for failed network connections, i.e. train tunnels). But it's up to you to add that fallback link. h-include should work well with the principles of Progressive Enhancement (otherwise, file a bug).
+No, not if you use a link to fallback content (for browsers without javascript or for failed network connections, i.e. train tunnels). But it's up to you to add that fallback link. h-include should work well with the principles of Progressive Enhancement (*otherwise, file a bug*).
 
 ## On HTTP/2
 
