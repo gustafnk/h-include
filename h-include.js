@@ -53,7 +53,7 @@ var hinclude;
         throw new Error('Recursion not allowed');
       }
 
-      // Check for recursion is ascendents
+      // Check for recursion in ascendents
       var elementToCheck = element.parentNode;
       while (elementToCheck.parentNode) {
         if (elementToCheck.nodeName === 'H-INCLUDE') {
