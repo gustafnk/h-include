@@ -41,35 +41,64 @@ var hinclude;
   hinclude = {
     classprefix: "include_",
 
-    show_content: function (element, req) {
-      var i, include, message, fragment = element.getAttribute('fragment') || 'body';
-      if (req.status === 200 || req.status === 304) {
-        var container = document.implementation.createHTMLDocument().documentElement;
-        container.innerHTML = req.responseText;
+    create_container: function (req) {
+      var container = document.implementation.createHTMLDocument().documentElement;
+      container.innerHTML = req.responseText;
 
-        var includes = container.getElementsByTagName('h-include');
-        for (i = 0; i < includes.length; i = i + 1) {
-          include = includes[i];
+      return container;
+    },
+    check_recursion: function (element) {
+      // Check for recursion against current browser location
+      if(element.getAttribute('src') === document.location.href) {
+        throw new Error('Recursion not allowed');
+      }
 
-          if (include.getAttribute('src') === element.getAttribute('src')) {
-            message = "Saw nested h-include with same src as ancestor (recursion).";
-            element.innerHTML = message;
-            throw new Error(message);
+      // Check for recursion in ascendents
+      var elementToCheck = element.parentNode;
+      while (elementToCheck.parentNode) {
+        if (elementToCheck.nodeName === 'H-INCLUDE') {
+
+          if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
+            throw new Error('Recursion not allowed');
           }
         }
 
-        var node = container.querySelector(fragment);
-
-        if (!node) {
-          console.warn("Did not find fragment in response");
-          return;
-        }
-
-        element.innerHTML = node.innerHTML;
-        
-        element.onSuccess && element.onSuccess();
+        elementToCheck = elementToCheck.parentNode;
       }
-      element.className = hinclude.classprefix + req.status;
+    },
+    extract_fragment: function (container, fragment, req) {
+      var node = container.querySelector(fragment);
+
+      if (!node) {
+        throw new Error("Did not find fragment in response");
+      }
+
+      return node;
+    },
+    replace_content: function (element, node) {
+      element.innerHTML = node.innerHTML;
+    },
+    on_end: function (element, req) {
+      element.className = 'included ' + hinclude.classprefix + req.status;
+    },
+
+    show_content: function (element, req) {
+      var fragment = element.getAttribute('fragment') || 'body';
+      if (req.status === 200 || req.status === 304) {
+        var createContainer = element.createContainer || hinclude.create_container;
+        var container = createContainer(req);
+
+        hinclude.check_recursion(element);
+
+        var extractFragment = element.extractFragment || hinclude.extract_fragment;
+        var node = extractFragment(container, fragment, req);
+
+        var replaceContent = element.replaceContent || hinclude.replace_content;
+        replaceContent(element, node);
+      }
+
+      var onEnd = element.onEnd || hinclude.on_end;
+      onEnd(element, req);
     },
 
     set_content_async: function (element, req) {
