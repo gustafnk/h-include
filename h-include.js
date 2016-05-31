@@ -47,7 +47,7 @@ var hinclude;
 
       return container;
     },
-    check_recursion: function (container, element) {
+    check_recursion: function (element) {
       // Check for recursion against current browser location
       if(element.getAttribute('src') === document.location.href) {
         throw new Error('Recursion not allowed');
@@ -88,7 +88,7 @@ var hinclude;
         var createContainer = element.createContainer || hinclude.create_container;
         var container = createContainer(req);
 
-        hinclude.check_recursion(container, element);
+        hinclude.check_recursion(element);
 
         var extractFragment = element.extractFragment || hinclude.extract_fragment;
         var node = extractFragment(container, fragment, req);
