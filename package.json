@@ -1,6 +1,6 @@
 {
   "name": "h-include",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
   "description": "Declarative client-side inclusion for the web using Custom Elements",
   "contributors": [
