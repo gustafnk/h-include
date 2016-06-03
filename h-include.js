@@ -1,6 +1,9 @@
 /*
-h-include.js -- HTML Includes (version 0.9.5)
+h-include.js -- HTML Includes (version 1.0.0)
 
+MIT License
+
+Copyright (c) 2016 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
 Copyright (c) 2005-2012 Mark Nottingham <mnot@mnot.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,12 +41,69 @@ var hinclude;
   hinclude = {
     classprefix: "include_",
 
+    create_container: function (req) {
+      var container = document.implementation.createHTMLDocument(' ').documentElement;
+      container.innerHTML = req.responseText;
+
+      return container;
+    },
+    check_recursion: function (element) {
+      // Check for recursion against current browser location
+      if(element.getAttribute('src') === document.location.href) {
+        throw new Error('Recursion not allowed');
+      }
+
+      // Check for recursion in ascendents
+      var elementToCheck = element.parentNode;
+      while (elementToCheck.parentNode) {
+        if (elementToCheck.nodeName === 'H-INCLUDE') {
+
+          if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
+            throw new Error('Recursion not allowed');
+          }
+        }
+
+        elementToCheck = elementToCheck.parentNode;
+      }
+    },
+    extract_fragment: function (container, fragment, req) {
+      var node = container.querySelector(fragment);
+
+      if (!node) {
+        throw new Error("Did not find fragment in response");
+      }
+
+      return node;
+    },
+    replace_content: function (element, node) {
+      element.innerHTML = node.innerHTML;
+    },
+    on_end: function (element, req) {
+      element.className = 'included ' + hinclude.classprefix + req.status;
+    },
+
+    show_content: function (element, req) {
+      var fragment = element.getAttribute('fragment') || 'body';
+      if (req.status === 200 || req.status === 304) {
+        var createContainer = element.createContainer || hinclude.create_container;
+        var container = createContainer(req);
+
+        hinclude.check_recursion(element);
+
+        var extractFragment = element.extractFragment || hinclude.extract_fragment;
+        var node = extractFragment(container, fragment, req);
+
+        var replaceContent = element.replaceContent || hinclude.replace_content;
+        replaceContent(element, node);
+      }
+
+      var onEnd = element.onEnd || hinclude.on_end;
+      onEnd(element, req);
+    },
+
     set_content_async: function (element, req) {
       if (req.readyState === 4) {
-        if (req.status === 200 || req.status === 304) {
-          element.innerHTML = req.responseText;
-        }
-        element.className = hinclude.classprefix + req.status;
+        hinclude.show_content(element, req);
       }
     },
 
@@ -62,10 +122,7 @@ var hinclude;
       var include;
       while (hinclude.buffer.length > 0) {
         include = hinclude.buffer.pop();
-        if (include[1].status === 200 || include[1].status === 304) {
-          include[0].innerHTML = include[1].responseText;
-        }
-        include[0].className = hinclude.classprefix + include[1].status;
+        hinclude.show_content(include[0], include[1]);
       }
     },
 
@@ -134,6 +191,12 @@ var hinclude;
   };
 
   var proto = Object.create(window.HTMLElement.prototype);
+
+  proto.attributeChangedCallback = function (attrName) {
+    if (attrName === 'src') {
+      this.refresh();
+    }
+  };
 
   proto.attachedCallback = function () {
 
