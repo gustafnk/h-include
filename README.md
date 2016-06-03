@@ -82,6 +82,14 @@ to use a polyfill for enabling [W3C Custom Elements](http://w3c.github.io/webcom
 
 We recommend using [document-register-element](https://github.com/WebReflection/document-register-element) (3KB) as the polyfill for [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/).
 
+## Hooks
+
+| Hook            | Callback arguments           | Default behavior                                                                         | Example override use case                                                     |
+|-----------------|------------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| `createContainer` | `request`                      | Creates a DOM container from the request                                                 | Loop through links to resources and  replace relative URLs with absolute URLs |
+| `extractFragment` | `container`, `fragment`, `request` | Queries the container with a fragment selector. The default fragment selector is 'body'. | Improved error handling if fragment doesn't match                             |
+| `replaceContent`  | `element`, `fragmentElement`     | Replaces the innerHTML of the element with the innerHTML of the fragmentElement          | DOM diffing                                                                   |
+
 ## How to avoid a brief flash of fallback content
 
 Put this code before the first `h-include` or in the `<head>` element.
