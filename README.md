@@ -38,14 +38,14 @@ Refresh an h-include element
 document.getElementsByTagName('h-include')[0].refresh()
 ```
 
-Attach an onSuccess callback
+Attach a hook callback (see [hooks](#hooks))
 
 ```
-var onSuccess = function(){
+var onEnd = function(){
   // ...
 }
 
-document.getElementsByTagName('h-include')[0].onSuccess = onSuccess;
+document.getElementsByTagName('h-include')[0].onEnd = onEnd;
 ```
 
 Other features:
