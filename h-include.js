@@ -42,7 +42,7 @@ var hinclude;
     classprefix: "include_",
 
     create_container: function (req) {
-      var container = document.implementation.createHTMLDocument().documentElement;
+      var container = document.implementation.createHTMLDocument(' ').documentElement;
       container.innerHTML = req.responseText;
 
       return container;

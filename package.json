@@ -26,6 +26,7 @@
     "lint": "jshint h-include.js",
     "server": "simplehttpserver -p 8080 test/assets",
     "test": "npm run copy; cd test; make test_port=8080",
-    "test_killall": "npm test; killall node"
+    "test_killall": "npm test; killall node",
+    "start": "npm run copy; npm run server"
   }
 }

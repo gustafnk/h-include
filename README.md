@@ -108,6 +108,10 @@ The `display: block` could be a limitation for you in some situations, so adapt 
 
 No, not if you use a link to fallback content (for browsers without javascript or for failed network connections, i.e. train tunnels). But it's up to you to add that fallback link. h-include should work well with the principles of Progressive Enhancement (*otherwise, file a bug*).
 
+## Browser support
+
+All modern browsers and IE down to IE10 is supported. If you find something quirky, please file an issue.
+
 ## Why not HTML Imports?
 
 - HTML Imports and h-include have different intended usages:
