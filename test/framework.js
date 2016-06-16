@@ -1,42 +1,54 @@
-var args = require('system').args;
-var webpage = require('webpage');
+var webdriver = require('selenium-webdriver'),
+//    chrome = require('selenium-webdriver/chrome'),
+    By = webdriver.By,
+    until = webdriver.until;
 
+var driver;
 
+function start() {
+    if (process.env.SAUCE_USERNAME != undefined) {
+      driver = new webdriver.Builder()
+      .usingServer('http://'+ process.env.SAUCE_USERNAME+':'+process.env.SAUCE_ACCESS_KEY+'@ondemand.saucelabs.com:80/wd/hub')
+      .withCapabilities({
+        'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+        build: process.env.TRAVIS_BUILD_NUMBER,
+        username: process.env.SAUCE_USERNAME,
+        accessKey: process.env.SAUCE_ACCESS_KEY,
+        browserName: "chrome"
+      }).build();
+    } else {
+      driver = new webdriver.Builder()
+      .withCapabilities({
+        browserName: "firefox"
+      }).build();
+   }
+}
+
+function stop() {
+    driver.quit();
+}
 
 function runTests(page_loc, tests, viewport) {
-  var port = args[1];
+  var port = process.env.PORT;
   var errors = [];
-  var page = webpage.create();
-  if(viewport){
-      page.viewportSize = viewport;
+
+  var window = driver.manage().window();
+  if(viewport && viewport.width && viewport.height){
+      window.setSize(viewport.width, viewport.height);
   }
 
   function checkContent(selector, expected) {
-      var a = page.evaluate(function(selector) {
-        return document.querySelector(selector).textContent;
-      }, selector);
-      if (a.trim() != expected) {
-        errors.push(selector + ': "' + a + "\" is not \"" + expected + '"');
+    driver.findElement(By.css(selector))
+    .then(function(el) {
+      var text = el.getText();
+      if (text != expected) {
+        errors.push(selector + ': "' + text + '" is not "' + expected + '"');
       }
+    });
   }
 
-  phantom.onError = function(msg, trace) {
-      errors.push('PHANTOM ERROR: ' + msg);
-  };
-
-  page.onConsoleMessage = function (msg) {
-      console.log('BROWSER CONSOLE: ' + msg);
-  };
-
-  page.open('http://localhost:' + port + '/' + page_loc, function (status) {
-    if (status === "success") {
-      console.log("testing " + port + "...");
-    } else {
-      console.error("Open problem; bailing\n");
-      phantom.exit(2);
-    }
-
-    setTimeout(function(){
+  return driver.get('http://localhost:' + port + '/' + page_loc)
+  .then(function () {
       var i = 0;
       while (i < tests.length) {
         checkContent(tests[i][0], tests[i][1]);
@@ -44,15 +56,14 @@ function runTests(page_loc, tests, viewport) {
       }
 
       if (errors.length > 0) {
-        console.log(errors.join("\n"));
-        page.render("error.png");
-        phantom.exit(1);
+        console.error(errors.join("\n"));
       } else {
-        console.log("Ok.");
-        phantom.exit(0);
+        console.info("Ok.");
       }
-    }, 100);
+      return errors.length;
   });
 }
 
+exports.start = start;
+exports.stop = stop;
 exports.runTests = runTests;

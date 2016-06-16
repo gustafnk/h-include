@@ -16,7 +16,8 @@
   "devDependencies": {
     "copyfiles": "^0.2.1",
     "jshint": "*",
-    "simplehttpserver": "0.0.6"
+    "simplehttpserver": "0.0.6",
+    "selenium-webdriver": "*"
   },
   "engines": {
     "node": ">= 0.6.0"
@@ -25,7 +26,7 @@
     "copy": "copyfiles h-include.js test/assets/",
     "lint": "jshint h-include.js",
     "server": "simplehttpserver -p 8080 test/assets",
-    "test": "npm run copy; cd test; make test_port=8080",
+    "test": "npm run copy; cd test; PORT=8080 make test",
     "test_killall": "npm test; killall node",
     "start": "npm run copy; npm run server"
   }

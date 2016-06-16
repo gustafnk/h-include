@@ -1,0 +1,54 @@
+[
+{
+	"expect": [
+		["#a", "this text is included"],
+		["#b", "this text overwrote what was just there."]
+	],
+	"file": "basic.html"
+},
+{
+	"expect": [
+  		["#a", "this text is included"],
+  		["#b", "this text overwrote what was just there."]
+	],
+	"file": "basic-async.html"
+},
+{
+	"expect": [
+		["#a", "Paragraph in fragment"]
+	],
+	"file": "fragment.html"
+},
+{
+	"expect": [
+		["#a", "1st para"]
+	],
+	"file": "none.html"
+},
+{
+	"expect": [
+		["#a", ""]
+	],
+	"file": "recursion-not-allowed.html"
+},
+{
+	"expect": [
+		["#a", "this text overwrote what was just there"]
+	],
+	"file": "update-src.html"
+},
+{
+	"expect": [
+		["#a", "Large viewport"]
+	],
+	"file": "media.html", 
+	"viewport": {"width": 880, "height": 800}
+},
+{
+	"expect": [
+		["#a", "Small viewport"]
+	],
+	"file": "media.html", 
+	"viewport": {"width": 480, "height": 800}
+}
+]
