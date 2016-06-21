@@ -12,4 +12,4 @@ lint:
 	jshint ../h-include.js
 
 server:
-	npm run server &
+	npm run server > /dev/null 2>&1 &
