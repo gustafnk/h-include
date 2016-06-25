@@ -132,37 +132,37 @@ var hinclude;
       if (media && window.matchMedia && !window.matchMedia(media).matches) {
         return;
       }
+
       var scheme = url.substring(0, url.indexOf(":"));
-      if (scheme.toLowerCase() === "data") { // just text/plain for now
-        var data = decodeURIComponent(url.substring(url.indexOf(",") + 1, url.length));
-        element.innerHTML = data;
-      } else {
-        var req = false;
-        if (window.XMLHttpRequest) {
-          try {
-            req = new XMLHttpRequest();
-          } catch (e1) {
-            req = false;
-          }
-        } else if (window.ActiveXObject) {
-          try {
-            req = new ActiveXObject("Microsoft.XMLHTTP");
-          } catch (e2) {
-            req = false;
-          }
+      if (scheme.toLowerCase() === "data") {
+        throw new Error('data URIs are not allowed');
+      }
+
+      var req = false;
+      if (window.XMLHttpRequest) {
+        try {
+          req = new XMLHttpRequest();
+        } catch (e1) {
+          req = false;
         }
-        if (req) {
-          this.outstanding += 1;
-          req.onreadystatechange = function () {
-            incl_cb(element, req);
-          };
-          try {
-            req.open("GET", url, true);
-            req.send("");
-          } catch (e3) {
-            this.outstanding -= 1;
-            alert("Include error: " + url + " (" + e3 + ")");
-          }
+      } else if (window.ActiveXObject) {
+        try {
+          req = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e2) {
+          req = false;
+        }
+      }
+      if (req) {
+        this.outstanding += 1;
+        req.onreadystatechange = function () {
+          incl_cb(element, req);
+        };
+        try {
+          req.open("GET", url, true);
+          req.send("");
+        } catch (e3) {
+          this.outstanding -= 1;
+          alert("Include error: " + url + " (" + e3 + ")");
         }
       }
     },
