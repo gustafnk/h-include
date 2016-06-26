@@ -17,14 +17,22 @@
 
 <h2 id="h">Update src attribute</h2>
 
-<p id="a" name="a"><h-include src="included"></h-include></p>
+<p id="a" name="a"><h-include-update-on-end class="test" src="included"></h-include-update-on-end></p>
 
 <script>
-var element = document.getElementsByTagName('h-include')[0];
-element.onEnd = function(element, req){
-  hinclude.on_end(element, req);
-  element.setAttribute('src', 'new');
+
+var proto = Object.create(HIncludeElement.prototype);
+
+proto.onEnd = function(req){
+  HIncludeElement.prototype.onEnd.apply(this, arguments); // call super
+
+  this.setAttribute('src', 'new');
 }
+
+document.registerElement('h-include-update-on-end', {
+  prototype: proto,
+});
+
 </script>
 
 </body>

@@ -32,194 +32,188 @@ See http://gustafnk.github.com/h-include/ for documentation.
 /*jslint indent: 2, browser: true, vars: true, nomen: true */
 /*global alert, ActiveXObject */
 
-var hinclude;
+window.HIncludeElement = (function() {
 
-(function () {
+  var classprefix = "include_";
 
-  "use strict";
+  var metaCache = {};
+  var buffer = [];
+  var outstanding = 0;
 
-  hinclude = {
-    classprefix: "include_",
+  function show_content(element, req){
+    var fragment = element.getAttribute('fragment') || 'body';
+    if (req.status === 200 || req.status === 304) {
+      var container = element.createContainer.call(element, req);
 
-    create_container: function (req) {
-      var container = document.implementation.createHTMLDocument(' ').documentElement;
-      container.innerHTML = req.responseText;
+      element.checkRecursion.call(element);
 
-      return container;
-    },
-    check_recursion: function (element) {
-      // Check for recursion against current browser location
-      if(element.getAttribute('src') === document.location.href) {
-        throw new Error('Recursion not allowed');
+      var node = element.extractFragment.call(element, container, fragment, req);
+      element.replaceContent.call(element, node);
+    }
+
+    element.onEnd.call(element, req);
+  }
+
+  function set_content_async(element, req) {
+    if (req.readyState === 4) {
+      show_content(element, req);
+    }
+  }
+
+  function set_content_buffered(element, req) {
+    if (req.readyState === 4) {
+      buffer.push([element, req]);
+      outstanding -= 1;
+      if (outstanding === 0) {
+        show_buffered_content();
       }
+    }
+  }
 
-      // Check for recursion in ascendents
-      var elementToCheck = element.parentNode;
-      while (elementToCheck.parentNode) {
-        if (elementToCheck.nodeName === 'H-INCLUDE') {
+  function show_buffered_content() {
+    while (buffer.length > 0) {
+      var toShow = buffer.pop();
+      show_content(toShow[0], toShow[1]);
+    }
+  }
 
-          if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
-            throw new Error('Recursion not allowed');
-          }
-        }
+  function get_meta(name, value_default) {
 
-        elementToCheck = elementToCheck.parentNode;
+    // Since get_meta is called on each createdCallback, we use caching
+    var cached = metaCache[name];
+    if (cached) {
+      return cached;
+    }
+
+    var metas = document.getElementsByTagName("meta");
+    for (var i = 0; i < metas.length; i += 1) {
+      var meta_name = metas[i].getAttribute("name");
+      if (meta_name === name) {
+        var meta_value = metas[i].getAttribute("content");
+        metaCache[name] = meta_value;
+        return meta_value;
       }
-    },
-    extract_fragment: function (container, fragment, req) {
-      var node = container.querySelector(fragment);
+    }
+    return value_default;
+  }
 
-      if (!node) {
-        throw new Error("Did not find fragment in response");
+  var proto = Object.create(HTMLElement.prototype);
+
+  proto.include = function(url, media, incl_cb) {
+    var that = this;
+    if (media && window.matchMedia && !window.matchMedia(media).matches) {
+      return;
+    }
+
+    var scheme = url.substring(0, url.indexOf(":"));
+    if (scheme.toLowerCase() === "data") {
+      throw new Error('data URIs are not allowed');
+    }
+
+    var req = false;
+    if (window.XMLHttpRequest) {
+      try {
+        req = new XMLHttpRequest();
+      } catch (e1) {
+        req = false;
       }
-
-      return node;
-    },
-    replace_content: function (element, node) {
-      element.innerHTML = node.innerHTML;
-    },
-    on_end: function (element, req) {
-      element.className = 'included ' + hinclude.classprefix + req.status;
-    },
-
-    show_content: function (element, req) {
-      var fragment = element.getAttribute('fragment') || 'body';
-      if (req.status === 200 || req.status === 304) {
-        var createContainer = element.createContainer || hinclude.create_container;
-        var container = createContainer(req);
-
-        hinclude.check_recursion(element);
-
-        var extractFragment = element.extractFragment || hinclude.extract_fragment;
-        var node = extractFragment(container, fragment, req);
-
-        var replaceContent = element.replaceContent || hinclude.replace_content;
-        replaceContent(element, node);
+    } else if (window.ActiveXObject) {
+      try {
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (e2) {
+        req = false;
       }
-
-      var onEnd = element.onEnd || hinclude.on_end;
-      onEnd(element, req);
-    },
-
-    set_content_async: function (element, req) {
-      if (req.readyState === 4) {
-        hinclude.show_content(element, req);
+    }
+    if (req) {
+      outstanding += 1;
+      req.onreadystatechange = function () {
+        incl_cb(that, req);
+      };
+      try {
+        req.open("GET", url, true);
+        req.send("");
+      } catch (e3) {
+        outstanding -= 1;
+        alert("Include error: " + url + " (" + e3 + ")");
       }
-    },
-
-    buffer: [],
-    set_content_buffered: function (element, req) {
-      if (req.readyState === 4) {
-        hinclude.buffer.push([element, req]);
-        hinclude.outstanding -= 1;
-        if (hinclude.outstanding === 0) {
-          hinclude.show_buffered_content();
-        }
-      }
-    },
-
-    show_buffered_content: function () {
-      var include;
-      while (hinclude.buffer.length > 0) {
-        include = hinclude.buffer.pop();
-        hinclude.show_content(include[0], include[1]);
-      }
-    },
-
-    outstanding: 0,
-
-    include: function (element, url, media, incl_cb) {
-      if (media && window.matchMedia && !window.matchMedia(media).matches) {
-        return;
-      }
-
-      var scheme = url.substring(0, url.indexOf(":"));
-      if (scheme.toLowerCase() === "data") {
-        throw new Error('data URIs are not allowed');
-      }
-
-      var req = false;
-      if (window.XMLHttpRequest) {
-        try {
-          req = new XMLHttpRequest();
-        } catch (e1) {
-          req = false;
-        }
-      } else if (window.ActiveXObject) {
-        try {
-          req = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (e2) {
-          req = false;
-        }
-      }
-      if (req) {
-        this.outstanding += 1;
-        req.onreadystatechange = function () {
-          incl_cb(element, req);
-        };
-        try {
-          req.open("GET", url, true);
-          req.send("");
-        } catch (e3) {
-          this.outstanding -= 1;
-          alert("Include error: " + url + " (" + e3 + ")");
-        }
-      }
-    },
-    metaCache: {},
-    get_meta: function (name, value_default) {
-
-      // Since get_meta is called on each createdCallback, we use caching
-      var cached = this.metaCache[name];
-      if (cached) {
-        return cached;
-      }
-
-      var m = 0;
-      var metas = document.getElementsByTagName("meta");
-      var meta_name, meta_value;
-      for (m; m < metas.length; m += 1) {
-        meta_name = metas[m].getAttribute("name");
-        if (meta_name === name) {
-          meta_value = metas[m].getAttribute("content");
-          this.metaCache[name] = meta_value;
-          return meta_value;
-        }
-      }
-      return value_default;
     }
   };
 
-  var proto = Object.create(window.HTMLElement.prototype);
+  proto.createContainer = function(req){
+    var container = document.implementation.createHTMLDocument(' ').documentElement;
+    container.innerHTML = req.responseText;
 
-  proto.attributeChangedCallback = function (attrName) {
+    return container;
+  };
+
+  proto.checkRecursion = function(){
+    // Check for recursion against current browser location
+    if(this.getAttribute('src') === document.location.href) {
+      throw new Error('Recursion not allowed');
+    }
+
+    // Check for recursion in ascendents
+    var elementToCheck = this.parentNode;
+    while (elementToCheck.parentNode) {
+      if (elementToCheck.nodeName === 'H-INCLUDE') {
+
+        if (this.getAttribute('src') === elementToCheck.getAttribute('src')) {
+          throw new Error('Recursion not allowed');
+        }
+      }
+
+      elementToCheck = elementToCheck.parentNode;
+    }
+  };
+
+  proto.extractFragment = function(container, fragment, req) {
+    var node = container.querySelector(fragment);
+
+    if (!node) {
+      throw new Error("Did not find fragment in response");
+    }
+
+    return node;
+  };
+
+  proto.replaceContent = function(node) {
+    this.innerHTML = node.innerHTML;
+  };
+
+  proto.onEnd = function(req) {
+    this.className = 'included ' + classprefix + req.status;
+  };
+
+  proto.attributeChangedCallback = function(attrName) {
     if (attrName === 'src') {
       this.refresh();
     }
   };
 
-  proto.attachedCallback = function () {
+  proto.attachedCallback = function() {
 
-    var mode = hinclude.get_meta("include_mode", "buffered");
+    var mode = get_meta("include_mode", "buffered");
+
     var callback;
-
     if (mode === "async") {
-      callback = hinclude.set_content_async;
+      callback = set_content_async;
     } else if (mode === "buffered") {
-      callback = hinclude.set_content_buffered;
-      var timeout = hinclude.get_meta("include_timeout", 2.5) * 1000;
-      setTimeout(hinclude.show_buffered_content, timeout);
+      callback = set_content_buffered;
+      var timeout = get_meta("include_timeout", 2.5) * 1000;
+      setTimeout(show_buffered_content, timeout);
     }
 
-    hinclude.include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
+    this.include(this.getAttribute("src"), this.getAttribute("media"), callback);
   };
 
-  proto.refresh = function () {
-    var callback = hinclude.set_content_buffered;
-    hinclude.include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
+  var refresh = function() {
+    var callback = set_content_buffered;
+    this.include(this.getAttribute("src"), this.getAttribute("media"), callback);
   };
 
-  document.registerElement('h-include', {
-    prototype : proto
+  proto.refresh = refresh;
+
+  return document.registerElement('h-include', {
+    prototype: proto
   });
-}());
+})();
