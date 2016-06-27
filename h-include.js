@@ -45,7 +45,7 @@ window.HIncludeElement = (function() {
     if (req.status === 200 || req.status === 304) {
       var container = element.createContainer.call(element, req);
 
-      element.checkRecursion.call(element);
+      checkRecursion(element);
 
       var node = element.extractFragment.call(element, container, fragment, req);
       element.replaceContent.call(element, node);
@@ -97,10 +97,27 @@ window.HIncludeElement = (function() {
     return value_default;
   }
 
-  var proto = Object.create(HTMLElement.prototype);
+  var checkRecursion = function(element){
+    // Check for recursion against current browser location
+    if(element.getAttribute('src') === document.location.href) {
+      throw new Error('Recursion not allowed');
+    }
 
-  proto.include = function(url, media, incl_cb) {
-    var that = this;
+    // Check for recursion in ascendents
+    var elementToCheck = element.parentNode;
+    while (elementToCheck.parentNode) {
+      if (elementToCheck.nodeName === 'H-INCLUDE') {
+
+        if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
+          throw new Error('Recursion not allowed');
+        }
+      }
+
+      elementToCheck = elementToCheck.parentNode;
+    }
+  };
+
+  var include = function(element, url, media, incl_cb) {
     if (media && window.matchMedia && !window.matchMedia(media).matches) {
       return;
     }
@@ -127,7 +144,7 @@ window.HIncludeElement = (function() {
     if (req) {
       outstanding += 1;
       req.onreadystatechange = function () {
-        incl_cb(that, req);
+        incl_cb(element, req);
       };
       try {
         req.open("GET", url, true);
@@ -139,31 +156,13 @@ window.HIncludeElement = (function() {
     }
   };
 
+  var proto = Object.create(HTMLElement.prototype);
+
   proto.createContainer = function(req){
     var container = document.implementation.createHTMLDocument(' ').documentElement;
     container.innerHTML = req.responseText;
 
     return container;
-  };
-
-  proto.checkRecursion = function(){
-    // Check for recursion against current browser location
-    if(this.getAttribute('src') === document.location.href) {
-      throw new Error('Recursion not allowed');
-    }
-
-    // Check for recursion in ascendents
-    var elementToCheck = this.parentNode;
-    while (elementToCheck.parentNode) {
-      if (elementToCheck.nodeName === 'H-INCLUDE') {
-
-        if (this.getAttribute('src') === elementToCheck.getAttribute('src')) {
-          throw new Error('Recursion not allowed');
-        }
-      }
-
-      elementToCheck = elementToCheck.parentNode;
-    }
   };
 
   proto.extractFragment = function(container, fragment, req) {
@@ -203,12 +202,12 @@ window.HIncludeElement = (function() {
       setTimeout(show_buffered_content, timeout);
     }
 
-    this.include(this.getAttribute("src"), this.getAttribute("media"), callback);
+    include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
   };
 
   var refresh = function() {
     var callback = set_content_buffered;
-    this.include(this.getAttribute("src"), this.getAttribute("media"), callback);
+    include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
   };
 
   proto.refresh = refresh;
