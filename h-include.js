@@ -184,7 +184,13 @@ window.HIncludeElement = (function() {
   };
 
   proto.onEnd = function(req) {
-    this.className = 'included ' + classprefix + req.status;
+    var tokens = this.className.split(/\s+/);
+    var otherClasses = tokens.filter(function(token){
+      return !token.match(/^include_\d+$/i) && !token.match(/^included/i);
+    }).join(' ');
+
+    this.className = otherClasses + (otherClasses ? ' ' : '') +
+      'included ' + classprefix + req.status;
   };
 
   proto.attributeChangedCallback = function(attrName) {
