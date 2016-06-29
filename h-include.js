@@ -29,7 +29,7 @@ SOFTWARE.
 See http://gustafnk.github.com/h-include/ for documentation.
 */
 
-/*jslint indent: 2, browser: true, vars: true, nomen: true */
+/*jslint indent: 2, browser: true, vars: true, nomen: true, loopfunc: true */
 /*global alert, ActiveXObject */
 
 window.HIncludeElement = (function() {
@@ -73,7 +73,11 @@ window.HIncludeElement = (function() {
   function show_buffered_content() {
     while (buffer.length > 0) {
       var toShow = buffer.pop();
-      show_content(toShow[0], toShow[1]);
+      try {
+        show_content(toShow[0], toShow[1]);
+      } catch(error) { // rethrow error without stopping the loop
+        setTimeout(function() { throw error; });
+      }
     }
   }
 

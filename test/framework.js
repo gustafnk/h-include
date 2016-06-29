@@ -78,7 +78,7 @@ function run(page_loc, tests) {
         return new Promise(function(resolve){
           setTimeout(function(){
             resolve(checkContent(test[0], test[1]));
-          }, 300);
+          }, 1000);
         });
       }));
   })
