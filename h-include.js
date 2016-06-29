@@ -132,32 +132,17 @@ window.HIncludeElement = (function() {
       throw new Error('data URIs are not allowed');
     }
 
-    var req = false;
-    if (window.XMLHttpRequest) {
-      try {
-        req = new XMLHttpRequest();
-      } catch (e1) {
-        req = false;
-      }
-    } else if (window.ActiveXObject) {
-      try {
-        req = new ActiveXObject("Microsoft.XMLHTTP");
-      } catch (e2) {
-        req = false;
-      }
-    }
-    if (req) {
-      outstanding += 1;
-      req.onreadystatechange = function () {
-        includeCallback(element, req);
-      };
-      try {
-        req.open("GET", url, true);
-        req.send("");
-      } catch (e3) {
-        outstanding -= 1;
-        alert("Include error: " + url + " (" + e3 + ")");
-      }
+    var req = new XMLHttpRequest();
+
+    outstanding += 1;
+    req.onreadystatechange = function () {
+      includeCallback(element, req);
+    };
+    try {
+      req.open("GET", url, true);
+      req.send("");
+    } catch (e) {
+      outstanding -= 1;
     }
   };
 
