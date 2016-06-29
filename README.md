@@ -38,16 +38,6 @@ Refresh an h-include element
 document.getElementsByTagName('h-include')[0].refresh()
 ```
 
-Attach a hook callback (see [hooks](#hooks))
-
-```
-var onEnd = function(){
-  // ...
-}
-
-document.getElementsByTagName('h-include')[0].onEnd = onEnd;
-```
-
 Other features:
 
  - Supports sync mode (batch include, timeout based) and async mode (insert on response)
@@ -82,14 +72,30 @@ to use a polyfill for enabling [W3C Custom Elements](http://w3c.github.io/webcom
 
 We recommend using [document-register-element](https://github.com/WebReflection/document-register-element) (3KB) as the polyfill for [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/).
 
-## Hooks
+## Overridable function on the custom element
 
-| Hook | Callback arguments | Default behavior | Example override use case                                                     |
+| Function | Arguments | Default behavior | Example override use case                                                     |
 |-----------------|------------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
 | `createContainer` | `request` | Creates a DOM container from the request | Loop through links to resources and  replace relative URLs with absolute URLs |
 | `extractFragment` | `container`, `fragment`, `request` | Queries the container with a fragment selector. The default fragment selector is 'body'. | Improved error handling if fragment doesn't match |
-| `replaceContent`  | `element`, `fragmentElement` | Replaces the innerHTML of the element with the innerHTML of the fragmentElement | DOM diffing |
-| `onEnd`  | `element`, `request` | Overwrite the `@class` attribute of the h-include element with status information | Merge the `@class` attribute values with status information |
+| `replaceContent`  | `fragmentElement` | Replaces the innerHTML of the element with the innerHTML of the fragmentElement | DOM diffing |
+| `onEnd`  | `request` | Add status information to the `@class` attribute of the h-include element | |
+
+Override one or many functions by inheriting from the custom element, like this:
+
+```
+var proto = Object.create(HIncludeElement.prototype);
+
+proto.onEnd = function(req){
+  HIncludeElement.prototype.onEnd.apply(this, arguments); // call super
+
+  // your code here
+}
+
+document.registerElement('h-include-improved', {
+  prototype: proto,
+});
+```
 
 ## How to avoid a brief flash of fallback content
 
@@ -121,6 +127,10 @@ No, not if you use a link to fallback content (for browsers without javascript o
 
 All modern browsers and IE down to IE10 is supported. If you find something quirky, please file an issue.
 
+## On HTTP/2
+
+Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
+
 ## Why not HTML Imports?
 
 - HTML Imports and h-include have different intended usages:
@@ -130,7 +140,3 @@ All modern browsers and IE down to IE10 is supported. If you find something quir
 - HTML Imports polyfills need to use eval for script execution, which breaks the [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/Security/CSP), if used
 - h-include *doesn't* load scripts it finds in the response (it's a feature)
 - The common [polyfill for HTML Imports]() is 38 KB (20 KB minified) and h-include.js is 7 KB (3 KB minified)
-
-## On HTTP/2
-
-Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
