@@ -40,7 +40,7 @@ window.HIncludeElement = (function() {
   var buffer = [];
   var outstanding = 0;
 
-  function show_content(element, req){
+  function showContent(element, req){
     var fragment = element.getAttribute('fragment') || 'body';
     if (req.status === 200 || req.status === 304) {
       var container = element.createContainer.call(element, req);
@@ -54,36 +54,37 @@ window.HIncludeElement = (function() {
     element.onEnd.call(element, req);
   }
 
-  function set_content_async(element, req) {
+  function setContentAsync(element, req) {
     if (req.readyState === 4) {
-      show_content(element, req);
+      showContent(element, req);
     }
   }
 
-  function set_content_buffered(element, req) {
+  function setContentBuffered(element, req) {
     if (req.readyState === 4) {
       buffer.push([element, req]);
       outstanding -= 1;
       if (outstanding === 0) {
-        show_buffered_content();
+        showBufferedContent();
       }
     }
   }
 
-  function show_buffered_content() {
+  function showBufferedContent() {
     while (buffer.length > 0) {
       var toShow = buffer.pop();
+
       try {
-        show_content(toShow[0], toShow[1]);
+        showContent(toShow[0], toShow[1]);
       } catch(error) { // rethrow error without stopping the loop
         setTimeout(function() { throw error; });
       }
     }
   }
 
-  function get_meta(name, value_default) {
+  function getMeta(name, defaultValue) {
 
-    // Since get_meta is called on each createdCallback, we use caching
+    // Since getMeta is called on each createdCallback, we use caching
     var cached = metaCache[name];
     if (cached) {
       return cached;
@@ -91,14 +92,14 @@ window.HIncludeElement = (function() {
 
     var metas = document.getElementsByTagName("meta");
     for (var i = 0; i < metas.length; i += 1) {
-      var meta_name = metas[i].getAttribute("name");
-      if (meta_name === name) {
-        var meta_value = metas[i].getAttribute("content");
-        metaCache[name] = meta_value;
-        return meta_value;
+      var metaName = metas[i].getAttribute("name");
+      if (metaName === name) {
+        var metaValue = metas[i].getAttribute("content");
+        metaCache[name] = metaValue;
+        return metaValue;
       }
     }
-    return value_default;
+    return defaultValue;
   }
 
   var checkRecursion = function(element){
@@ -121,7 +122,7 @@ window.HIncludeElement = (function() {
     }
   };
 
-  var include = function(element, url, media, incl_cb) {
+  var include = function(element, url, media, includeCallback) {
     if (media && window.matchMedia && !window.matchMedia(media).matches) {
       return;
     }
@@ -148,7 +149,7 @@ window.HIncludeElement = (function() {
     if (req) {
       outstanding += 1;
       req.onreadystatechange = function () {
-        incl_cb(element, req);
+        includeCallback(element, req);
       };
       try {
         req.open("GET", url, true);
@@ -201,22 +202,22 @@ window.HIncludeElement = (function() {
 
   proto.attachedCallback = function() {
 
-    var mode = get_meta("include_mode", "buffered");
+    var mode = getMeta("include_mode", "buffered");
 
     var callback;
     if (mode === "async") {
-      callback = set_content_async;
+      callback = setContentAsync;
     } else if (mode === "buffered") {
-      callback = set_content_buffered;
-      var timeout = get_meta("include_timeout", 2.5) * 1000;
-      setTimeout(show_buffered_content, timeout);
+      callback = setContentBuffered;
+      var timeout = getMeta("include_timeout", 2.5) * 1000;
+      setTimeout(showBufferedContent, timeout);
     }
 
     include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
   };
 
   var refresh = function() {
-    var callback = set_content_buffered;
+    var callback = setContentBuffered;
     include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
   };
 
