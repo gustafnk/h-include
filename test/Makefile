@@ -1,31 +1,15 @@
-test: basic basic_async none small_media large_media fragment recursion_not_allowed update_src lint
+RUNNER = node
+PORT = 8080
 
-basic: server
-	phantomjs basic.js $(test_port)
+default: all
 
-basic_async: server
-	phantomjs basic-async.js $(test_port)
+all: test lint
 
-none: server
-	phantomjs none.js $(test_port)
-
-small_media: server
-	phantomjs small_media.js $(test_port)
-
-large_media: server
-	phantomjs large_media.js $(test_port)
-
-fragment: server
-	phantomjs fragment.js $(test_port)
-
-update_src: server
-	phantomjs update-src.js $(test_port)
-
-recursion_not_allowed: server
-	phantomjs recursion-not-allowed.js $(test_port)
+test: server
+	PORT=${PORT} ${RUNNER} index.js ${TEST}
 
 lint:
-	npm run lint
+	jshint ../h-include.js
 
 server:
-	npm run server &
+	npm run server > /dev/null 2>&1 &
