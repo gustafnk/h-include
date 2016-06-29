@@ -75,7 +75,11 @@ function run(page_loc, tests) {
   return driver.get('http://localhost:' + port + '/' + page_loc)
   .then(function () {
       return Promise.all(tests.map(function(test) { // TODO use reduce() to run sequentially
-        return checkContent(test[0], test[1]);
+        return new Promise(function(resolve){
+          setTimeout(function(){
+            resolve(checkContent(test[0], test[1]));
+          }, 300);
+        });
       }));
   })
   .then(function() {
