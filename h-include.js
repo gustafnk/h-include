@@ -1,5 +1,5 @@
 /*
-h-include.js -- HTML Includes (version 1.1.0)
+h-include.js -- HTML Includes (version 1.2.0)
 
 MIT License
 
