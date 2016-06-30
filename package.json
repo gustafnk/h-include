@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
   "description": "Declarative client-side inclusion for the web using Custom Elements",
+  "keywords": ["web-components"],
   "contributors": [
     {
       "name": "Mark Nottingham",
