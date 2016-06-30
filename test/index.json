@@ -8,6 +8,12 @@
 },
 {
 	"expect": [
+		["#counter", "3"]
+	],
+	"file": "lazy.html"
+},
+{
+	"expect": [
   		["#a", "this text is included"],
   		["#b", "this text overwrote what was just there."]
 	],

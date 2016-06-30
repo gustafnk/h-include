@@ -97,6 +97,31 @@ document.registerElement('h-include-improved', {
 });
 ```
 
+## How to do lazy loading (load when in viewport)
+
+```
+<script src="https://cdn.rawgit.com/jeremenichelli/hunt/master/src/hunt.js"></script>
+
+// Configure hunt.js
+window.addEventListener('load', function() {
+  hunt(document.getElementsByTagName('h-include-lazy'), {
+    in: function() {
+      this.refresh();
+    },
+    offset: 400
+  });
+});
+
+// Register h-include-lazy
+var proto = Object.create(HIncludeElement.prototype);
+
+proto.attachedCallback = function(){}
+
+document.registerElement('h-include-lazy', {
+  prototype: proto,
+});
+```
+
 ## How to avoid a brief flash of fallback content
 
 Put this code before the first `h-include` or in the `<head>` element.
