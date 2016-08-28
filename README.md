@@ -134,15 +134,13 @@ Put this code before the first `h-include` or in the `<head>` element.
 
 <style>
   h-include:not(.included) {
-    display: none;
+    visibility: hidden;
   }
   .no-script h-include, h-include.included {
-    display: block;
+    visibility: visible;
   }
 </style>
 ```
-
-The `display: block` could be a limitation for you in some situations, so adapt the code to fit your scenarios.
 
 ## Does this break SEO or violate Progressive Enhancement?
 
