@@ -36,7 +36,8 @@ window.HIncludeElement = (function() {
 
   var classprefix = "include_";
 
-  var metaCache = {};
+  var config = window.HIncludeConfig;
+
   var buffer = [];
   var outstanding = 0;
 
@@ -80,26 +81,6 @@ window.HIncludeElement = (function() {
         setTimeout(function() { throw error; });
       }
     }
-  }
-
-  function getMeta(name, defaultValue) {
-
-    // Since getMeta is called on each createdCallback, we use caching
-    var cached = metaCache[name];
-    if (cached) {
-      return cached;
-    }
-
-    var metas = document.getElementsByTagName("meta");
-    for (var i = 0; i < metas.length; i += 1) {
-      var metaName = metas[i].getAttribute("name");
-      if (metaName === name) {
-        var metaValue = metas[i].getAttribute("content");
-        metaCache[name] = metaValue;
-        return metaValue;
-      }
-    }
-    return defaultValue;
   }
 
   var checkRecursion = function(element){
@@ -186,15 +167,14 @@ window.HIncludeElement = (function() {
   };
 
   proto.attachedCallback = function() {
-
-    var mode = getMeta("include_mode", "buffered");
+    var mode = config && config.mode || 'buffered';
 
     var callback;
     if (mode === "async") {
       callback = setContentAsync;
     } else if (mode === "buffered") {
       callback = setContentBuffered;
-      var timeout = getMeta("include_timeout", 2.5) * 1000;
+      var timeout = config && config.timeout || 2500;
       setTimeout(showBufferedContent, timeout);
     }
 

@@ -38,7 +38,7 @@ Refresh an h-include element
 document.getElementsByTagName('h-include')[0].refresh()
 ```
 
-Other features:
+## Other features
 
  - Supports sync mode (batch include, timeout based) and async mode (insert on response)
  - Changing the @src attribute works as expected and includes a new resource
@@ -46,6 +46,20 @@ Other features:
 
 See [the demo page](http://gustafnk.github.com/h-include/) for more documentation and
 examples.
+
+## Configuration
+
+Set buffered include timeout (default is `2500` ms):
+
+```
+HIncludeConfig = { timeout: 10000 };
+```
+
+Set include mode to `async` (default is `buffered`):
+
+```
+HIncludeConfig = { mode: 'async' };
+```
 
 ## Installation
 
@@ -97,22 +111,31 @@ document.registerElement('h-include-improved', {
 });
 ```
 
-## How to do lazy loading (load when in viewport)
+## Lazy loading example
 
 ```
-<script src="https://cdn.rawgit.com/jeremenichelli/hunt/master/src/hunt.js"></script>
-
-// Configure hunt.js
 window.addEventListener('load', function() {
-  hunt(document.getElementsByTagName('h-include-lazy'), {
-    in: function() {
-      this.refresh();
-    },
-    offset: 400
+  var elements = document.getElementsByTagName('h-include-lazy');
+  var config = {
+    rootMargin: '400px 0px',
+    threshold: 0.01
+  };
+
+  var observer = new IntersectionObserver(onIntersection, config);
+  [].forEach.call(elements, element => {
+    observer.observe(element);
   });
+
+  function onIntersection(entries) {
+    entries.forEach(entry => {
+      if (entry.intersectionRatio > 0) {
+        observer.unobserve(entry.target);
+        entry.target.refresh();
+      }
+    });
+  }
 });
 
-// Register h-include-lazy
 var proto = Object.create(HIncludeElement.prototype);
 
 proto.attachedCallback = function(){}

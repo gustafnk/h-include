@@ -24,7 +24,7 @@
     "copyfiles": "^0.2.1",
     "jshint": "*",
     "simplehttpserver": "0.0.6",
-    "selenium-webdriver": "*"
+    "selenium-webdriver": "2.x"
   },
   "engines": {
     "node": ">= 0.6.0"
