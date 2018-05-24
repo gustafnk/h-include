@@ -129,9 +129,19 @@ document.registerElement('h-include-lazy', {
 });
 ```
 
-## Does this break SEO
+## Media query support
 
-Yes, client-side transclusion suffers from all problems with client-side-only rendering. You should not use it for SEO sensitive content. That being said, SEO value could be a lot less below-the-fold, which opens up for lazy loading possibilities, etc.
+It's possible to use media queries to have different fragments for different devices:
+
+```
+<h-include media="screen and (max-width: 600px)" src="small.html"></h-include>
+<h-include media="screen and (min-width: 601px)" src="large.html"></h-include>
+```
+
+## Error Handling
+
+If fetching the included URL results in a 404 Not Found status code, the class of the include element will be changed to include_404. Likewise, a 500 Server Error status code will result in the include element’s class being changed to include_500.
+
 
 ## Browser support
 

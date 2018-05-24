@@ -1,5 +1,9 @@
 # Frequently asked questions
 
+## Does `<h-include>` break SEO?
+
+Yes, client-side transclusion suffers from all problems with client-side-only rendering. You should not use it for SEO sensitive content. That being said, SEO value could be a lot less below-the-fold, which opens up for lazy loading possibilities, etc.
+
 ## Can I include fragments from other hostnames?
 
 Yes, if the remote origin supports CORS for your hostname (like all AJAX).
