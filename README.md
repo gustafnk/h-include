@@ -75,10 +75,6 @@ Install using bower:
 $ bower install h-include
 ```
 
-## Another demo: Static site web shop
-
-Here is another demo: a [static site web shop](https://github.com/gustafnk/static-web-shop-example) deployed on a CDN, which uses a shopping cart running on Heroku.
-
 ## Dependencies
 
 h-include provides a custom element `<h-include>`. This means that you have
@@ -118,7 +114,7 @@ window.addEventListener('load', function() {
   var elements = document.getElementsByTagName('h-include-lazy');
   var config = {
     rootMargin: '400px 0px',
-    threshold: 0.01
+    threshold: 0.01 // 1% of the target is visible
   };
 
   var observer = new IntersectionObserver(onIntersection, config);
@@ -165,9 +161,9 @@ Put this code before the first `h-include` or in the `<head>` element.
 </style>
 ```
 
-## Does this break SEO or violate Progressive Enhancement?
+## Does this break SEO
 
-No, not if you use a link to fallback content (for browsers without javascript or for failed network connections, i.e. train tunnels). But it's up to you to add that fallback link. h-include should work well with the principles of Progressive Enhancement (*otherwise, file a bug*).
+Yes, client-side transclusion suffers from all problems with client-side-only rendering. You should not use it for SEO sensitive content. That being said, SEO value could be a lot less below-the-fold, which opens up for lazy loading possibilities, etc.
 
 ## Browser support
 
