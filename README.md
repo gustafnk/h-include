@@ -26,9 +26,20 @@ Refresh an h-include element
 document.getElementsByTagName('h-include')[0].refresh()
 ```
 
+## Rendering Mode
+
+By default, each include is fetched in the background and the page is updated only when they all are available.
+
+This is bounded by a timeout, by default five seconds. After the timeout,
+h-include will show what it has and keep on listening for the remaining responses.
+
+However, it's also possible to have h-includes become visible as they're available, see the configuration section below. While this shows the included content quicker, it may be less visually smooth.
+
+
 ## Other features
 
- - Supports sync mode (batch include, timeout based) and async mode (insert on response)
+ - Media query support
+ - Easy to inherit to create lazy loaded includes
  - Changing the @src attribute works as expected and includes a new resource
 
 See [the demo page](http://gustafnk.github.com/h-include/) for more documentation and
