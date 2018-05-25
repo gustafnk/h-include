@@ -6,6 +6,8 @@ Declarative client-side transclusion. Perfect for Microfrontend architectures, i
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
 
+*Breaking change in version 2.0*: changed configuration mechanism to use JavaScript instead of meta tag.
+
 ## Usage
 
 Include a document
