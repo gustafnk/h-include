@@ -6,6 +6,7 @@
 	<link type="text/css" rel="stylesheet" href="style.css">
   <script type="text/javascript" src="document-register-element.js"></script>
 	<script type="text/javascript" src="h-include.js"></script>
+  <script type="text/javascript" src="gh-main.js"></script>
 	<style type="text/css">
 	.error_text { display: none; }
 	.include_404 .error_404 { display: inline; text-decoration: underline; }
@@ -19,15 +20,15 @@
 
 <h1>h-include.js</h1>
 
-<p class="intro">Tired of regenerating HTML pages from templates? Want more from Web caches? <strong>h-include</strong> makes one thing very easy; including other bits of HTML into your Web page, <em>using the browser</em>.</p>
+<a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.png?branch=master"></a>
+
+<p class="intro">Declarative client-side transclusion. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).</p>
+
+<p>Based on <a href="https://github.com/mnot/hinclude">hinclude.js</a> by <a href="https://github.com/mnot/">@mnot</a></p>
 
 <h2>The Basics</h2>
 
-<p>h-include adds one element to HTML; <code>h-include</code>. When the browser encounters this element,  it will include the document at the end of the <code>src</code> attribute.</p>
-
-<p>To use it, first download a copy of the library and make it available on your site;</p>
-
-<p><strong>Download</strong>: <a href="https://github.com/gustafnk/h-include/tags">h-include.js</a></p>
+<p>h-include adds <code>h-include</code> as a Custom Element. When the browser encounters this element, it will fetch and include the document linked in the <code>src</code> attribute.</p>
 
 <p>Wherever you want to include something, do this:</p>
 
@@ -37,57 +38,35 @@
 
 <p>Where <code>/other/document/here.html</code> is the document you want to include. Note that because of limitations in the JavaScript security model, it <strong>must</strong> be on the same server (if you're not using CORS).</p>
 
-<p>For example, <h-include src="demo/included"></h-include>. You can include any HTML markup that would be valid in context.</p>
-
-
-<h2>Rendering Mode</h2>
-
-<p>By default, each one is fetched in the background, and the page is updated only when they all are available.</p>
-
-<p>This is bounded by a timeout, by default five seconds. After the timeout,
-h-include will show what it has and keep on listening for the remaining responses. The timeout is configurable; e.g.,</p>
-
-<pre class="example">
-  &lt;meta name="include_timeout" content="2" />
-</pre>
-
-<p>in the document's head section will set the timeout to two seconds.</p>
-
-<p>However, it's also possible to have h-includes become visible as they're available, using the <code>include_mode</code> meta element with a value of "async". While this shows the included content quicker, it may be less visually smooth.<p>
-
-<p>For example, including this in the head section of your HTML:</p>
-
-<pre class="example">  &lt;meta name="include_mode" content="async" /></pre>
-
-<p>will instruct h-include to show included sections as soon as they're available.</p>
+<p>For example, <h-include src="demo/included-fragment.html"></h-include>. You can include any HTML markup that would be valid in context.</p>
 
 <h2>Default Content</h2>
 
 <p>Before the included content is displayed, anything inside the include element (hereafter, <em>default content</em>) will be visible. For example, this:</p>
 
 <pre class="example">
-  &lt;h-include src="new">
+  &lt;h-include src="new-fragment.html">
     this content will be overwritten by the included content
   &lt;/h-include>
 </pre>
 
-<p>Looks like this: <h-include src="demo/new">this content will be overwritten by the included content</h-include>.</p>
+<p>Looks like this: <h-include src="demo/new-fragment.html">this content will be overwritten by the included content</h-include>.</p>
 
 <p>Since HTML instructs browsers to ignore elements they don&#8217;t understand, default content is also shown by those that have JavaScript turned off.</p>
 
-<p>Of course, you can have no default content, in which case nothing will show up until the include is successful. Which brings up&#8230;</p>
+<p>Of course, you can have no default content, in which case nothing will show up until the include is successful.</p>
 
-<h2>Advanced Error Handling</h2>
+<h2>Extend with lazy loading</h2>
 
-<p>h-include will also show default content if there is some problem with loading the include.</p>
+<p>
+  <h-include-lazy src="demo/lazy-fragment.html"></h-include-lazy>
+</p>
 
-<p>That's adequate for typical applications. However, for debugging and other specialised purposes, h-include allows you to control the display of errors through CSS, by changing the class of the include element based on the result of inclusion.</p>
+<h2>Navigation</h2>
 
-<p>For example, if fetching the included URL results in a <code>404 Not Found</code> status code, the class of the include element will be changed to <code>include_404</code>. Likewise, a <code>500 Server Error</code> status code will result in the include element&#8217;s class being changed to <code>include_500</code>.</p>
-
-<p>For example, <h-include src="nothing"><span class="error_text error_404">this content is shown because there was a 404</span><span class="error_text error_500">this content is shown because there was a 500</span></h-include>.</p>
-
-<p><em>View the source of this page to see how that worked&#8230;</em></p>
+<p class="box" id="box-1">
+  <h-include src="/h-include/demo/navigation/1.html" navigate></h-include>
+</p>
 
 </div>
 

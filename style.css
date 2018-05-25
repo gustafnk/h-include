@@ -1,3 +1,7 @@
 body {
   font-family: Helvetica, Arial, sans-serif;
 }
+
+.box {
+  border-style: dashed; border-color: black; width: 200px; padding: 50px;
+}
