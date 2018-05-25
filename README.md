@@ -30,7 +30,6 @@ document.getElementsByTagName('h-include')[0].refresh()
 
  - Supports sync mode (batch include, timeout based) and async mode (insert on response)
  - Changing the @src attribute works as expected and includes a new resource
- - Throws if caught in an infinite include loop, avoiding the [Droste effect](https://en.wikipedia.org/wiki/Droste_effect).
 
 See [the demo page](http://gustafnk.github.com/h-include/) for more documentation and
 examples.
@@ -47,6 +46,12 @@ Set include mode to `async` (default is `buffered`):
 
 ```
 HIncludeConfig = { mode: 'async' };
+```
+
+Throw if caught in an infinite include loop, to avoid the [Droste effect](https://en.wikipedia.org/wiki/Droste_effect):
+
+```
+HIncludeConfig = { checkRecursion: true };
 ```
 
 ## Installation

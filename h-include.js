@@ -46,7 +46,9 @@ window.HIncludeElement = (function() {
     if (req.status === 200 || req.status === 304) {
       var container = element.createContainer.call(element, req);
 
-      checkRecursion(element);
+      if (config && config.checkRecursion) {
+        checkRecursion(element);
+      }
 
       var node = element.extractFragment.call(element, container, fragment, req);
       element.replaceContent.call(element, node);
