@@ -51,19 +51,19 @@ examples.
 
 Set buffered include timeout (default is `2500` ms):
 
-```
+```js
 HIncludeConfig = { timeout: 10000 };
 ```
 
 Set include mode to `async` (default is `buffered`):
 
-```
+```js
 HIncludeConfig = { mode: 'async' };
 ```
 
 Throw if caught in an infinite include loop, to avoid the [Droste effect](https://en.wikipedia.org/wiki/Droste_effect):
 
-```
+```js
 HIncludeConfig = { checkRecursion: true };
 ```
 
@@ -99,7 +99,7 @@ We recommend using [document-register-element](https://github.com/WebReflection/
 
 Override one or many functions by inheriting from the custom element, like this:
 
-```
+```js
 var proto = Object.create(HIncludeElement.prototype);
 
 proto.onEnd = function(req){
@@ -115,7 +115,7 @@ document.registerElement('h-include-improved', {
 
 ## Lazy loading example
 
-```
+```js
 window.addEventListener('load', function() {
   var elements = document.getElementsByTagName('h-include-lazy');
   var config = {
