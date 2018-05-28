@@ -1,6 +1,6 @@
 {
   "name": "h-include",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/gustafnk/h-include",
   "repository": {
     "type": "git",
@@ -8,6 +8,7 @@
   },
   "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
   "description": "Declarative client-side inclusion for the web using Custom Elements",
+  "main": "h-include.js",
   "keywords": ["web-components"],
   "license": "MIT",
   "contributors": [
