@@ -156,6 +156,12 @@ It's possible to use media queries to have different fragments for different dev
 <h-include media="screen and (min-width: 601px)" src="large.html"></h-include>
 ```
 
+## Navigation
+
+Add `navigate` attribute to let link navigation events be captured by `h-include` element itself, which changes the `src` attribute and triggers a refresh.
+
+If `navigate attribute is used, use `target="_top"` to let link inside `h-include` behave as a normal link.
+
 ## Error Handling
 
 If fetching the included URL results in a 404 Not Found status code, the class of the include element will be changed to include_404. Likewise, a 500 Server Error status code will result in the include element’s class being changed to include_500.
