@@ -1,6 +1,6 @@
 # h-include.js
 
-<a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.png?branch=master"></a>
+<a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
 
 Declarative client-side transclusion. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).
 
