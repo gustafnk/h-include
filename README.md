@@ -32,7 +32,7 @@ document.getElementsByTagName('h-include')[0].refresh()
 
 By default, each include is fetched in the background and the page is updated only when they all are available.
 
-This is bounded by a timeout, by default five seconds. After the timeout,
+This is bounded by a timeout, by default 2500 ms. After the timeout,
 h-include will show what it has and keep on listening for the remaining responses.
 
 However, it's also possible to have h-includes become visible as they're available, see the configuration section below. While this shows the included content quicker, it may be less visually smooth.
