@@ -123,6 +123,12 @@ window.HIncludeElement = (function() {
 
     var req = new XMLHttpRequest();
 
+    // Check if `withCredentials` should be true
+    var withCredentialsAttribute = element.getAttribute('with-credentials');
+    if (withCredentialsAttribute === '' || withCredentialsAttribute === 'true') {
+      req.withCredentials = true;
+    }
+
     outstanding += 1;
     req.onreadystatechange = function () {
       includeCallback(element, req);
