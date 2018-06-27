@@ -24,7 +24,7 @@
   "devDependencies": {
     "copyfiles": "^0.2.1",
     "jshint": "*",
-    "simplehttpserver": "0.0.6",
+    "simplehttpserver": "^0.1.1",
     "selenium-webdriver": "2.x"
   },
   "engines": {
