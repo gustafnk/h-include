@@ -19,7 +19,13 @@ Include a document
 Include a document and extract a fragment
 
 ```
-<h-include src="/other/document/here.html" fragment=".container"></h-include>
+<h-include src="..." fragment=".container"></h-include>
+```
+
+Enable [XMLHttpRequest.withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)
+
+```
+<h-include src="..." with-credentials></h-include>
 ```
 
 Refresh an h-include element
