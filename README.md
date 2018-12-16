@@ -168,20 +168,19 @@ It's possible to use media queries to have different fragments for different dev
 
 Add `navigate` attribute to let link navigation events be captured by `h-include` element itself, which changes the `src` attribute and triggers a refresh.
 
-If `navigate attribute is used, use `target="_top"` to let link inside `h-include` behave as a normal link.
+If `navigate` attribute is used, use `target="_top"` to let link inside `h-include` behave as a normal link.
 
 ## Error Handling
 
 If fetching the included URL results in a 404 Not Found status code, the class of the include element will be changed to include_404. Likewise, a 500 Server Error status code will result in the include element’s class being changed to include_500.
 
-
 ## Browser support
 
-All modern browsers and IE down to IE10 is supported. If you find something quirky, please file an issue.
+All modern browsers and IE down to IE10 are supported. If you find something quirky, please file an issue.
 
 ## On HTTP/2
 
-Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
+Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So, if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
 
 ## FAQ
 
