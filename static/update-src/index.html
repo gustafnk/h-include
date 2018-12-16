@@ -24,9 +24,12 @@
 var proto = Object.create(HIncludeElement.prototype);
 
 proto.onEnd = function(req){
+  var that = this;
   HIncludeElement.prototype.onEnd.apply(this, arguments); // call super
 
-  this.setAttribute('src', 'fragment-2.html');
+  setTimeout(function(){
+    that.setAttribute('src', 'fragment-2.html');
+  }, 100);
 }
 
 document.registerElement('h-include-update-on-end', {
