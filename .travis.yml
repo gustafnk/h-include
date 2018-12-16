@@ -1,7 +1,7 @@
 language: node_js
 node_js: 
   - node
-script: "PORT=8080 npm test"
+script: "PORT=8080 npm run remote-tests"
 addons:
   sauce_connect: true
 sudo: false
