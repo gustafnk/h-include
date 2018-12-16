@@ -121,6 +121,8 @@ document.registerElement('h-include-improved', {
 
 ## Lazy loading example
 
+This example uses the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) in a `load` event handler on `window`, to lazy-load `<h-include-lazy>` element content.
+
 ```js
 window.addEventListener('load', function() {
   var elements = document.getElementsByTagName('h-include-lazy');
