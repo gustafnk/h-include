@@ -1,9 +1,0 @@
-[
-{"browserName":"firefox","platform":"Windows","version":"latest"},
-{"browserName":"chrome","platform":"Windows","version":"latest"},
-{"browserName":"MicrosoftEdge","platform":"Windows 10","version":"latest"},
-{"browserName":"internet explorer","platform":"Windows 10","version":"11"},
-{"browserName":"internet explorer","platform":"Windows 8","version":"10"},
-{"browserName":"safari","platform":"OS X 10.11","version":"latest"},
-{"browserName":"android","platform":"Linux","version":"latest","device-type":"tablet"}
-]
