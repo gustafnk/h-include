@@ -1,4 +1,4 @@
-test/error.png
-test/npm-debug.log
-test/assets/h-include.js
+static/error.png
+static/npm-debug.log
+static/assets/h-include.js
 node_modules/
