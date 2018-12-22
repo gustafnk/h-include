@@ -1,8 +1,20 @@
 [
 {"browserName":"chrome","platform":"Windows","version":"latest"},
+{"browserName":"chrome","platform":"Windows","version":"50"},
+{"browserName":"chrome","platform":"Windows","version":"55"},
+{"browserName":"chrome","platform":"Windows","version":"65"},
+{"browserName":"chrome","platform":"Windows","version":"68"},
 {"browserName":"firefox","platform":"Windows","version":"latest"},
+{"browserName":"firefox","platform":"Windows","version":"50"},
+{"browserName":"firefox","platform":"Windows","version":"55"},
+{"browserName":"firefox","platform":"Windows","version":"70"},
 {"browserName":"MicrosoftEdge","platform":"Windows 10","version":"latest"},
 {"browserName":"internet explorer","platform":"Windows 10","version":"11"},
+{"browserName":"internet explorer","platform":"Windows 8","version":"11"},
+{"browserName":"internet explorer","platform":"Windows 7","version":"11"},
 {"browserName":"safari","platform":"OS X 10.11","version":"latest"},
+{"browserName":"safari","platform":"OS X 10.11","version":"11"},
+{"browserName":"safari","platform":"OS X 10.11","version":"10"},
+{"browserName":"safari","platform":"OS X 10.11","version":"9"},
 {"browserName":"chrome","platform":"OS X 10.11","version":"latest"}
 ]
