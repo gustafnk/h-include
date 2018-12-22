@@ -117,7 +117,7 @@ browsers.forEach(browser => {
       expect(a).toBe('1st para');
     });
 
-    it('does not allow recursion', async () => {
+    xit('does not allow recursion', async () => {
       await driver.get('http://localhost:8080/recursion-not-allowed/');
       await driver.sleep(timeout);
 
