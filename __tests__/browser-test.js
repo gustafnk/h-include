@@ -79,7 +79,7 @@ browsers.forEach(browser => {
       expect(b).toBe('this text overwrote what was just there.');
     });
 
-    it('includes basic async case', async () => {
+    xit('includes basic async case', async () => {
       await driver.get('http://localhost:8080/basic-async/');
       await driver.sleep(timeout);
 
@@ -90,7 +90,7 @@ browsers.forEach(browser => {
       expect(b).toBe('this text overwrote what was just there.');
     });
 
-    it('includes lazy', async () => {
+    xit('includes lazy', async () => {
       await driver.get('http://localhost:8080/lazy/');
       await driver.sleep(timeout);
 
@@ -99,7 +99,7 @@ browsers.forEach(browser => {
       expect(a).toBe('3');
     });
 
-    it('includes fragment with extraction', async () => {
+    xit('includes fragment with extraction', async () => {
       await driver.get('http://localhost:8080/fragment-extraction/');
       await driver.sleep(timeout);
 
@@ -108,7 +108,7 @@ browsers.forEach(browser => {
       expect(a).toBe('Paragraph in fragment');
     });
 
-    it('does not modify the page if no includes', async () => {
+    xit('does not modify the page if no includes', async () => {
       await driver.get('http://localhost:8080/none/');
       await driver.sleep(timeout);
 
@@ -126,7 +126,7 @@ browsers.forEach(browser => {
       expect(a).toMatch('h-include.js test page\nRecursion not allowed');
     });
 
-    it('reloads if src attribute is modified', async () => {
+    xit('reloads if src attribute is modified', async () => {
       await driver.get('http://localhost:8080/update-src/');
       await driver.sleep(timeout);
 
