@@ -7,7 +7,7 @@
 {"browserName":"firefox","platform":"OS X 10.11","version":"latest"},
 {"browserName":"firefox","platform":"OS X 10.11","version":"50"},
 {"browserName":"firefox","platform":"OS X 10.11","version":"55"},
-{"browserName":"firefox","platform":"OS X 10.11","version":"70"},
+{"browserName":"firefox","platform":"OS X 10.11","version":"64"},
 {"browserName":"MicrosoftEdge","platform":"Windows 10","version":"latest"},
 {"browserName":"internet explorer","platform":"Windows 10","version":"11"},
 {"browserName":"internet explorer","platform":"Windows 8","version":"11"},
