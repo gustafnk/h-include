@@ -152,7 +152,7 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/media/');
       await driver.sleep(timeout);
 
-      const a = await driver.findElement(By.id('a')).getText();
+      const a = await driver.findElement(By.id('a')).getText().trim();
 
       expect(a).toBe('Large viewport');
     });
@@ -168,7 +168,7 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/media/');
       await driver.sleep(timeout);
 
-      const a = await driver.findElement(By.id('a')).getText();
+      const a = await driver.findElement(By.id('a')).getText().trim();
 
       expect(a).toBe('Small viewport');
     });
