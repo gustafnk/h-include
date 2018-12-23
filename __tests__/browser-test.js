@@ -171,6 +171,9 @@ browsers.forEach(browser => {
     });
 
     afterEach(function(done){
+      driver.manage().logs()
+		.get('browser')
+		.then(v => v && v.length && console.log(v));
       driver.quit();
 
       if (process.env.IS_LOCAL === 'true') {
