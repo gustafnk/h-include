@@ -84,7 +84,7 @@ browsers.forEach(browser => {
       expect(b).toBe('this text overwrote what was just there.');
     });
 
-    xit('includes basic async case', async () => {
+    it('includes basic async case', async () => {
       await driver.get('http://localhost:8080/basic-async/');
       await driver.sleep(timeout);
 
