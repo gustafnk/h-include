@@ -14,6 +14,8 @@ const SauceLabs = require('saucelabs'),
 const caps = {};
 let browsers;
 
+const log = false;
+
 if (process.env.IS_LOCAL === 'true') {
   browsers = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'browsers-local.json'), 'utf8'));
 } else {
@@ -171,9 +173,12 @@ browsers.forEach(browser => {
     });
 
     afterEach(function(done){
-      driver.manage().logs()
-		.get('browser')
-		.then(v => v && v.length && console.log(v));
+      if (log && browser.browserName === 'chrome') {
+        driver.manage().logs()
+          .get('browser')
+          .then(v => v && v.length && console.log(v));
+      }
+
       driver.quit();
 
       if (process.env.IS_LOCAL === 'true') {
