@@ -34,8 +34,6 @@ See http://gustafnk.github.com/h-include/ for documentation.
 
 window.HIncludeElement = (function() {
 
-  var tagname = "h-include";
-  var TAGNAME = tagname.toUpperCase();
   var classprefix = "include_";
 
   var config = window.HIncludeConfig;
@@ -102,7 +100,7 @@ window.HIncludeElement = (function() {
     // Check for recursion in ascendents
     var elementToCheck = element.parentNode;
     while (elementToCheck.parentNode) {
-      if (elementToCheck.nodeName === TAGNAME) {
+      if (elementToCheck.nodeName === 'H-INCLUDE') {
 
         if (element.getAttribute('src') === elementToCheck.getAttribute('src')) {
           throw new Error('Recursion not allowed');
@@ -153,7 +151,7 @@ window.HIncludeElement = (function() {
     if (element.nodeName === nodeName) {
       return element;
     }
-  };
+  }
 
   var getLink = function(element) {
     var link = getElement(element, 'A');
@@ -164,7 +162,7 @@ window.HIncludeElement = (function() {
   };
 
   var getHinclude = function(element) {
-    return getElement(element, TAGNAME);
+    return getElement(element, 'H-INCLUDE');
   };
 
   var handle = function(e) {
@@ -233,7 +231,7 @@ window.HIncludeElement = (function() {
     }
   };
 
-  proto.attachedCallback = proto.connectedCallback = function() {
+  proto.attachedCallback = function() {
     var mode = config && config.mode || 'buffered';
 
     var callback;
@@ -255,13 +253,7 @@ window.HIncludeElement = (function() {
 
   proto.refresh = refresh;
 
-  // `customElements.define()` requires `class HIncludeElement extends HTMLElement`.
-  // But that would be a syntax error in older browsers. This is our work-around.
-  // See https://medium.com/@robertgrosse/how-es6-classes-really-work-and-how-to-build-your-own-fd6085eb326a
-  var HIncludeElement = function() {
-    return Reflect.construct(HTMLElement, arguments, HIncludeElement);
-  };
-  HIncludeElement.prototype = proto;
-  customElements.define(tagname, HIncludeElement);
-  return HIncludeElement;
+  return document.registerElement('h-include', {
+    prototype: proto
+  });
 })();
