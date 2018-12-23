@@ -44,7 +44,7 @@ if (process.env.IS_LOCAL === 'true') {
 
 browsers.forEach(browser => {
   const browserString = JSON.stringify(browser);
-  const timeout = browser.timeout || 0;
+  const timeout = browser.timeout || 1000;
 
   describe(`h-include - ${browserString}`, () => {
     let driver;
@@ -122,7 +122,7 @@ browsers.forEach(browser => {
       expect(a).toBe('1st para');
     });
 
-    it('does not allow recursion', async () => {
+    xit('does not allow recursion', async () => {
       await driver.get('http://localhost:8080/recursion-not-allowed/');
       await driver.sleep(timeout);
 
