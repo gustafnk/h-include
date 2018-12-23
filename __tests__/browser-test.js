@@ -152,9 +152,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/media/');
       await driver.sleep(timeout);
 
-      const a = await driver.findElement(By.id('a')).getText().trim();
+      const a = await driver.findElement(By.id('a')).getText();
 
-      expect(a).toBe('Large viewport');
+      expect(a.trim()).toBe('Large viewport');
     });
 
     it('loads small fragment for small viewport', async () => {
@@ -168,9 +168,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/media/');
       await driver.sleep(timeout);
 
-      const a = await driver.findElement(By.id('a')).getText().trim();
+      const a = await driver.findElement(By.id('a')).getText();
 
-      expect(a).toBe('Small viewport');
+      expect(a.trim()).toBe('Small viewport');
     });
 
     afterEach(function(done){
