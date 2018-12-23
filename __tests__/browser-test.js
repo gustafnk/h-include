@@ -141,37 +141,33 @@ browsers.forEach(browser => {
       expect(a).toBe('this text overwrote what was just there');
     });
 
-    it('loads large fragment for large viewport', async () => {
-      if (browser.browserName === 'MicrosoftEdge' && browser.platform === 'Windows 10') {
-        return;
-      }
+    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
+      it('loads large fragment for large viewport', async () => {
+        const viewport = driver.manage().window();
+        await viewport.setSize(800, 800); // width, height
+        await driver.sleep(timeout);
+        await driver.get('http://localhost:8080/media/');
+        await driver.sleep(timeout);
 
-      const viewport = driver.manage().window();
-      await viewport.setSize(800, 800); // width, height
-      await driver.sleep(timeout);
-      await driver.get('http://localhost:8080/media/');
-      await driver.sleep(timeout);
+        const a = await driver.findElement(By.id('a')).getText();
 
-      const a = await driver.findElement(By.id('a')).getText();
+        expect(a.trim()).toBe('Large viewport');
+      });
+    }
 
-      expect(a.trim()).toBe('Large viewport');
-    });
+    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
+      it('loads small fragment for small viewport', async () => {
+        const viewport = driver.manage().window();
+        await viewport.setSize(480, 800); // width, height
+        await driver.sleep(timeout);
+        await driver.get('http://localhost:8080/media/');
+        await driver.sleep(timeout);
 
-    it('loads small fragment for small viewport', async () => {
-      if (browser.browserName === 'MicrosoftEdge' && browser.platform === 'Windows 10') {
-        return;
-      }
+        const a = await driver.findElement(By.id('a')).getText();
 
-      const viewport = driver.manage().window();
-      await viewport.setSize(480, 800); // width, height
-      await driver.sleep(timeout);
-      await driver.get('http://localhost:8080/media/');
-      await driver.sleep(timeout);
-
-      const a = await driver.findElement(By.id('a')).getText();
-
-      expect(a.trim()).toBe('Small viewport');
-    });
+        expect(a.trim()).toBe('Small viewport');
+      });
+    }
 
     afterEach(function(done){
       if (log && browser.browserName === 'chrome') {
