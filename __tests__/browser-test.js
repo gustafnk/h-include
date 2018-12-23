@@ -95,7 +95,7 @@ browsers.forEach(browser => {
       expect(b).toBe('this text overwrote what was just there.');
     });
 
-    it('includes lazy', async () => {
+    xit('includes lazy', async () => {
       await driver.get('http://localhost:8080/lazy/');
       await driver.sleep(timeout);
 
@@ -113,7 +113,7 @@ browsers.forEach(browser => {
       expect(a).toBe('Paragraph in fragment');
     });
 
-    xit('does not modify the page if no includes', async () => {
+    it('does not modify the page if no includes', async () => {
       await driver.get('http://localhost:8080/none/');
       await driver.sleep(timeout);
 
