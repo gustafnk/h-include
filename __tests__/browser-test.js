@@ -44,7 +44,7 @@ if (process.env.IS_LOCAL === 'true') {
 
 browsers.forEach(browser => {
   const browserString = JSON.stringify(browser);
-  const timeout = browser.timeout || 1000;
+  const timeout = browser.timeout || 500;
 
   describe(`h-include - ${browserString}`, () => {
     let driver;
