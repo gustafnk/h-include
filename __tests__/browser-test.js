@@ -128,7 +128,7 @@ browsers.forEach(browser => {
 
       const a = await driver.findElement(By.id('a')).getText();
 
-      expect(a).toMatch('h-include.js test page\nRecursion not allowed');
+      expect(a).toMatch(/h-include.js test page(\n)*Recursion not allowed/);
     });
 
     // TODO Implement observedAttributes property
