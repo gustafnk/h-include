@@ -141,7 +141,7 @@ browsers.forEach(browser => {
       expect(a).toBe('this text overwrote what was just there');
     });
 
-    xit('loads large fragment for large viewport', async () => {
+    it('loads large fragment for large viewport', async () => {
       if (browser.browserName === 'MicrosoftEdge' && browser.platform === 'Windows 10') {
         return;
       }
@@ -157,7 +157,7 @@ browsers.forEach(browser => {
       expect(a).toBe('Large viewport');
     });
 
-    xit('loads large fragment for large viewport', async () => {
+    it('loads small fragment for small viewport', async () => {
       if (browser.browserName === 'MicrosoftEdge' && browser.platform === 'Windows 10') {
         return;
       }
