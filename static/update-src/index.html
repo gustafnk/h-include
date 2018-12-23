@@ -18,24 +18,13 @@
 
 <h2 id="h">Update src attribute</h2>
 
-<p id="a" name="a"><h-include-update-on-end class="test" src="fragment.html"></h-include-update-on-end></p>
+<p id="a" name="a"><h-include class="test" src="fragment.html"></h-include></p>
 
 <script>
 
-var proto = Object.create(HIncludeElement.prototype);
-
-proto.onEnd = function(req){
-  var that = this;
-  HIncludeElement.prototype.onEnd.apply(this, arguments); // call super
-
-  setTimeout(function(){
-    that.setAttribute('src', 'fragment-2.html');
-  }, 100);
-}
-
-document.registerElement('h-include-update-on-end', {
-  prototype: proto,
-});
+setTimeout(function(){
+  document.querySelector('.test').setAttribute('src', 'fragment-2.html');
+}, 100);
 
 </script>
 
