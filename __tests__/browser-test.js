@@ -71,11 +71,8 @@ browsers.forEach(browser => {
     });
 
     it('includes basic case', async () => {
-      console.log(Date.now());
       await driver.get('http://localhost:8080/basic/');
-      console.log(Date.now()); 
       await driver.sleep(timeout);
-      console.log(Date.now());
 
       const a = await driver.findElement(By.id('a')).getText();
       const b = await driver.findElement(By.id('b')).getText();
