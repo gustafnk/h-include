@@ -92,7 +92,7 @@ browsers.forEach(browser => {
       expect(b).toBe('this text overwrote what was just there.');
     });
 
-    xit('includes lazy', async () => {
+    it('includes lazy', async () => {
       await driver.get('http://localhost:8080/lazy/');
       await driver.sleep(timeout);
 
