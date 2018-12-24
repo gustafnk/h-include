@@ -130,7 +130,7 @@ browsers.forEach(browser => {
 
     it.only('reloads if src attribute is modified', async () => {
       await driver.get('http://localhost:8080/update-src/');
-      await driver.sleep(timeout + 1000);
+      await driver.sleep(timeout + 5000);
 
       const a = await driver.findElement(By.id('a')).getText();
 
