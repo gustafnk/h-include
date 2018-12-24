@@ -1,7 +1,6 @@
 [
 {"browserName":"chrome","platform":"Windows 10","version":"latest"},
 {"browserName":"chrome","platform":"Windows 10","version":"50"},
-{"browserName":"chrome","platform":"Windows 10","version":"55"},
 {"browserName":"chrome","platform":"Windows 10","version":"65"},
 {"browserName":"chrome","platform":"Windows 10","version":"68"},
 {"browserName":"firefox","platform":"OS X 10.11","version":"latest"},
