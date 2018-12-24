@@ -14,7 +14,7 @@ const SauceLabs = require('saucelabs'),
 const caps = {};
 let browsers;
 
-const log = false;
+const log = true;
 
 if (process.env.IS_LOCAL === 'true') {
   browsers = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'browsers-local.json'), 'utf8'));
@@ -128,7 +128,7 @@ browsers.forEach(browser => {
       expect(a).toMatch(/h-include.js test page(\n)*Recursion not allowed/);
     });
 
-    it('reloads if src attribute is modified', async () => {
+    it.only('reloads if src attribute is modified', async () => {
       await driver.get('http://localhost:8080/update-src/');
       await driver.sleep(timeout);
 
