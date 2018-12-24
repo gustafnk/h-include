@@ -101,7 +101,7 @@ browsers.forEach(browser => {
       expect(a).toBe('3');
     });
 
-    xit('includes fragment with extraction', async () => {
+    it('includes fragment with extraction', async () => {
       await driver.get('http://localhost:8080/fragment-extraction/');
       await driver.sleep(timeout);
 
