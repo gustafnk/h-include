@@ -6,7 +6,7 @@
 {"browserName":"firefox","platform":"OS X 10.11","version":"latest"},
 {"browserName":"firefox","platform":"OS X 10.11","version":"50"},
 {"browserName":"firefox","platform":"OS X 10.11","version":"55"},
-{"browserName":"firefox","platform":"OS X 10.11","version":"64"},
+{"browserName":"firefox","platform":"OS X 10.11","version":"64","timeout":1000},
 {"browserName":"MicrosoftEdge","platform":"Windows 10","version":"latest","timeout":2000},
 {"browserName":"internet explorer","platform":"Windows 10","version":"11","timeout":2000},
 {"browserName":"internet explorer","platform":"Windows 7","version":"11","timeout":2000},
