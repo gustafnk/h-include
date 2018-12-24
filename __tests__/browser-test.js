@@ -14,7 +14,7 @@ const SauceLabs = require('saucelabs'),
 const caps = {};
 let browsers;
 
-const log = true;
+const log = false;
 
 if (process.env.IS_LOCAL === 'true') {
   browsers = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'browsers-local.json'), 'utf8'));
@@ -44,7 +44,7 @@ if (process.env.IS_LOCAL === 'true') {
 
 browsers.forEach(browser => {
   const browserString = JSON.stringify(browser);
-  const timeout = browser.timeout || 500;
+  const timeout = browser.timeout || 650;
 
   describe(`h-include - ${browserString}`, () => {
     let driver;
