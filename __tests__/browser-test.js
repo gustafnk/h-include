@@ -14,6 +14,9 @@ const SauceLabs = require('saucelabs'),
 const caps = {};
 let browsers;
 
+const timeout = 6000;
+const log = false;
+
 if (process.env.IS_LOCAL === 'true') {
   browsers = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'browsers-local.json'), 'utf8'));
 } else {
@@ -42,7 +45,6 @@ if (process.env.IS_LOCAL === 'true') {
 
 browsers.forEach(browser => {
   const browserString = JSON.stringify(browser);
-  const timeout = browser.timeout || 250;
 
   describe(`h-include - ${browserString}`, () => {
     let driver;
@@ -70,104 +72,127 @@ browsers.forEach(browser => {
 
     it('includes basic case', async () => {
       await driver.get('http://localhost:8080/basic/');
-      await driver.sleep(timeout);
+      const aSelector = By.id('included-1');
+      const bSelector = By.id('included-2');
 
-      const a = await driver.findElement(By.id('a')).getText();
-      const b = await driver.findElement(By.id('b')).getText();
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(By.id('included-1'));
 
-      expect(a).toBe('this text is included');
-      expect(b).toBe('this text overwrote what was just there.');
+      await driver.wait(until.elementLocated(By.id('included-2')), timeout);
+      const b = await driver.findElement(bSelector);
+
+      const aText = await a.getText();
+      const bText = await b.getText();
+
+      expect(aText).toBe('this text is included');
+      expect(bText).toBe('this text overwrote what was just there');
     });
 
     it('includes basic async case', async () => {
       await driver.get('http://localhost:8080/basic-async/');
-      await driver.sleep(timeout);
+      const aSelector = By.id('included-1');
+      const bSelector = By.id('included-2');
 
-      const a = await driver.findElement(By.id('a')).getText();
-      const b = await driver.findElement(By.id('b')).getText();
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(aSelector);
 
-      expect(a).toBe('this text is included');
-      expect(b).toBe('this text overwrote what was just there.');
+      await driver.wait(until.elementLocated(bSelector), timeout);
+      const b = await driver.findElement(bSelector);
+
+      const aText = await a.getText();
+      const bText = await b.getText();
+
+      expect(aText).toBe('this text is included');
+      expect(bText).toBe('this text overwrote what was just there');
     });
 
     it('includes lazy', async () => {
       await driver.get('http://localhost:8080/lazy/');
-      await driver.sleep(timeout);
+      const aSelector = By.id('included-3');
 
-      const a = await driver.findElement(By.id('counter')).getText();
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(aSelector);
 
-      expect(a).toBe('3');
+      const aText = await a.getText();
+
+      expect(aText).toBe('this text is included 3');
     });
 
     it('includes fragment with extraction', async () => {
       await driver.get('http://localhost:8080/fragment-extraction/');
-      await driver.sleep(timeout);
+      const aSelector = By.id('a');
 
-      const a = await driver.findElement(By.id('a')).getText();
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(aSelector);
 
-      expect(a).toBe('Paragraph in fragment');
+      const aText = await a.getText();
+
+      expect(aText).toBe('Paragraph in fragment');
     });
 
     it('does not modify the page if no includes', async () => {
       await driver.get('http://localhost:8080/none/');
-      await driver.sleep(timeout);
+      const aSelector = By.id('a');
 
-      const a = await driver.findElement(By.id('a')).getText();
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(aSelector);
 
-      expect(a).toBe('1st para');
+      const aText = await a.getText();
+
+      expect(aText).toBe('1st para');
     });
 
     it('does not allow recursion', async () => {
       await driver.get('http://localhost:8080/recursion-not-allowed/');
-      await driver.sleep(timeout);
 
       const a = await driver.findElement(By.id('a')).getText();
 
-      expect(a).toMatch('h-include.js test page\nRecursion not allowed');
+      expect(a).toMatch(/h-include.js test page(\n)*Recursion not allowed/);
     });
 
     it('reloads if src attribute is modified', async () => {
       await driver.get('http://localhost:8080/update-src/');
-      await driver.sleep(timeout);
+      const aSelector = By.id('included-2');
 
-      const a = await driver.findElement(By.id('a')).getText();
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(aSelector);
 
-      expect(a).toBe('this text overwrote what was just there');
+      const aText = await a.getText();
+
+      expect(aText).toBe('this text overwrote what was just there');
     });
 
-    xit('loads large fragment for large viewport', async () => {
-      if (browser.browserName === 'MicrosoftEdge' && browser.platform === 'Windows 10') {
-        return;
-      }
+    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
+      it('loads large fragment for large viewport', async () => {
+        const viewport = driver.manage().window();
+        await viewport.setSize(800, 800); // width, height
+                await driver.get('http://localhost:8080/media/');
 
-      const viewport = driver.manage().window();
-      await viewport.setSize(800, 800); // width, height
-      await driver.sleep(timeout);
-      await driver.get('http://localhost:8080/media/');
-      await driver.sleep(timeout);
+        const a = await driver.findElement(By.id('a')).getText();
 
-      const a = await driver.findElement(By.id('a')).getText();
+        expect(a.trim()).toBe('Large viewport');
+      });
+    }
 
-      expect(a).toBe('Large viewport');
-    });
+    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
+      it('loads small fragment for small viewport', async () => {
+        const viewport = driver.manage().window();
+        await viewport.setSize(480, 800); // width, height
+                await driver.get('http://localhost:8080/media/');
 
-    xit('loads large fragment for large viewport', async () => {
-      if (browser.browserName === 'MicrosoftEdge' && browser.platform === 'Windows 10') {
-        return;
-      }
+        const a = await driver.findElement(By.id('a')).getText();
 
-      const viewport = driver.manage().window();
-      await viewport.setSize(480, 800); // width, height
-      await driver.sleep(timeout);
-      await driver.get('http://localhost:8080/media/');
-      await driver.sleep(timeout);
-
-      const a = await driver.findElement(By.id('a')).getText();
-
-      expect(a).toBe('Small viewport');
-    });
+        expect(a.trim()).toBe('Small viewport');
+      });
+    }
 
     afterEach(function(done){
+      if (log && browser.browserName === 'chrome') {
+        driver.manage().logs()
+          .get('browser')
+          .then(v => v && v.length && console.log(v));
+      }
+
       driver.quit();
 
       if (process.env.IS_LOCAL === 'true') {
