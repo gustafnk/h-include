@@ -14,7 +14,7 @@ const SauceLabs = require('saucelabs'),
 const caps = {};
 let browsers;
 
-const 6000 = timeout;
+const timeout = 6000;
 const log = false;
 
 if (process.env.IS_LOCAL === 'true') {
