@@ -255,20 +255,13 @@ window.HIncludeElement = (function() {
 
   proto.refresh = refresh;
 
-  if ('customElements' in window) {
-    // `customElements.define()` requires `class HIncludeElement extends HTMLElement`.
-    // But that would be a syntax error in older browsers. This is our work-around.
-    // See https://medium.com/@robertgrosse/how-es6-classes-really-work-and-how-to-build-your-own-fd6085eb326a
-    var HIncludeElement = function() {
-        return Reflect.construct(HTMLElement, arguments, HIncludeElement);
-    };
-    HIncludeElement.prototype = proto;
-    customElements.define(tagname, HIncludeElement);
-    return HIncludeElement;
-  }
-  else {
-    return document.registerElement(tagname, {
-      prototype: proto
-    });
-  }
+  // `customElements.define()` requires `class HIncludeElement extends HTMLElement`.
+  // But that would be a syntax error in older browsers. This is our work-around.
+  // See https://medium.com/@robertgrosse/how-es6-classes-really-work-and-how-to-build-your-own-fd6085eb326a
+  var HIncludeElement = function() {
+      return Reflect.construct(HTMLElement, arguments, HIncludeElement);
+  };
+  HIncludeElement.prototype = proto;
+  customElements.define(tagname, HIncludeElement);
+  return HIncludeElement;
 })();
