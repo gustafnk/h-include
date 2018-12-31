@@ -52,9 +52,12 @@
     counterElement.innerHTML = counter;
   }
 
-  document.registerElement('h-include-lazy', {
-    prototype: proto,
-  });
+  var HIncludeLazyElement = function() {
+    return Reflect.construct(HTMLElement, arguments, HIncludeLazyElement);
+  };
+  HIncludeLazyElement.prototype = proto;
+
+  customElements.define('h-include-lazy', HIncludeLazyElement);
   </script>
 
 </head>
