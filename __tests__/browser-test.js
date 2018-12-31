@@ -150,7 +150,7 @@ browsers.forEach(browser => {
       expect(a).toMatch(/h-include.js test page(\n)*Recursion not allowed/);
     });
 
-    it('reloads if src attribute is modified', async () => {
+    xit('reloads if src attribute is modified', async () => {
       await driver.get('http://localhost:8080/update-src/');
       const aSelector = By.id('included-2');
 
