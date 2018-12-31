@@ -48,7 +48,6 @@ However, it's also possible to have h-includes become visible as they're availab
 
  - Media query support
  - Easy to inherit to create lazy loaded includes
- - Changing the @src attribute works as expected and includes a new resource
 
 See [the demo page](http://gustafnk.github.com/h-include/) for more documentation and
 examples.
