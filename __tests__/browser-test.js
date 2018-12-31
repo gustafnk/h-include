@@ -150,18 +150,6 @@ browsers.forEach(browser => {
       expect(a).toMatch(/h-include.js test page(\n)*Recursion not allowed/);
     });
 
-    xit('reloads if src attribute is modified', async () => {
-      await driver.get('http://localhost:8080/update-src/');
-      const aSelector = By.id('included-2');
-
-      await driver.wait(until.elementLocated(aSelector), timeout);
-      const a = await driver.findElement(aSelector);
-
-      const aText = await a.getText();
-
-      expect(aText).toBe('this text overwrote what was just there');
-    });
-
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads large fragment for large viewport', async () => {
         const viewport = driver.manage().window();

@@ -227,12 +227,6 @@ window.HIncludeElement = (function() {
       'included ' + classprefix + req.status;
   };
 
-  proto.attributeChangedCallback = function(attrName) {
-    if (attrName === 'src') {
-      this.refresh();
-    }
-  };
-
   proto.attachedCallback = proto.connectedCallback = function() {
     var mode = config && config.mode || 'buffered';
 
