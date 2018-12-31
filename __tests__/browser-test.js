@@ -15,7 +15,7 @@ const caps = {};
 let browsers;
 
 const timeout = 6000;
-const log = false;
+const log = true;
 
 if (process.env.IS_LOCAL === 'true') {
   browsers = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'browsers-local.json'), 'utf8'));
