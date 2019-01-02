@@ -41,7 +41,7 @@
   var counter = 0;
   var proto = Object.create(HIncludeElement.prototype);
 
-  proto.attachedCallback = function(){}
+  proto.connectedCallback = function(){};
 
   // For testing purpuses only
   proto.onEnd = function(req){
