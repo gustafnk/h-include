@@ -4,10 +4,13 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title>h-include Tests</title>
   <link type="text/css" rel="stylesheet" href="/static/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/loadjs/3.5.5/loadjs.min.js"></script>
   <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
   <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
   <script type="text/javascript" src="/lib/h-include.js"></script>
   <script type="text/javascript" src="/lib/h-include-lazy.js"></script>
+  <script type="text/javascript" src="/lib/h-import.js"></script>
+  <script type="text/javascript" src="/lib/h-import-lazy.js"></script>
   <script type="text/javascript" src="/lib/init-lazy-load.js"></script>
   <style type="text/css">
   .error_text { display: none; }
@@ -18,7 +21,7 @@
 
   <script>
   window.addEventListener('load', function() {
-    HInclude.initLazyLoad();
+    HInclude.initLazyLoad('h-include-lazy, h-import-lazy');
   });
 
   var counter = 0;
@@ -88,6 +91,18 @@ Soon an explosion of includes....
 <h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
 <h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
 <h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<h-import-lazy src="/static/import/resource-fragment.html"></h-import-lazy>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+Fin.
 
 </body>
 </html>
