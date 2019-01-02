@@ -1,4 +1,3 @@
 [
-{"browserName":"firefox","platform":"OS X 10.11","version":"latest", "timeout":500},
-{"browserName":"chrome","platform":"OS X 10.11","version":"latest", "timeout":500}
+{"browserName":"chrome","platform":"OS X 10.11","version":"latest"}
 ]

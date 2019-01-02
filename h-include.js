@@ -32,7 +32,8 @@ See http://gustafnk.github.com/h-include/ for documentation.
 /*jslint indent: 2, browser: true, vars: true, nomen: true, loopfunc: true */
 /*global alert, ActiveXObject */
 
-window.HIncludeElement = (function() {
+window.HInclude = {};
+window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
   var tagname = "h-include";
   var TAGNAME = tagname.toUpperCase();
@@ -227,7 +228,7 @@ window.HIncludeElement = (function() {
       'included ' + classprefix + req.status;
   };
 
-  proto.attachedCallback = proto.connectedCallback = function() {
+  proto.connectedCallback = function() {
     var mode = config && config.mode || 'buffered';
 
     var callback;

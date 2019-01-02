@@ -36,9 +36,9 @@
     "node": ">= 8.*"
   },
   "scripts": {
-    "copy": "copyfiles h-include.js static/",
+    "copy": "copyfiles h-include.js static/; copyfiles h-include.js lib/",
     "lint": "jshint h-include.js",
-    "server": "simplehttpserver -p 8080 static",
+    "server": "simplehttpserver -p 8080 .",
     "test": "npm run copy; cd test; PORT=8080 make test",
     "local-tests": "npm run copy; npm run server > /dev/null 2>&1 & IS_LOCAL=true mocha -t 600000 __tests__/*-test.js",
     "remote-tests": "npm run copy; npm run server > /dev/null 2>&1 & mocha -t 60000 __tests__/*-test.js",

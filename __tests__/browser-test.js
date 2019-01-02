@@ -51,7 +51,7 @@ browsers.forEach(browser => {
 
     beforeEach(function() {
       if (process.env.IS_LOCAL === 'true') {
-        driver = new Builder().forBrowser('firefox').build();
+        driver = new Builder().forBrowser(browser.browserName).build();
       } else {
         Object.assign(caps, browser);
 
@@ -71,7 +71,7 @@ browsers.forEach(browser => {
     });
 
     it('includes basic case', async () => {
-      await driver.get('http://localhost:8080/basic/');
+      await driver.get('http://localhost:8080/static/basic/');
       const aSelector = By.id('included-1');
       const bSelector = By.id('included-2');
 
@@ -89,7 +89,7 @@ browsers.forEach(browser => {
     });
 
     it('includes basic async case', async () => {
-      await driver.get('http://localhost:8080/basic-async/');
+      await driver.get('http://localhost:8080/static/basic-async/');
       const aSelector = By.id('included-1');
       const bSelector = By.id('included-2');
 
@@ -107,7 +107,7 @@ browsers.forEach(browser => {
     });
 
     it('includes lazy', async () => {
-      await driver.get('http://localhost:8080/lazy/');
+      await driver.get('http://localhost:8080/static/lazy/');
       const aSelector = By.id('included-3');
 
       await driver.wait(until.elementLocated(aSelector), timeout);
@@ -119,7 +119,7 @@ browsers.forEach(browser => {
     });
 
     it('includes fragment with extraction', async () => {
-      await driver.get('http://localhost:8080/fragment-extraction/');
+      await driver.get('http://localhost:8080/static/fragment-extraction/');
       const aSelector = By.id('a');
 
       await driver.wait(until.elementLocated(aSelector), timeout);
@@ -131,7 +131,7 @@ browsers.forEach(browser => {
     });
 
     it('does not modify the page if no includes', async () => {
-      await driver.get('http://localhost:8080/none/');
+      await driver.get('http://localhost:8080/static/none/');
       const aSelector = By.id('a');
 
       await driver.wait(until.elementLocated(aSelector), timeout);
@@ -143,7 +143,7 @@ browsers.forEach(browser => {
     });
 
     it('does not allow recursion', async () => {
-      await driver.get('http://localhost:8080/recursion-not-allowed/');
+      await driver.get('http://localhost:8080/static/recursion-not-allowed/');
 
       const a = await driver.findElement(By.id('a')).getText();
 
@@ -154,7 +154,7 @@ browsers.forEach(browser => {
       it('loads large fragment for large viewport', async () => {
         const viewport = driver.manage().window();
         await viewport.setSize(800, 800); // width, height
-                await driver.get('http://localhost:8080/media/');
+                await driver.get('http://localhost:8080/static/media/');
 
         const a = await driver.findElement(By.id('a')).getText();
 
@@ -166,7 +166,7 @@ browsers.forEach(browser => {
       it('loads small fragment for small viewport', async () => {
         const viewport = driver.manage().window();
         await viewport.setSize(480, 800); // width, height
-                await driver.get('http://localhost:8080/media/');
+                await driver.get('http://localhost:8080/static/media/');
 
         const a = await driver.findElement(By.id('a')).getText();
 
