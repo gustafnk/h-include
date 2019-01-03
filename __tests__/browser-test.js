@@ -145,9 +145,14 @@ browsers.forEach(browser => {
     it('does not allow recursion', async () => {
       await driver.get('http://localhost:8080/static/recursion-not-allowed/');
 
-      const a = await driver.findElement(By.id('a')).getText();
+      const aSelector = By.id('a');
 
-      expect(a).toMatch(/h-include.js test page(\n)*Recursion not allowed/);
+      await driver.wait(until.elementLocated(aSelector), timeout);
+      const a = await driver.findElement(aSelector);
+
+      const aText = await a.getText();
+
+      expect(aText).toBe('1');
     });
 
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
