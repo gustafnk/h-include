@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>h-include Tests</title>
+  <link type="text/css" rel="stylesheet" href="/static/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/loadjs/3.5.5/loadjs.min.js"></script>
+  <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
+  <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+  <script type="text/javascript" src="/lib/h-include.js"></script>
+  <script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+  <style type="text/css">
+  .error_text { display: none; }
+  .include_404 .error_404 { display: inline; text-decoration: underline; }
+  .counter-container { position: fixed; top: 20px; right: 20px; }
+  h-include-lazy { display: block; }
+  </style>
+
+  <script>
+  window.addEventListener('load', function() {
+    HInclude.initLazyLoad('h-include-lazy, h-import-lazy');
+  });
+  </script>
+
+</head>
+<body>
+
+<h1>h-include.js test page</h1>
+
+<h2 id="h">Lazy loading</h2>
+
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment-3.html"></h-include-lazy>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<h-include-lazy src="fragment.html"></h-include-lazy>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+Sooon....
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+Soon an explosion of includes....
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<h-import-lazy src="/static/import-extension/resource-fragment.html"></h-import-lazy>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+Fin.
+
+</body>
+</html>

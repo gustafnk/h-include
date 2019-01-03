@@ -3,7 +3,7 @@ h-include.js -- HTML Includes (version 2.1.0)
 
 MIT License
 
-Copyright (c) 2018 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
+Copyright (c) 2016-2018 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
 Copyright (c) 2005-2012 Mark Nottingham <mnot@mnot.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,7 +32,8 @@ See http://gustafnk.github.com/h-include/ for documentation.
 /*jslint indent: 2, browser: true, vars: true, nomen: true, loopfunc: true */
 /*global alert, ActiveXObject */
 
-window.HIncludeElement = (function() {
+window.HInclude = {};
+window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
   var tagname = "h-include";
   var TAGNAME = tagname.toUpperCase();
@@ -227,7 +228,7 @@ window.HIncludeElement = (function() {
       'included ' + classprefix + req.status;
   };
 
-  proto.attachedCallback = proto.connectedCallback = function() {
+  proto.connectedCallback = function() {
     var mode = config && config.mode || 'buffered';
 
     var callback;
