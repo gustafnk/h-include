@@ -142,7 +142,7 @@ browsers.forEach(browser => {
       expect(aText).toBe('1st para');
     });
 
-    it.only('does not allow recursion', async () => {
+    it('does not allow recursion', async () => {
       await driver.get('http://localhost:8080/recursion-not-allowed/');
 
       const aSelector = By.id('a');
