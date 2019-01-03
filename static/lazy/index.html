@@ -20,17 +20,6 @@
   window.addEventListener('load', function() {
     HInclude.initLazyLoad('h-include-lazy, h-import-lazy');
   });
-
-  var counter = 0;
-
-  // For testing purpuses only
-  HInclude.HIncludeLazyElement.onEnd = function(req){
-    HIncludeElement.prototype.onEnd.apply(this, arguments); // call super
-
-    counter = counter + 1;
-    var counterElement = document.getElementById('counter');
-    counterElement.innerHTML = counter;
-  }
   </script>
 
 </head>
@@ -38,13 +27,11 @@
 
 <h1>h-include.js test page</h1>
 
-<div class="counter-container"><span id="counter">0</span> element(s) included</div>
-
 <h2 id="h">Lazy loading</h2>
 
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment-3.html">Text to be overwritten</h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment-3.html"></h-include-lazy>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -52,7 +39,7 @@
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -60,8 +47,8 @@
 Sooon....
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -71,23 +58,23 @@ Soon an explosion of includes....
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
-<h-include-lazy src="fragment.html">Text to be overwritten</h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
