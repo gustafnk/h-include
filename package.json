@@ -36,7 +36,7 @@
     "node": ">= 8.*"
   },
   "scripts": {
-    "copy": "copyfiles h-include.js static/; copyfiles h-include.js lib/",
+    "copy": "bash copy-and-deprecate.sh",
     "lint": "jshint lib/",
     "server": "simplehttpserver -p 8080 .",
     "test": "npm run copy; cd test; PORT=8080 make test",

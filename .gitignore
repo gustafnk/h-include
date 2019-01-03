@@ -1,5 +1,4 @@
 static/error.png
-static/npm-debug.log
-static/h-include.js
-lib/h-include.js
+npm-debug.log
+h-include.js
 node_modules/
