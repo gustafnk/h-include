@@ -107,7 +107,7 @@ browsers.forEach(browser => {
     });
 
     it('includes lazy', async () => {
-      await driver.get('http://localhost:8080/static/lazy/');
+      await driver.get('http://localhost:8080/static/lazy-extension/');
       const aSelector = By.id('included-3');
 
       await driver.wait(until.elementLocated(aSelector), timeout);
