@@ -3,7 +3,7 @@ h-include.js -- HTML Includes (version 2.1.0)
 
 MIT License
 
-Copyright (c) 2018 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
+Copyright (c) 2016-2018 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
 Copyright (c) 2005-2012 Mark Nottingham <mnot@mnot.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
