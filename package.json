@@ -1,0 +1,13 @@
+{
+  "name": "h-include-gh-pages",
+  "version": "0.0.1",
+  "devDependencies": {
+    "simplehttpserver": "^0.3.0"
+  },
+  "scripts": {
+    "start": "simplehttpserver -p 8080 ."
+  },
+  "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com> (https://twitter.com/gustaf_nk)",
+  "license": "MIT",
+  "homepage": "https://github.com/gustafnk/h-include"
+}

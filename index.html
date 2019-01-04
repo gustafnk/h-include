@@ -22,7 +22,7 @@
 
 <a href="https://travis-ci.org/gustafnk/h-include"><img src="https://travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
 
-<p class="intro">Declarative client-side transclusion. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).</p>
+<p class="intro">Declarative client-side transclusion. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like <a href="https://en.wikipedia.org/wiki/Edge_Side_Includes">Edge-Side Includes</a>.</p>
 
 <p>Based on <a href="https://github.com/mnot/hinclude">hinclude.js</a> by <a href="https://github.com/mnot/">@mnot</a></p>
 
@@ -40,30 +40,17 @@
 
 <p>For example, <h-include src="demo/included-fragment.html"></h-include>. You can include any HTML markup that would be valid in context.</p>
 
-<h2>Default Content</h2>
+<h2><code>h-include-lazy</code></h2>
+<p>TBD</p>
 
-<p>Before the included content is displayed, anything inside the include element (hereafter, <em>default content</em>) will be visible. For example, this:</p>
+<h2><code>h-import</code></h2>
+<p>TBD</p>
 
-<pre class="example">
-  &lt;h-include src="new-fragment.html">
-    this content will be overwritten by the included content
-  &lt;/h-include>
-</pre>
+<h2><code>h-import-lazy</code></h2>
+<p>TBD</p>
 
-<p>Looks like this: <h-include src="demo/new-fragment.html">this content will be overwritten by the included content</h-include>.</p>
-
-<p>Since HTML instructs browsers to ignore elements they don&#8217;t understand, default content is also shown by those that have JavaScript turned off.</p>
-
-<p>Of course, you can have no default content, in which case nothing will show up until the include is successful.</p>
-
-<h2>Extend with lazy loading</h2>
-
-<p>
-  <h-include-lazy src="demo/lazy-fragment.html"></h-include-lazy>
-</p>
-
-<h2>Navigation</h2>
-
+<h2><code>@navigate</code> attribute</h2>
+Example:
 <p class="box" id="box-1">
   <h-include src="/h-include/demo/navigation/1.html" navigate></h-include>
 </p>
