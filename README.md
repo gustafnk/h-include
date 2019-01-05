@@ -2,75 +2,23 @@
 
 <a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
 
-Declarative client-side transclusion. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).
+Declarative client-side transclusion, using [Custom Elements V1](https://developers.google.com/web/fundamentals/web-components/customelements). Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
 
-*Breaking change in version 2.0*: changed configuration mechanism to use JavaScript instead of meta tag.
+*Breaking change in version 3.0*: If you have created your own custom elements that inherit from h-include, they too need to be based on Custom Elements V1. See [EXTENDING.md](EXTENDING.md) for an example how to extend h-include.
 
 ## Usage
 
-Include a document
+Include a HTML resource like this:
 
 ```
-<h-include src="/other/document/here.html"></h-include>
+<h-include src="/url/to/fragment.html"></h-include>
 ```
 
-Include a document and extract a fragment
+Each `<h-include>` element will create an AJAX request to the url and replace the `innerHTML` of the element with the response of the request.
 
-```
-<h-include src="..." fragment=".container"></h-include>
-```
-
-Enable [XMLHttpRequest.withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)
-
-```
-<h-include src="..." with-credentials></h-include>
-```
-
-Refresh an h-include element
-
-```
-document.getElementsByTagName('h-include')[0].refresh()
-```
-
-## Rendering Mode
-
-By default, each include is fetched in the background and the page is updated only when they all are available.
-
-This is bounded by a timeout, by default 2500 ms. After the timeout,
-h-include will show what it has and keep on listening for the remaining responses.
-
-However, it's also possible to have h-includes become visible as they're available, see the configuration section below. While this shows the included content quicker, it may be less visually smooth.
-
-
-## Other features
-
- - Media query support
- - Easy to inherit to create lazy loaded includes
-
-See [the demo page](http://gustafnk.github.com/h-include/) for more documentation and
-examples.
-
-## Configuration
-
-Set buffered include timeout (default is `2500` ms):
-
-```js
-HIncludeConfig = { timeout: 10000 };
-```
-
-Set include mode to `async` (default is `buffered`):
-
-```js
-HIncludeConfig = { mode: 'async' };
-```
-
-Throw if caught in an infinite include loop, to avoid the [Droste effect](https://en.wikipedia.org/wiki/Droste_effect):
-
-```js
-HIncludeConfig = { checkRecursion: true };
-```
+See [the demo page](http://gustafnk.github.com/h-include/) for live examples.
 
 ## Installation
 
@@ -86,72 +34,164 @@ Install using bower:
 $ bower install h-include
 ```
 
-## Dependencies
+## Rendering Mode
 
-h-include provides a custom element `<h-include>`. This means that you have
-to use a polyfill for enabling [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/) for browsers not supporting it.
+By default, each include is fetched in the background and the page is updated only when they all are available.
 
-We recommend using [document-register-element](https://github.com/WebReflection/document-register-element) (3KB) as the polyfill for [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/).
+This is bounded by a timeout, by default 2500 ms. After the timeout,
+h-include will show what it has and keep on listening for the remaining responses.
 
-## Overridable function on the custom element
+However, it's also possible to have responses from `<h-include>` elements become visible as they're available, by providing configuration:
 
-| Function | Arguments | Default behavior | Example override use case                                                     |
-|-----------------|------------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| `createContainer` | `request` | Creates a DOM container from the request | Loop through links to resources and  replace relative URLs with absolute URLs |
-| `extractFragment` | `container`, `fragment`, `request` | Queries the container with a fragment selector. The default fragment selector is 'body'. | Improved error handling if fragment doesn't match |
-| `replaceContent`  | `fragmentElement` | Replaces the innerHTML of the element with the innerHTML of the fragmentElement | DOM diffing |
-| `onEnd`  | `request` | Add status information to the `@class` attribute of the h-include element | |
-
-Override one or many functions by inheriting from the custom element, like this:
-
-```js
-var proto = Object.create(HIncludeElement.prototype);
-
-proto.onEnd = function(req){
-  HIncludeElement.prototype.onEnd.apply(this, arguments); // call super
-
-  // your code here
-}
-
-document.registerElement('h-include-improved', {
-  prototype: proto,
-});
+```
+HIncludeConfig = { mode: 'async' };
 ```
 
-## Lazy loading example
+While this shows the included content quicker, it may be less visually smooth.
 
-This example uses the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) in a `load` event handler on `window`, to lazy-load `<h-include-lazy>` element content.
+## Custom Elements polyfill
+
+You need to use a polyfill for enabling [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/) for browsers not supporting Custom Elements V1.
+
+We recommend using [document-register-element](https://github.com/WebReflection/document-register-element) (5KB minified and gzipped) as the polyfill for [W3C Custom Elements](http://w3c.github.io/webcomponents/spec/custom/).
+
+Example:
+
+```
+<head>
+  <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
+  <script type="text/javascript" src="/path/to/h-include.js"></script>
+</head>
+<body>
+  ...
+  <h-include src=">
+  ...
+</body>
+```
+
+## Extensions
+
+Additional extensions are located in [`lib/h-include-extensions.js`](https://github.com/gustafnk/h-include/blob/master/lib/h-include-extensions.js) and have `lib/h-include.js` as a dependency.
+
+```
+<script type="text/javascript" src="/lib/h-include.js"></script>
+<script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+```
+
+All extensions inherit h-include's base behavior, when applicable.
+
+To create your own elements that inherit from `<h-include>`, see [EXTENDING.md](EXTENDING.md).
+
+### h-include-lazy
+
+Only includes the HTML resource if the element is about to enter the viewport, by default 400 pixels margin, using the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) (which needs to be polyfilled).
+
+After page load, elements in the DOM need to registered to the Intersection Observer:
+
+```
+<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+<script type="text/javascript" src="/lib/h-include.js"></script>
+<script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+<script>
+window.addEventListener('load', function() {
+  HInclude.initLazyLoad();
+});
+</script>
+```
+
+Example:
+
+```
+<h-include-lazy src="fragment.html"></h-include-lazy>
+
+...
+
+
+<h-include-lazy src="lazy-loaded-fragment.html"></h-include-lazy>
+```
+
+### h-import
+
+Request an HTML resource and include all found script and stylesheet references.
+
+Example:
+
+```
+<h-import src="resource-fragment.html"></h-import>
+```
+
+### h-import-lazy
+
+After page load, elements in the DOM need to registered to the Intersection Observer:
+
+```
+<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+<script type="text/javascript" src="/lib/h-include.js"></script>
+<script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+<script>
+window.addEventListener('load', function() {
+  HInclude.initLazyLoad();
+});
+</script>
+```
+
+Example:
+
+```
+<h-include src="fragment.html"></h-include-lazy>
+
+...
+
+
+<h-import-lazy src="lazy-loaded-resource-fragment.html"></h-import-lazy>
+```
+
+#### Default values for HInclude.initLazyLoad
+
+By default, the selector for `HInclude.initLazyLoad` is `'h-include-lazy, h-import-lazy'` and the Intersection Observer `rootMargin` and `threshold` default values are `400px 0px` and `0.01` respectively. These can be overridden:
+
+```
+HInclude.initLazyLoad('css style selector', {rootMargin: '200px 0', threshold: 0.2});
+```
+
+## Advanced usage
+
+Include an HTML resource and extract a fragment of the response by using a selector
+
+```
+<h-include src="..." fragment=".container"></h-include>
+```
+
+Enable [XMLHttpRequest.withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)
+
+```
+<h-include src="..." with-credentials></h-include>
+```
+
+Refresh an element
 
 ```js
-window.addEventListener('load', function() {
-  var elements = document.getElementsByTagName('h-include-lazy');
-  var config = {
-    rootMargin: '400px 0px',
-    threshold: 0.01 // 1% of the target is visible
-  };
+document.getElementsByTagName('h-include')[0].refresh()
+```
 
-  var observer = new IntersectionObserver(onIntersection, config);
-  [].forEach.call(elements, element => {
-    observer.observe(element);
-  });
+## Configuration
 
-  function onIntersection(entries) {
-    entries.forEach(entry => {
-      if (entry.intersectionRatio > 0) {
-        observer.unobserve(entry.target);
-        entry.target.refresh();
-      }
-    });
-  }
-});
+Set buffered include timeout (default is `2500` ms):
 
-var proto = Object.create(HIncludeElement.prototype);
+```js
+HIncludeConfig = { timeout: 10000 };
+```
 
-proto.attachedCallback = function(){}
+Set include mode to `async` (default is `buffered`):
 
-document.registerElement('h-include-lazy', {
-  prototype: proto,
-});
+```js
+HIncludeConfig = { mode: 'async' };
+```
+
+Throw if caught in an infinite include loop
+
+```js
+HIncludeConfig = { checkRecursion: true };
 ```
 
 ## Media query support
@@ -162,6 +202,8 @@ It's possible to use media queries to have different fragments for different dev
 <h-include media="screen and (max-width: 600px)" src="small.html"></h-include>
 <h-include media="screen and (min-width: 601px)" src="large.html"></h-include>
 ```
+
+`<h-include>` will not listen to changes to screen orientation or size.
 
 ## Navigation
 
@@ -177,7 +219,7 @@ If fetching the included URL results in a 404 Not Found status code, the class o
 
 All modern browsers and IE down to IE10 are supported. If you find something quirky, please file an issue.
 
-## On HTTP/2
+## HTTP/2 improves XHR performance
 
 Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So, if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
 
