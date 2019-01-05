@@ -146,13 +146,17 @@ Example:
 <h-import-lazy src="lazy-loaded-resource-fragment.html"></h-import-lazy>
 ```
 
-#### Default values for HInclude.initLazyLoad
+#### Helper function: HInclude.initLazyLoad
 
 By default, the selector for `HInclude.initLazyLoad` is `'h-include-lazy, h-import-lazy'` and the Intersection Observer `rootMargin` and `threshold` default values are `400px 0px` and `0.01` respectively. These can be overridden:
 
 ```
 HInclude.initLazyLoad('css style selector', {rootMargin: '200px 0', threshold: 0.2});
 ```
+
+#### Helper function: HInclude.loadResources
+
+Load an array of script and stylesheet resources (to be overridden).
 
 ## Advanced usage
 
