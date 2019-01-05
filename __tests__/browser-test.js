@@ -36,10 +36,8 @@ if (process.env.IS_LOCAL === 'true') {
   Object.assign(caps, {
     'tunnel-identifier': tunnelId,
     build: buildId,
-    username: process.env.SAUCE_USERNAME,
-    accessKey: process.env.SAUCE_ACCESS_KEY,
-    'username': username,
-    'accessKey': accessKey,
+    username: username,
+    accessKey: accessKey,
   });
 }
 
