@@ -1,3 +1,4 @@
 [
-{"browserName":"chrome","platform":"OS X 10.11","version":"latest"}
+{"browserName":"chrome","platform":"OS X 10.11","version":"latest"},
+{"browserName":"firefox","platform":"OS X 10.11","version":"latest"}
 ]
