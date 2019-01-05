@@ -31,6 +31,11 @@ if (process.env.IS_LOCAL === 'true') {
   else if (process.env.SAUCE_TUNNEL_ID) {
     tunnelId = process.env.SAUCE_TUNNEL_ID;
     buildId = 0;
+
+    Object.assign(caps, {
+      host: 'localhost',
+      port: 4445,
+    });
   }
 
   Object.assign(caps, {
