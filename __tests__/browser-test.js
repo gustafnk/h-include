@@ -47,7 +47,7 @@ browsers.forEach(browser => {
   describe(`h-include - ${browserString}`, () => {
     let driver;
 
-    beforeEach(function() {
+    before(() => {
       if (process.env.IS_LOCAL === 'true') {
         driver = new Builder().forBrowser(browser.browserName).build();
       } else {
@@ -177,7 +177,7 @@ browsers.forEach(browser => {
       });
     }
 
-    afterEach(function(done){
+    after(done => {
       if (log && browser.browserName === 'chrome') {
         driver.manage().logs()
           .get('browser')
@@ -186,6 +186,10 @@ browsers.forEach(browser => {
 
       driver.quit();
 
+      done();
+    });
+
+    afterEach(function(done){
       if (process.env.IS_LOCAL === 'true') {
         done();
       } else {
