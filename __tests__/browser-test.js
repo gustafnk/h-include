@@ -158,6 +158,25 @@ browsers.forEach(browser => {
       expect(aText).toBe('1');
     });
 
+    it('navigates', async () => {
+      await driver.get('http://localhost:8080/static/navigate-extension/');
+
+      await driver.wait(until.elementLocated(By.id('a')), timeout);
+      await driver.findElement(By.css('#a .link')).click();
+
+      await driver.wait(until.elementLocated(By.id('b')), timeout);
+      await driver.findElement(By.css('#b .link')).click();
+
+      const cSelector = By.id('c');
+      await driver.wait(until.elementLocated(cSelector), timeout);
+
+      const c = await driver.findElement(cSelector);
+
+      const cText = await c.getText();
+
+      expect(cText).toBe('This is the last box. Goodbye.');
+    });
+
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads large fragment for large viewport', async () => {
         const viewport = driver.manage().window();
