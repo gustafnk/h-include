@@ -7,8 +7,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/loadjs/3.5.5/loadjs.min.js"></script>
   <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
   <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
-	<script type="text/javascript" src="https://gitcdn.xyz/repo/gustafnk/h-include/master/lib/h-include.js"></script>
-  <script type="text/javascript" src="https://gitcdn.xyz/repo/gustafnk/h-include/master/lib/h-include-extensions.js"></script>
+	<script type="text/javascript" src="lib/h-include.js"></script>
+  <script type="text/javascript" src="lib/h-include-extensions.js"></script>
   <script>
   window.addEventListener('load', function() {
     HInclude.initLazyLoad();
@@ -46,7 +46,22 @@
 
 <h-include src="demo/basic/fragment.html"></h-include>
 
-<h2><code>h-import</code></h2>
+<h2>Advanced usage</h2>
+
+<h3>Fragment extraction</h3>
+
+<p>Extract a fragment from a full HTML resource:</p>
+
+<h-include src="demo/fragment-extraction/full-page.html" fragment=".container"></h-include>
+
+<h3>Media query support</h3>
+
+<h-include media="screen and (max-width: 600px)" src="demo/media/small.html"></h-include>
+<h-include media="screen and (min-width: 601px)" src="demo/media/large.html"></h-include>
+
+<h2>Extensions</h2>
+
+<h3><code>h-import</code></h3>
 <div>
   <h-import src="demo/import-extension/resource-fragment.html"></h-import>
   <h-include src="demo/import-extension/fragment.html"></h-include>
@@ -54,16 +69,16 @@
   <p>If possible, use <a href="https://en.wikipedia.org/wiki/Edge_Side_Includes" rel="nofollow">Edge-Side Includes</a> to import statically loaded resource fragments, due to performance reasons.</p>
 </div>
 
-<h2><code>h-include-lazy</code></h2>
+<h3><code>h-include-lazy</code></h3>
 <p><a href="#bottom">Go to bottom of page</a></p>
 
-<h2><code>h-import-lazy</code></h2>
+<h3><code>h-import-lazy</code></h3>
 <p><a href="#bottom">Go to bottom of page</a></p>
 
-<h2><code>h-include-navigate</code></h2>
+<h3><code>h-include-navigate</code></h3>
 Example:
 <p class="box" id="box-1">
-  <h-include-navigate src="demo/navigation/1.html"></h-include>
+  <h-include-navigate src="demo/navigate-extension/1.html"></h-include>
 </p>
 
 <!-- line breaks for demonstrating lazy loading -->
