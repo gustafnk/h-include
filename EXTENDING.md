@@ -1,6 +1,8 @@
 # Extending h-include
 
+Extending h-include is quite simple. Follow the pattern below and then look at the method table at the bottom of this page.
 
+You might want to read the source code of lib/h-include.js and lib/h-include-extensions.js to know how this are connected and to get inspired.
 
 ```
 (function() {
@@ -18,7 +20,12 @@
 })();
 ```
 
-## Overridable functions
+If needed, you can also call the "super method" like this:
+```
+HIncludeElement.prototype.methodThatWasOverridden.apply(this, arguments);
+```
+
+## Overridable methods
 
 | Function | Arguments | Default behavior | Returns                                                     |
 |-----------------|------------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
