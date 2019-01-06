@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>h-include Tests</title>
+  <link type="text/css" rel="stylesheet" href="/static/style.css">
+  <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
+  <script type="text/javascript" src="/lib/h-include.js"></script>
+  <script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+  <style type="text/css">
+  .error_text { display: none; }
+  .include_404 .error_404 { display: inline; text-decoration: underline; }
+  .box { border-style: dashed; border-color: black; width: 200px; padding: 50px;}
+  .large-box { border-style: dashed; border-color: black; width: 400px; padding: 50px;}
+  </style>
+</head>
+<body>
+
+<h1><code>h-include-navigate</code> test page</h1>
+
+<h2 id="h">Navigate within nested <code>h-include-navigate</code></h2>
+
+<p class="box" id="box-1"><h-include-navigate src="1.html"></h-include-navigate></p>
+
+<p class="large-box" id="box-2"><h-include-navigate src="inner.html"></h-include-navigate></p>
+<p class="large-box" id="box-3"><h-include-navigate src="inner.html"></h-include-navigate></p>
+
+</body>
+</html>
