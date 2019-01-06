@@ -158,7 +158,7 @@ browsers.forEach(browser => {
       expect(aText).toBe('1');
     });
 
-    xit('navigates', async () => {
+    it('navigates', async () => {
       await driver.get('http://localhost:8080/static/navigate-extension/');
 
       await driver.wait(until.elementLocated(By.id('a')), timeout);
