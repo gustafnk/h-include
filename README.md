@@ -2,24 +2,24 @@
 
 <a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
 
-Declarative client-side transclusion, using [Custom Elements V1](https://developers.google.com/web/fundamentals/web-components/customelements). Perfect for [Microfrontend architectures](https://micro-frontends.org/), in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).
+Declarative client-side transclusion, using [Custom Elements V1](https://developers.google.com/web/fundamentals/web-components/customelements). Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
 
 *Breaking changes in version 3.0*:
 
 - If you have created your own custom elements that inherit from h-include, they too need to be based on Custom Elements V1. See [EXTENDING.md](EXTENDING.md) for an example how to extend h-include.
-- `navigate` attribute is broken out into separate element `<h-include-navigate>`, located in lib/h-include-extensions.js
+- The `navigate` attribute is broken out into the separate element `<h-include-navigate>`, located in `lib/h-include-extensions.js`.
 
 ## Usage
 
-Include a HTML resource like this:
+Include an HTML resource like this:
 
 ```
 <h-include src="/url/to/fragment.html"></h-include>
 ```
 
-Each `<h-include>` element will create an AJAX request to the url and replace the `innerHTML` of the element with the response of the request.
+Each `<h-include>` element will create an AJAX request to the URL and replace the `innerHTML` of the element with the response of the request.
 
 See [the demo page](http://gustafnk.github.com/h-include/) for live examples.
 
@@ -44,7 +44,7 @@ By default, each include is fetched in the background and the page is updated on
 This is bounded by a timeout, by default 2500 ms. After the timeout,
 h-include will show what it has and keep on listening for the remaining responses.
 
-However, it's also possible to have responses from `<h-include>` elements become visible as they're available, by providing configuration:
+However, it's also possible to have responses from `<h-include>` elements become visible as they become available, by providing configuration:
 
 ```
 HIncludeConfig = { mode: 'async' };
