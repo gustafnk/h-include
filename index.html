@@ -4,8 +4,16 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>Introducing h-include</title>
 	<link type="text/css" rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/loadjs/3.5.5/loadjs.min.js"></script>
+  <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
   <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
 	<script type="text/javascript" src="https://gitcdn.xyz/repo/gustafnk/h-include/master/lib/h-include.js"></script>
+  <script type="text/javascript" src="https://gitcdn.xyz/repo/gustafnk/h-include/master/lib/h-include-extensions.js"></script>
+  <script>
+  window.addEventListener('load', function() {
+    HInclude.initLazyLoad();
+  });
+  </script>
   <script type="text/javascript" src="gh-main.js"></script>
 	<style type="text/css">
 	.error_text { display: none; }
@@ -19,41 +27,61 @@
 <div id="main">
 
 <h1>h-include.js</h1>
+<a name="top"></a>
 
 <a href="https://travis-ci.org/gustafnk/h-include"><img src="https://travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
 
-<p class="intro">Declarative client-side transclusion. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like <a href="https://en.wikipedia.org/wiki/Edge_Side_Includes">Edge-Side Includes</a>.</p>
+<p>Declarative client-side transclusion, using <a href="https://developers.google.com/web/fundamentals/web-components/customelements" rel="nofollow">Custom Elements V1</a>. Perfect for Microfrontend architectures, in combination with server-side transclusion technologies like <a href="https://en.wikipedia.org/wiki/Edge_Side_Includes" rel="nofollow">Edge-Side Includes</a>.</p>
+<p>Based on <a href="https://github.com/mnot/hinclude">hinclude.js</a> by <a href="https://github.com/mnot/">@mnot</a>.</p>
 
-<p>Based on <a href="https://github.com/mnot/hinclude">hinclude.js</a> by <a href="https://github.com/mnot/">@mnot</a></p>
+<h2>Basic usage</h2>
 
-<h2>The Basics</h2>
-
-<p>h-include adds <code>h-include</code> as a Custom Element. When the browser encounters this element, it will fetch and include the document linked in the <code>src</code> attribute.</p>
+<p>h-include adds <code>&lt;h-include&gt;</code> as a Custom Element. When the browser encounters this element, it will fetch and include the HTML resource linked in the <code>src</code> attribute.</p>
 
 <p>Wherever you want to include something, do this:</p>
 
 <pre class="example">
-  &lt;h-include src="/other/document/here.html"&gt;&lt;/h-include&gt;
+  &lt;h-include src="demo/basic/fragment.html"&gt;&lt;/h-include&gt;
 </pre>
 
-<p>Where <code>/other/document/here.html</code> is the document you want to include. Note that because of limitations in the JavaScript security model, it <strong>must</strong> be on the same server (if you're not using CORS).</p>
-
-<p>For example, <h-include src="demo/included-fragment.html"></h-include>. You can include any HTML markup that would be valid in context.</p>
-
-<h2><code>h-include-lazy</code></h2>
-<p>TBD</p>
+<h-include src="demo/basic/fragment.html"></h-include>
 
 <h2><code>h-import</code></h2>
-<p>TBD</p>
+<div>
+  <h-import src="demo/import-extension/resource-fragment.html"></h-import>
+  <h-include src="demo/import-extension/fragment.html"></h-include>
+
+  <p>If possible, use <a href="https://en.wikipedia.org/wiki/Edge_Side_Includes" rel="nofollow">Edge-Side Includes</a> to import statically loaded resource fragments, due to performance reasons.</p>
+</div>
+
+<h2><code>h-include-lazy</code></h2>
+<p><a href="#bottom">Go to bottom of page</a></p>
 
 <h2><code>h-import-lazy</code></h2>
-<p>TBD</p>
+<p><a href="#bottom">Go to bottom of page</a></p>
 
-<h2><code>@navigate</code> attribute</h2>
+<h2><code>h-include-navigate</code></h2>
 Example:
 <p class="box" id="box-1">
-  <h-include src="/h-include/demo/navigation/1.html" navigate></h-include>
+  <h-include-navigate src="demo/navigation/1.html"></h-include>
 </p>
+
+<!-- line breaks for demonstrating lazy loading -->
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+
+<a name="bottom"></a>
+<h-include-lazy src="demo/lazy-extension/fragment.html"></h-include-lazy>
+<br><br><br>
+<div>
+  <h-import-lazy src="demo/import-extension/lazy-resource-fragment.html"></h-import-lazy>
+  <h-include-lazy src="demo/import-extension/lazy-fragment.html"></h-include-lazy>
+</div>
+
+<br><br>
+<a href="#top">Back to top</a>
 
 </div>
 
