@@ -6,7 +6,10 @@ Declarative client-side transclusion, using [Custom Elements V1](https://develop
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
 
-*Breaking change in version 3.0*: If you have created your own custom elements that inherit from h-include, they too need to be based on Custom Elements V1. See [EXTENDING.md](EXTENDING.md) for an example how to extend h-include.
+*Breaking changes in version 3.0*:
+
+- If you have created your own custom elements that inherit from h-include, they too need to be based on Custom Elements V1. See [EXTENDING.md](EXTENDING.md) for an example how to extend h-include.
+- `navigate` attribute is broken out into separate element `<h-include-navigate>`, located in lib/h-include-extensions.js
 
 ## Usage
 
@@ -119,6 +122,8 @@ Example:
 ```
 <h-import src="resource-fragment.html"></h-import>
 ```
+
+If possible, use [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes) to import statically loaded resource fragments, due to performance reasons.
 
 ### h-import-lazy
 
