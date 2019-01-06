@@ -74,7 +74,7 @@ Example:
 
 ## Extensions
 
-Additional extensions are located in [`lib/h-include-extensions.js`](https://github.com/gustafnk/h-include/blob/master/lib/h-include-extensions.js) and have `lib/h-include.js` as a dependency.
+Additional extensions are located in [`lib/h-include-extensions.js`](https://github.com/gustafnk/h-include/blob/master/lib/h-include-extensions.js) and have `lib/h-include.js` as a dependency:
 
 ```
 <script type="text/javascript" src="/lib/h-include.js"></script>
@@ -151,6 +151,13 @@ Example:
 <h-import-lazy src="lazy-loaded-resource-fragment.html"></h-import-lazy>
 ```
 
+## h-import-navigate
+
+Use `<h-import-navigate>` to let link navigation events be captured by the element itself, which changes the `src` attribute and triggers a refresh.
+
+Use `target="_top"` to let link inside `h-include` behave as a normal link.
+
+
 #### Helper function: HInclude.initLazyLoad
 
 By default, the selector for `HInclude.initLazyLoad` is `'h-include-lazy, h-import-lazy'` and the Intersection Observer `rootMargin` and `threshold` default values are `400px 0px` and `0.01` respectively. These can be overridden:
@@ -165,22 +172,39 @@ Load an array of script and stylesheet resources (to be overridden).
 
 ## Advanced usage
 
-Include an HTML resource and extract a fragment of the response by using a selector
+### Refresh method
+
+Refresh an element by using the `refresh()` method:
+
+```js
+const element = document.getElementsByTagName('h-include')[0];
+element.refresh();
+```
+
+### Media queries
+
+Use media queries to have different fragments for different devices:
+
+```
+<h-include media="screen and (max-width: 600px)" src="small.html"></h-include>
+<h-include media="screen and (min-width: 601px)" src="large.html"></h-include>
+```
+
+`<h-include>` will not listen to changes to screen orientation or size.
+
+### Fragment extraction
+
+Include an HTML resource and extract a fragment of the response by using a selector:
 
 ```
 <h-include src="..." fragment=".container"></h-include>
 ```
 
-Enable [XMLHttpRequest.withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)
+### XMLHttpRequest.withCredentials
 
+Enable [XMLHttpRequest.withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials):
 ```
 <h-include src="..." with-credentials></h-include>
-```
-
-Refresh an element
-
-```js
-document.getElementsByTagName('h-include')[0].refresh()
 ```
 
 ## Configuration
@@ -197,28 +221,11 @@ Set include mode to `async` (default is `buffered`):
 HIncludeConfig = { mode: 'async' };
 ```
 
-Throw if caught in an infinite include loop
+Throw if caught in an infinite include loop:
 
 ```js
 HIncludeConfig = { checkRecursion: true };
 ```
-
-## Media query support
-
-It's possible to use media queries to have different fragments for different devices:
-
-```
-<h-include media="screen and (max-width: 600px)" src="small.html"></h-include>
-<h-include media="screen and (min-width: 601px)" src="large.html"></h-include>
-```
-
-`<h-include>` will not listen to changes to screen orientation or size.
-
-## Navigation
-
-Add `navigate` attribute to let link navigation events be captured by `h-include` element itself, which changes the `src` attribute and triggers a refresh.
-
-If `navigate` attribute is used, use `target="_top"` to let link inside `h-include` behave as a normal link.
 
 ## Error Handling
 
