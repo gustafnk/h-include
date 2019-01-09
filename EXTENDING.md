@@ -22,8 +22,10 @@ You might want to read the source code of lib/h-include.js and lib/h-include-ext
 
 If needed, you can also call the "super method" like this:
 ```
-HIncludeElement.prototype.methodThatWasOverridden.apply(this, arguments);
+window.HInclude.HIncludeElement.prototype.methodThatWasOverridden.apply(this, arguments);
 ```
+
+(Note: In h-include 3.0, `window.HIncludeElement` was moved to `window.HInclude.HIncludeElement`)
 
 ## Overridable methods
 
