@@ -124,9 +124,13 @@ Example:
 <h-import src="resource-fragment.html"></h-import>
 ```
 
-If possible, use [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes) to import statically loaded resource fragments, due to performance reasons.
+If possible, use [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes) (or similar) to import statically loaded resource fragments, due to performance reasons.
+
+To load resources, h-import and h-import-lazy call `HInclude.loadResources` with an array of urls to resources. By default, this method delegates the resource loadin to [loadjs](https://github.com/muicss/loadjs), which needs to be on the `window` object. However, `HInclude.loadResources` can be replaced with a loader of your choice.
 
 ### h-import-lazy
+
+When lazy loading fragments, it might be the case that additional style and script resources need to be loaded as well. For example, think of a lazy loaded footer with rather specific styling. For these scenarios, use h-import-lazy.
 
 After page load, elements in the DOM need to registered to the Intersection Observer:
 
@@ -144,7 +148,7 @@ window.addEventListener('load', function() {
 Example:
 
 ```
-<h-include src="fragment.html"></h-include-lazy>
+<h-include-lazy src="fragment.html"></h-include-lazy>
 
 ...
 
@@ -152,9 +156,9 @@ Example:
 <h-import-lazy src="lazy-loaded-resource-fragment.html"></h-import-lazy>
 ```
 
-## h-import-navigate
+## h-include-navigate
 
-Use `<h-import-navigate>` to let link navigation events be captured by the element itself, which changes the `src` attribute and triggers a refresh.
+Use `<h-include-navigate>` to let link navigation events be captured by the element itself, which changes the `src` attribute and triggers a refresh.
 
 Use `target="_top"` to let link inside `h-include` behave as a normal link.
 
@@ -222,11 +226,14 @@ Set include mode to `async` (default is `buffered`):
 HIncludeConfig = { mode: 'async' };
 ```
 
-Throw if caught in an infinite include loop:
+Throw if caught in an infinite include loop (default is `false`):
 
 ```js
 HIncludeConfig = { checkRecursion: true };
 ```
+
+If `checkRecursion` is `true`, h-include will traverse the DOM upwards to find another h-include element with the same src attribute, until the root node. This operation takes a few CPU cycles per h-include, which is why it's not enable by default.
+
 
 ## Error Handling
 

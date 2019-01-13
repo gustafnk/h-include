@@ -36,4 +36,3 @@ window.HInclude.HIncludeElement.prototype.methodThatWasOverridden.apply(this, ar
 | `replaceContent`  | `fragmentElement` | Replaces the innerHTML of the element with the innerHTML of the fragmentElement | `void` |
 | `onEnd`  | `request` | Add status information to the `@class` attribute of the h-include element | `void` |
 
-Override one or many functions by inheriting from the custom element, like this:
