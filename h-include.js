@@ -20,7 +20,7 @@ console.warn('Using h-include.js from the root folder is deprecated, please use 
 })();
 
 /*
-h-include.js -- HTML Includes (version 2.1.0)
+h-include.js -- HTML Includes (version 3.0.0)
 
 MIT Style License
 
