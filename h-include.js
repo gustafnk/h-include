@@ -1,31 +1,31 @@
 
 console.warn('Using h-include.js from the root folder is deprecated, please use lib/h-include.js instead');
 
+// Reflect.construct polyfill adopted from https://github.com/WebReflection/classtrophobic-es5
+/*! (C) 2017 Andrea Giammarchi - MIT Style License */
+(function() {
+  var sPO = Object.setPrototypeOf ||
+          function (o, p) { o.__proto__ = p; return o; };
+  var hasReflect = typeof Reflect === 'object';
+
+  if (!hasReflect) {
+    Reflect = {
+      construct: function (Super, args, Constructor) {
+        [].unshift.call(args, Super);
+        var C = Super.bind.apply(Super, args);
+        return sPO(new C, Constructor.prototype);
+      }
+    }
+  }
+})();
+
 /*
 h-include.js -- HTML Includes (version 2.1.0)
 
-MIT License
+MIT Style License
 
-Copyright (c) 2016-2018 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
+Copyright (c) 2016-2019 Gustaf Nilsson Kotte <gustaf.nk@gmail.com>
 Copyright (c) 2005-2012 Mark Nottingham <mnot@mnot.net>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 
 ------------------------------------------------------------------------------
 
@@ -33,14 +33,13 @@ See http://gustafnk.github.com/h-include/ for documentation.
 */
 
 /*jslint indent: 2, browser: true, vars: true, nomen: true, loopfunc: true */
-/*global alert, ActiveXObject */
 
 window.HInclude = {};
 window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
-  var tagname = "h-include";
+  var tagname = 'h-include';
   var TAGNAME = tagname.toUpperCase();
-  var classprefix = "include_";
+  var classprefix = 'include_';
 
   var config = window.HIncludeConfig;
 
@@ -58,12 +57,6 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
       var node = element.extractFragment.call(element, container, fragment, req);
       element.replaceContent.call(element, node);
-
-      // Register navigation
-      var navigationAttribute = element.getAttribute('navigate');
-      if (navigationAttribute === '' || navigationAttribute === 'true') {
-        registerNavigation(element);
-      }
     }
 
     element.onEnd.call(element, req);
@@ -122,8 +115,8 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       return;
     }
 
-    var scheme = url.substring(0, url.indexOf(":"));
-    if (scheme.toLowerCase() === "data") {
+    var scheme = url.substring(0, url.indexOf(':'));
+    if (scheme.toLowerCase() === 'data') {
       throw new Error('data URIs are not allowed');
     }
 
@@ -140,63 +133,12 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       includeCallback(element, req);
     };
     try {
-      req.open("GET", url, true);
-      req.send("");
+      req.open('GET', url, true);
+      req.send('');
     } catch (e) {
       outstanding -= 1;
     }
   };
-
-  var getElement = function(elementArg, nodeName) {
-    var element;
-    element = elementArg;
-    while (element.parentNode && element.nodeName !== nodeName) {
-      element = element.parentNode;
-    }
-
-    if (element.nodeName === nodeName) {
-      return element;
-    }
-  };
-
-  var getLink = function(element) {
-    var link = getElement(element, 'A');
-
-    if (link && link.href.length !== 0) {
-      return link;
-    }
-  };
-
-  var getHinclude = function(element) {
-    return getElement(element, TAGNAME);
-  };
-
-  var handle = function(e) {
-    var link = getLink(e.target);
-
-    if (!link) return;
-
-    // Detect target attribute
-    var targetAttribute = link.getAttribute('target');
-    if (targetAttribute === '_top') {
-      // Treat as regular link
-      return;
-    }
-
-    // Navigate
-    var href = link.href;
-    if (!href) return;
-
-    var hElement = getHinclude(e.target);
-    hElement.setAttribute('src', href);
-
-    e.preventDefault();
-  };
-
-  var registerNavigation = function(element) {
-    element.addEventListener('click', handle, true);
-  };
-
 
   var proto = Object.create(HTMLElement.prototype);
 
@@ -211,7 +153,7 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
     var node = container.querySelector(fragment);
 
     if (!node) {
-      throw new Error("Did not find fragment in response");
+      throw new Error('Did not find fragment in response');
     }
 
     return node;
@@ -235,20 +177,20 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
     var mode = config && config.mode || 'buffered';
 
     var callback;
-    if (mode === "async") {
+    if (mode === 'async') {
       callback = setContentAsync;
-    } else if (mode === "buffered") {
+    } else if (mode === 'buffered') {
       callback = setContentBuffered;
       var timeout = config && config.timeout || 2500;
       setTimeout(showBufferedContent, timeout);
     }
 
-    include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
+    include(this, this.getAttribute('src'), this.getAttribute('media'), callback);
   };
 
   var refresh = function() {
     var callback = setContentBuffered;
-    include(this, this.getAttribute("src"), this.getAttribute("media"), callback);
+    include(this, this.getAttribute('src'), this.getAttribute('media'), callback);
   };
 
   proto.refresh = refresh;
