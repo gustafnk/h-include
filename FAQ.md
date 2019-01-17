@@ -2,7 +2,7 @@
 
 ## Does `<h-include>` break SEO?
 
-*No*, because of https://developers.google.com/search/docs/guides/rendering and https://developers.google.com/search/docs/guides/lazy-loading 
+*No* (at least not Google SEO), because of https://developers.google.com/search/docs/guides/rendering and https://developers.google.com/search/docs/guides/lazy-loading 
 
 Tests:
 - [Google indexes regular h-include](https://www.google.com/search?ei=reNAXJqPAYKqrgSmpY3YCg&q=site%3Ahttps%3A%2F%2Fgustafnk.github.io%2Fh-include+%22This+element+was+included%22&oq=site%3Ahttps%3A%2F%2Fgustafnk.github.io%2Fh-include+%22This+element+was+included%22&gs_l=psy-ab.3...9293.9293..10130...0.0..0.69.69.1......0....1..gws-wiz.Lr0UjtrrJBg)
