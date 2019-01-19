@@ -6,7 +6,7 @@ Declarative client-side transclusion, using [Custom Elements V1](https://develop
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
 
-*Breaking changes in version 3.0*:
+*Breaking changes in version 3.0.0*:
 
 - Because h-include is now using Custom Elements V1, we recommend that you update your polyfill (i.e. [document-register-element](https://github.com/WebReflection/document-register-element)) to the latest version.
 - If you have created your own custom elements that inherit from h-include, they too need to be based on Custom Elements V1. See [EXTENDING.md](EXTENDING.md) for an example how to extend h-include.
