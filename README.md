@@ -87,6 +87,16 @@ All extensions inherit h-include's base behavior, when applicable.
 
 To create your own elements that inherit from `<h-include>`, see [EXTENDING.md](EXTENDING.md).
 
+Example usage, in summary:
+
+| Resource fragments  | Content fragments  | Example |
+|---|---|---|
+| ESI | ESI | Short static pages |
+| ESI | h-include  | Dynamic web app with static content fragments (i.e. search) |
+| ESI | ESI + h‑include‑lazy | Pages with *homogeneous* lists, lazy loaded on scroll below the fold |
+| ESI + h‑import‑lazy | ESI + h‑include‑lazy | Pages with *heterogeneous* content, lazy loaded on scroll below the fold together with resource fragments |
+| h‑import | h‑include (etc) | Sites without access to ESI |
+
 ### h-include-lazy
 
 Only includes the HTML resource if the element is about to enter the viewport, by default 400 pixels margin, using the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) (which needs to be polyfilled).
