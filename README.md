@@ -1,3 +1,5 @@
+<img src="logo-full.png" width="300" />
+
 # h-include.js
 
 <a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
