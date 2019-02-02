@@ -115,6 +115,8 @@ Example:
 <h-include-lazy src="lazy-loaded-fragment.html"></h-include-lazy>
 ```
 
+Example repo using plain h-include (without lazy) and the Intersection Observer API to pull in content on ‘in-view’ scroll interaction can be found [here](https://github.com/nicolasdelfino/iobserver-h-include).
+
 ### h-import
 
 Request an HTML resource and include all found script and stylesheet references.
