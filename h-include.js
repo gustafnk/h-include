@@ -9,7 +9,7 @@ console.warn('Using h-include.js from the root folder is deprecated, please use 
   var hasReflect = typeof Reflect === 'object';
 
   if (!hasReflect) {
-    Reflect = {
+    window.Reflect = {
       construct: function (Super, args, Constructor) {
         [].unshift.call(args, Super);
         var C = Super.bind.apply(Super, args);
@@ -20,7 +20,7 @@ console.warn('Using h-include.js from the root folder is deprecated, please use 
 })();
 
 /*
-h-include.js -- HTML Includes (version 3.0.0)
+h-include.js -- HTML Includes (version 3.0.1)
 
 MIT Style License
 
