@@ -24,7 +24,11 @@
         type: 'media',
         value: 'screen and (max-width: 600px)'
       }
-      return [condition1, condition2, condition3]
+      var condition4 = {
+        type: 'media',
+        value: 'screen and (min-width: 500px)'
+      }
+      return [condition1, condition2, condition3, condition4]
     }
 
     window.conditionFunction1 = function () {
@@ -38,7 +42,7 @@
 
 <body>
   <h1>h-include when</h1>
-  <h-include src="/static/basic/fragment.html" when="testConditions"></h-include>
+  <h-include src="/static/basic/fragment.html" when="testConditions" media="screen and (max-width: 600px)"></h-include>
 
 </body>
 
