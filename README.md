@@ -190,6 +190,43 @@ Load an array of script and stylesheet resources (to be overridden).
 
 ## Advanced usage
 
+### Conditional includes using when
+
+When offers a way of using one or many predicates for inclusion.
+
+```
+<h-include when="testConditions"></h-include>
+```
+
+The method specified in the when attribute needs to return an array of one or many items that return true for the inclusion to occur.
+
+Two different types of conditions are supported: function and media.
+A condition is an object that contains two properties - a type and a value. 
+
+Media type values are matched against window.matchMedia.
+Function type value are executed.
+
+```js
+window.testConditions = function () {
+  var condition1 = {
+    type: 'function',
+    value: 'conditionFunction'
+  }
+  var condition2 = {
+    type: 'media',
+    value: 'screen and (max-width: 600px)'
+  }
+  var condition3 = {
+    type: 'media',
+    value: 'screen and (min-width: 500px)'
+  }
+  return [condition1, condition2, condition3]
+}
+
+window.conditionFunction = function () {
+  return true
+}
+```
 ### Refresh method
 
 Refresh an element by using the `refresh()` method:

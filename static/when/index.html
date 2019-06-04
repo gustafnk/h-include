@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>test</title>
+  <link type="text/css" rel="stylesheet" href="/static/style.css">
+  <script>
+    this.customElements || document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');
+  </script>
+  <script type="text/javascript" src="/lib/h-include.js"></script>
+  <script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+  <script>
+    window.testConditions = function () {
+      var condition1 = {
+        type: 'function',
+        value: 'conditionFunction1'
+      }
+      var condition2 = {
+        type: 'media',
+        value: 'screen and (max-width: 600px)'
+      }
+      var condition3 = {
+        type: 'media',
+        value: 'screen and (min-width: 500px)'
+      }
+      return [condition1, condition2, condition3]
+    }
+
+    window.conditionFunction1 = function () {
+      return true
+    }
+  </script>
+</head>
+
+<body>
+
+  <h1>h-include.js test page</h1>
+
+  <h2 id="h">When - conditional inclusion</h2>
+
+  <h-include src="/static/basic/fragment.html" when="testConditions"></h-include>
+
+</body>
+
+</html>
