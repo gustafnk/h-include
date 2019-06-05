@@ -14,22 +14,14 @@
     window.testConditions = function () {
       var condition1 = {
         type: 'function',
-        value: 'conditionFunction1'
-      }
-      var condition2 = {
-        type: 'media',
-        value: 'screen and (max-width: 600px)'
-      }
-      var condition3 = {
-        type: 'media',
-        value: 'screen and (min-width: 500px)'
-      }
-      return [condition1, condition2, condition3]
-    }
+        value: 'conditionFunction'
+      };
+      return [condition1];
+    };
 
-    window.conditionFunction1 = function () {
-      return true
-    }
+    window.conditionFunction = function () {
+      return false;
+    };
   </script>
 </head>
 
@@ -39,7 +31,7 @@
 
   <h2 id="h">When - conditional inclusion</h2>
 
-  <h-include src="/static/basic/fragment.html" when="testConditions"></h-include>
+  <h-include src="fragment.html" when="testConditions"></h-include>
 
 </body>
 

@@ -177,6 +177,60 @@ browsers.forEach(browser => {
       expect(cText).toBe('This is the last box. Goodbye.');
     });
 
+    it('does perform inclusion when meeting all conditions', async () => {
+      const viewport = driver.manage().window();
+      // media predicate for inclusion is max-width: 500px
+      await viewport.setSize(499, 500); // width, height
+      await driver.get('http://localhost:8080/static/when/pass-mix-predicate.html');
+
+      const a = await driver.findElement(By.id('when-included')).getText();
+
+      expect(a.trim()).toBe('this text is included');
+    });
+
+    it('does not perform inclusion when passing media but failing a functional condition', async () => {
+      const viewport = driver.manage().window();
+      // media predicate for inclusion is max-width: 500px
+      await viewport.setSize(499, 500); // width, height
+      await driver.get('http://localhost:8080/static/when/fail-mix-condition.html');
+
+      try {
+        await driver.findElement(By.id('when-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does not perform inclusion when passing a function condition but failing media', async () => {
+      const viewport = driver.manage().window();
+      // media predicate for inclusion is max-width: 500px
+      await viewport.setSize(501, 500); // width, height
+      await driver.get('http://localhost:8080/static/when/pass-fn-condition.html');
+
+      try {
+        await driver.findElement(By.id('when-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when passing a functional condition', async () => {
+      await driver.get('http://localhost:8080/static/when/pass-fn-predicate.html');
+      
+      const a = await driver.findElement(By.id('when-included')).getText();
+
+      expect(a.trim()).toBe('this text is included');
+    });
+
+    it('does not perform inclusion when failing a functional condition', async () => {
+      await driver.get('http://localhost:8080/static/when/fail-fn-predicate.html');
+      try {
+        await driver.findElement(By.id('when-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads large fragment for large viewport', async () => {
         const viewport = driver.manage().window();
