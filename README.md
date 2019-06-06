@@ -190,43 +190,16 @@ Load an array of script and stylesheet resources (to be overridden).
 
 ## Advanced usage
 
-### Conditional includes using when
+### Conditional inclusion using when
 
-When offers a way of using one or many predicates for inclusion.
+When offers a way of using a predicate for inclusion. It also features an optional alt attribute that functions as the source of inclusion given that the predicate fails.
 
 ```
-<h-include when="testConditions"></h-include>
+<h-include src="logged-in.html" when="org.project.predicateFunction" alt="log-in.html"></h-include>
 ```
 
-The method specified in the when attribute needs to return an array of one or many items that return true for the inclusion to occur.
+The method specified in the when attribute may be namespaced and needs to return true for the inclusion of the url specified in the src attribute to occur.
 
-Two different types of conditions are supported: function and media.
-A condition is an object that contains two properties - a type and a value. 
-
-Media type values are matched against window.matchMedia.
-Function type value are executed.
-
-```js
-window.testConditions = function () {
-  var condition1 = {
-    type: 'function',
-    value: 'conditionFunction'
-  }
-  var condition2 = {
-    type: 'media',
-    value: 'screen and (max-width: 600px)'
-  }
-  var condition3 = {
-    type: 'media',
-    value: 'screen and (min-width: 500px)'
-  }
-  return [condition1, condition2, condition3]
-}
-
-window.conditionFunction = function () {
-  return true
-}
-```
 ### Refresh method
 
 Refresh an element by using the `refresh()` method:
