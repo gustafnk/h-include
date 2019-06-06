@@ -11,17 +11,13 @@
   <script type="text/javascript" src="/lib/h-include.js"></script>
   <script type="text/javascript" src="/lib/h-include-extensions.js"></script>
   <script>
-    window.testConditions = function () {
-      var condition1 = {
-        type: 'function',
-        value: 'conditionFunction'
-      };
-      return [condition1];
-    };
-
-    window.conditionFunction = function () {
-      return false;
-    };
+    window.org = {
+      project: {
+        predicateFunction: function() {
+          return false;
+        }
+      }
+    }
   </script>
 </head>
 
@@ -29,9 +25,9 @@
 
   <h1>h-include.js test page</h1>
 
-  <h2 id="h">When - conditional inclusion</h2>
+  <h2 id="h">When / Alt - conditional inclusion</h2>
 
-  <h-include src="fragment.html" when="testConditions"></h-include>
+  <h-include src="fragment.html" when="org.project.predicateFunction"></h-include>
 
 </body>
 
