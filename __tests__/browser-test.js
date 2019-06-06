@@ -177,22 +177,16 @@ browsers.forEach(browser => {
       expect(cText).toBe('This is the last box. Goodbye.');
     });
 
-    it('does perform inclusion when meeting all conditions', async () => {
-      const viewport = driver.manage().window();
-      // media predicate for inclusion is max-width: 500px
-      await viewport.setSize(499, 500); // width, height
-      await driver.get('http://localhost:8080/static/when/pass-mix-predicate.html');
+    it('does perform inclusion of src when predicate function succeeds', async () => {
+      await driver.get('http://localhost:8080/static/when/when-pass-use-src.html');
 
       const a = await driver.findElement(By.id('when-included')).getText();
 
-      expect(a.trim()).toBe('this text is included');
+      expect(a.trim()).toBe('when - this text is included');
     });
 
-    it('does not perform inclusion when passing media but failing a functional condition', async () => {
-      const viewport = driver.manage().window();
-      // media predicate for inclusion is max-width: 500px
-      await viewport.setSize(499, 500); // width, height
-      await driver.get('http://localhost:8080/static/when/fail-mix-condition.html');
+    it('does not perform inclusion of src when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail.html');
 
       try {
         await driver.findElement(By.id('when-included'))
@@ -201,47 +195,29 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does not perform inclusion when passing a function condition but failing media', async () => {
-      const viewport = driver.manage().window();
-      // media predicate for inclusion is max-width: 500px
-      await viewport.setSize(501, 500); // width, height
-      await driver.get('http://localhost:8080/static/when/pass-fn-condition.html');
+    it('does not perform inclusion of alt when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail.html');
 
       try {
-        await driver.findElement(By.id('when-included'))
+        await driver.findElement(By.id('alt-included'))
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
       }
     });
 
-    it('does perform inclusion when passing a functional condition', async () => {
-      await driver.get('http://localhost:8080/static/when/pass-fn-predicate.html');
-      
-      const a = await driver.findElement(By.id('when-included')).getText();
+    it('does perform inclusion of alt when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail-if-alt-use-alt.html');
 
-      expect(a.trim()).toBe('this text is included');
-    });
-
-    it('does not perform inclusion when failing a functional condition', async () => {
-      await driver.get('http://localhost:8080/static/when/fail-fn-predicate.html');
       try {
         await driver.findElement(By.id('when-included'))
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
+
+        const a = await driver.findElement(By.id('alt-included')).getText();
+        
+        expect(a.trim()).toBe('alt - this text is included');
       }
     });
-
-    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
-      it('loads large fragment for large viewport', async () => {
-        const viewport = driver.manage().window();
-        await viewport.setSize(800, 800); // width, height
-                await driver.get('http://localhost:8080/static/media/');
-
-        const a = await driver.findElement(By.id('a')).getText();
-
-        expect(a.trim()).toBe('Large viewport');
-      });
-    }
 
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads small fragment for small viewport', async () => {
