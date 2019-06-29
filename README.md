@@ -190,6 +190,16 @@ Load an array of script and stylesheet resources (to be overridden).
 
 ## Advanced usage
 
+### Conditional inclusion using when
+
+When offers a way of using a predicate for inclusion. It also features an optional alt attribute that functions as the source of inclusion given that the predicate fails.
+
+```
+<h-include src="logged-in.html" when="org.project.predicateFunction" alt="log-in.html"></h-include>
+```
+
+The method specified in the when attribute may be namespaced and needs to return true for the inclusion of the url specified in the src attribute to occur.
+
 ### Refresh method
 
 Refresh an element by using the `refresh()` method:

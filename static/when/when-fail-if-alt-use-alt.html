@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>test</title>
+  <link type="text/css" rel="stylesheet" href="/static/style.css">
+  <script>
+    this.customElements || document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');
+  </script>
+  <script type="text/javascript" src="/lib/h-include.js"></script>
+  <script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+  <script>
+    window.org = {
+      project: {
+        predicateFunction: function() {
+          return false;
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <h1>h-include.js test page</h1>
+
+  <h2 id="h">When / Alt - conditional inclusion</h2>
+
+  <h-include src="fragment.html" when="org.project.predicateFunction" alt="fragment2.html"></h-include>
+
+</body>
+
+</html>
