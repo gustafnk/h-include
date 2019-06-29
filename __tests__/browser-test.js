@@ -177,17 +177,47 @@ browsers.forEach(browser => {
       expect(cText).toBe('This is the last box. Goodbye.');
     });
 
-    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
-      it('loads large fragment for large viewport', async () => {
-        const viewport = driver.manage().window();
-        await viewport.setSize(800, 800); // width, height
-                await driver.get('http://localhost:8080/static/media/');
+    it('does perform inclusion of src when predicate function succeeds', async () => {
+      await driver.get('http://localhost:8080/static/when/when-pass-use-src.html');
 
-        const a = await driver.findElement(By.id('a')).getText();
+      const a = await driver.findElement(By.id('when-included')).getText();
 
-        expect(a.trim()).toBe('Large viewport');
-      });
-    }
+      expect(a.trim()).toBe('when - this text is included');
+    });
+
+    it('does not perform inclusion of src when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail.html');
+
+      try {
+        await driver.findElement(By.id('when-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does not perform inclusion of alt when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion of alt when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail-if-alt-use-alt.html');
+
+      try {
+        await driver.findElement(By.id('when-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const a = await driver.findElement(By.id('alt-included')).getText();
+        
+        expect(a.trim()).toBe('alt - this text is included');
+      }
+    });
 
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads small fragment for small viewport', async () => {
