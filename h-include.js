@@ -20,7 +20,7 @@ console.warn('Using h-include.js from the root folder is deprecated, please use 
 })();
 
 /*
-h-include.js -- HTML Includes (version 3.0.1)
+h-include.js -- HTML Includes (version 3.1.1)
 
 MIT Style License
 
@@ -110,10 +110,16 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
     }
   };
 
-  var include = function(element, url, media, includeCallback) {
-    if (media && window.matchMedia && !window.matchMedia(media).matches) {
-      return;
-    }
+  var include = function(element, url, includeCallback) {
+    var alternativeUrl = element.getAttribute('alt');
+    if(!element.conditionalInclusion.call(element)) {
+      // if alt is specified, set url to alt if the predicate fails
+      if(alternativeUrl) {
+        url = alternativeUrl;
+      } else {
+        return;
+      }
+    } 
 
     var scheme = url.substring(0, url.indexOf(':'));
     if (scheme.toLowerCase() === 'data') {
@@ -141,6 +147,33 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
   };
 
   var proto = Object.create(HTMLElement.prototype);
+
+  function getPredicate(identifier, context) {
+    var namespaces = identifier.split('.');
+    var func = namespaces.pop();
+    for (var i = 0; i < namespaces.length; i++) {
+      context = context[namespaces[i]];
+    }
+    return context[func];
+  }
+
+  proto.conditionalInclusion = function() {
+    var when = this.getAttribute('when');
+    if(when) {
+      var predicate = getPredicate(when, window);
+      if(predicate) {
+        return predicate();
+      } else {
+        throw new Error('Predicate function not found');
+      }
+    } 
+    
+    var media = this.getAttribute('media');
+    if (media && window.matchMedia && !window.matchMedia(media).matches) {
+      return false;
+    }
+    return true;
+  };
 
   proto.createContainer = function(req){
     var container = document.implementation.createHTMLDocument(' ').documentElement;
@@ -185,12 +218,12 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       setTimeout(showBufferedContent, timeout);
     }
 
-    include(this, this.getAttribute('src'), this.getAttribute('media'), callback);
+    include(this, this.getAttribute('src'), callback);
   };
 
   var refresh = function() {
     var callback = setContentBuffered;
-    include(this, this.getAttribute('src'), this.getAttribute('media'), callback);
+    include(this, this.getAttribute('src'), callback);
   };
 
   proto.refresh = refresh;

@@ -1,6 +1,6 @@
 {
   "name": "h-include",
-  "version": "3.0.1",
+  "version": "3.1.1",
   "homepage": "https://github.com/gustafnk/h-include",
   "repository": {
     "type": "git",
@@ -21,6 +21,10 @@
     {
       "name": "Sean Hogan",
       "email": "shogun70@gmail.com"
+    },
+    {
+      "name": "Nicolás Delfino",
+      "email": "nicolas.delfino@tretton37.com"
     }
   ],
   "devDependencies": {
