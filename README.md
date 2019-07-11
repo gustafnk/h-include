@@ -200,6 +200,14 @@ When offers a way of using a predicate for inclusion. It also features an option
 
 The method specified in the when attribute may be namespaced and needs to return true for the inclusion of the url specified in the src attribute to occur.
 
+### Request errors and alternative inclusion using alt
+
+The alt attribute can be used on its own without `when` and functions as an alternative source of inclusion should the default source result in a request error.
+
+```
+<h-include src="unavailable.html" alt="alternative.html"></h-include>
+```
+
 ### Refresh method
 
 Refresh an element by using the `refresh()` method:
