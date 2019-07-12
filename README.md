@@ -192,10 +192,10 @@ Load an array of script and stylesheet resources (to be overridden).
 
 ### Conditional inclusion using when
 
-When offers a way of using a predicate for inclusion. It also features an optional `when-alt-src` attribute that functions as the source of inclusion given that the predicate fails.
+When offers a way of using a predicate for inclusion. It also features an optional `when-false-src` attribute that functions as the source of inclusion given that the predicate fails.
 
 ```
-<h-include src="logged-in.html" when="org.project.predicateFunction" when-alt-src="log-in.html"></h-include>
+<h-include src="logged-in.html" when="org.project.predicateFunction" when-false-src="log-in.html"></h-include>
 ```
 
 The method specified in the when attribute may be namespaced and needs to return true for the inclusion of the url specified in the src attribute to occur.
