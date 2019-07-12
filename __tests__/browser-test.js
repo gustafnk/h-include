@@ -195,27 +195,27 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does not perform inclusion of alt when predicate function fails', async () => {
+    it('does not perform inclusion of when-false-src when predicate function fails', async () => {
       await driver.get('http://localhost:8080/static/when/when-fail.html');
 
       try {
-        await driver.findElement(By.id('alt-included'))
+        await driver.findElement(By.id('when-false-src-included'))
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
       }
     });
 
-    it('does perform inclusion of alt when predicate function fails', async () => {
-      await driver.get('http://localhost:8080/static/when/when-fail-if-alt-use-alt.html');
+    it('does perform inclusion of when-false-src when predicate function fails', async () => {
+      await driver.get('http://localhost:8080/static/when/when-fail-if-when-false-src.html');
 
       try {
         await driver.findElement(By.id('when-included'))
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
 
-        const a = await driver.findElement(By.id('alt-included')).getText();
+        const a = await driver.findElement(By.id('when-false-src-included')).getText();
         
-        expect(a.trim()).toBe('alt - this text is included');
+        expect(a.trim()).toBe('when-false-src - this text is included');
       }
     });
 
