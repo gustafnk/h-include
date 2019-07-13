@@ -6,6 +6,10 @@ Declarative client-side transclusion, using [Custom Elements V1](https://develop
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
 
+*Breaking changes in version 4.0.0*:
+
+Rename `alt` attribute to `when-false-src` to support future feature for error handling.
+
 *Breaking changes in version 3.0.0*:
 
 - Because h-include is now using Custom Elements V1, we recommend that you update your polyfill (i.e. [document-register-element](https://github.com/WebReflection/document-register-element)) to the latest version.
