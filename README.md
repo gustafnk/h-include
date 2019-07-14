@@ -202,7 +202,7 @@ The method specified in the when attribute may be namespaced and needs to return
 
 ### Request errors and alternative inclusion using alt
 
-The alt attribute can be used on its own without `when` and functions as an alternative source of inclusion should the default source result in a request error.
+The alt attribute functions as an alternative source of inclusion should the url result in a request error.
 
 ```
 <h-include src="unavailable.html" alt="alternative.html"></h-include>
