@@ -12,6 +12,15 @@
     </script>
     <script type="text/javascript" src="/lib/h-include.js"></script>
     <script type="text/javascript" src="/lib/h-include-extensions.js"></script>
+    <script>
+      window.org = {
+        project: {
+          predicateFunction: function() {
+            return true;
+          }
+        }
+      };
+    </script>
   </head>
 
   <body>
@@ -19,6 +28,7 @@
 
     <h2 id="h">Request error - Alt</h2>
 
-    <h-include src="nothing" alt="fragment3.html"></h-include>
+    <h-include
+      src="nothing" when="org.project.predicateFunction" when-false-src="nothing2" alt="fragment3.html"></h-include>
   </body>
 </html>

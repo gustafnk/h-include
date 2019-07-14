@@ -247,8 +247,8 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does not perform inclusion when predicate fails and forcing a 404 in alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-fail-alt-error.html');
+    it('does not perform inclusion when predicate fails, no when-false-src and forcing a 404 in alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-error.html');
 
       try {
         await driver.findElement(By.id('alt-included'))
@@ -257,8 +257,8 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does perform inclusion when predicate fails and using a valid alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-fail-alt-pass.html');
+    it('does perform inclusion when predicate fails, no when-false-src and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-pass.html');
 
       try {
         await driver.findElement(By.id('default-included'))
@@ -275,8 +275,8 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does not perform inclusion when forcing a 404 in src and alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-pass-error-alt-error.html');
+    it('does not perform inclusion when predicate fails, when-false-src fails and alt src fails', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-error.html');
 
       try {
         await driver.findElement(By.id('alt-included'))
@@ -285,8 +285,64 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does perform inclusion when forcing a 404 in src and using a valid alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-pass-error-alt-pass.html');
+    it('does perform inclusion when predicate fails, when-false-src fails and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-pass.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
+    it('does not perform inclusion when predicate is met, no when-false-src and alt src fails', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-error.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when predicate is met, no when-false-src and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-pass.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
+    it('does not perform inclusion when predicate is met, when-false-src fails and alt src fails', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-error.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when predicate is met, when-false-src fails and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-pass.html');
 
       try {
         await driver.findElement(By.id('default-included'))

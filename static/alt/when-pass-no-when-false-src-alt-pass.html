@@ -16,7 +16,7 @@
       window.org = {
         project: {
           predicateFunction: function() {
-            return false;
+            return true;
           }
         }
       };
@@ -29,6 +29,6 @@
     <h2 id="h">Request error - Alt</h2>
 
     <h-include
-      src="nothing" when="org.project.predicateFunction" alt="nofile.html"></h-include>
+      src="nothing" when="org.project.predicateFunction" alt="fragment3.html"></h-include>
   </body>
 </html>
