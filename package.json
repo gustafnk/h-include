@@ -2,13 +2,17 @@
   "name": "h-include",
   "version": "4.0.0",
   "homepage": "https://github.com/gustafnk/h-include",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/gustafnk/h-include"
   },
   "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
   "description": "Declarative client-side inclusion for the web using Custom Elements",
-  "main": "h-include.js",
+  "module": "dist/h-include.esm.js",
+  "browser": "dist/h-include.js",
   "keywords": [
     "web-components"
   ],
@@ -34,15 +38,19 @@
     "prepend-file": "^1.3.1",
     "saucelabs": "^1.5.0",
     "selenium-webdriver": "^3.5.0",
-    "simplehttpserver": "^0.1.1"
+    "simplehttpserver": "^0.1.1",
+    "rollup": "^1.16.2"
   },
   "engines": {
     "node": ">= 8.*"
   },
   "scripts": {
+    "build": "rollup -c",
+    "build-dev": "rollup -c -w",
     "lint": "jshint lib/",
     "server": "simplehttpserver -p 8080 .",
     "test": "cd test; PORT=8080 make test",
+    "pretest": "npm run build",
     "local-tests": "npm run server > /dev/null 2>&1 & IS_LOCAL=true mocha -t 600000 __tests__/*-test.js",
     "remote-tests": "npm run server > /dev/null 2>&1 & mocha -t 60000 __tests__/*-test.js",
     "test_killall": "npm test; killall node",
