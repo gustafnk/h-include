@@ -219,6 +219,146 @@ browsers.forEach(browser => {
       }
     });
 
+    it('uses alt attribute when forcing a 404', async () => {
+      await driver.get('http://localhost:8080/static/alt/alt.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
+    it('does not perform inclusion when forcing a 404 and no alt attribute is present', async () => {
+      await driver.get('http://localhost:8080/static/alt/no-alt.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does not perform inclusion when predicate fails, no when-false-src and forcing a 404 in alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-error.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when predicate fails, no when-false-src and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-pass.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
+    it('does not perform inclusion when predicate fails, when-false-src fails and alt src fails', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-error.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when predicate fails, when-false-src fails and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-pass.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
+    it('does not perform inclusion when predicate is met, no when-false-src and alt src fails', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-error.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when predicate is met, no when-false-src and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-pass.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
+    it('does not perform inclusion when predicate is met, when-false-src fails and alt src fails', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-error.html');
+
+      try {
+        await driver.findElement(By.id('alt-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+      }
+    });
+
+    it('does perform inclusion when predicate is met, when-false-src fails and using a valid alt src', async () => {
+      await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-pass.html');
+
+      try {
+        await driver.findElement(By.id('default-included'))
+      } catch (error) {
+        expect(error.name).toBe('NoSuchElementError');
+
+        const cSelector = By.id('alt-included');
+        await driver.wait(until.elementLocated(cSelector), timeout);
+    
+        const c = await driver.findElement(cSelector);
+        const cText = await c.getText();
+
+        expect(cText).toBe('alt - this text is included');
+      }
+    });
+
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads small fragment for small viewport', async () => {
         const viewport = driver.manage().window();
