@@ -15,6 +15,17 @@ export default [
 		]
 	},
 	{
+		input: 'src/h-include-extensions.js',
+		output: {
+			name: 'HIncludeExtensions',
+			file: pkg.browserExtensions,
+			format: 'umd'
+		},
+		plugins: [
+			commonjs()
+		]
+	},
+	{
 		input: 'src/h-include.js',
 		output: {
 			file: pkg.module, format: 'es'

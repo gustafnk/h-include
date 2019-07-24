@@ -13,6 +13,7 @@
   "description": "Declarative client-side inclusion for the web using Custom Elements",
   "module": "lib/h-include.esm.js",
   "browser": "lib/h-include.js",
+  "browserExtensions": "lib/h-include-extensions.js",
   "keywords": [
     "web-components"
   ],
