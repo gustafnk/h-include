@@ -20,7 +20,7 @@ console.warn('Using h-include.js from the root folder is deprecated, please use 
 })();
 
 /*
-h-include.js -- HTML Includes (version 4.0.0)
+h-include.js -- HTML Includes (version 4.1.0)
 
 MIT Style License
 
@@ -45,6 +45,7 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
   var buffer = [];
   var outstanding = 0;
+  var altSrcInclude = false;
 
   function showContent(element, req){
     var fragment = element.getAttribute('fragment') || 'body';
@@ -58,23 +59,18 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       var node = element.extractFragment.call(element, container, fragment, req);
       element.replaceContent.call(element, node);
     }
-
     element.onEnd.call(element, req);
   }
 
   function setContentAsync(element, req) {
-    if (req.readyState === 4) {
-      showContent(element, req);
-    }
+    showContent(element, req);
   }
 
   function setContentBuffered(element, req) {
-    if (req.readyState === 4) {
-      buffer.push([element, req]);
-      outstanding -= 1;
-      if (outstanding === 0) {
-        showBufferedContent();
-      }
+    buffer.push([element, req]);
+    outstanding -= 1;
+    if (outstanding === 0) {
+      showBufferedContent();
     }
   }
 
@@ -110,16 +106,43 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
     }
   };
 
-  var include = function(element, url, includeCallback) {
-    var alternativeUrl = element.getAttribute('alt');
-    if(!element.conditionalInclusion.call(element)) {
-      // if alt is specified, set url to alt if the predicate fails
-      if(alternativeUrl) {
-        url = alternativeUrl;
-      } else {
-        return;
+  var getUrl = function(element) {
+    var whenFalseUrl = element.getAttribute('when-false-src');
+    var whenCondition = whenFalseUrl && !element.conditionalInclusion.call(element, 'when');
+    var mediaCondition = !element.conditionalInclusion.call(element, 'media');
+
+    return getConditionalUrl(element, whenCondition, mediaCondition, altSrcInclude);
+  };
+
+  var getConditionalUrl = function(element, whenCondition, mediaCondition, altSrcInclude) {
+    var url = element.getAttribute('src');
+    var whenFalseUrl = element.getAttribute('when-false-src');
+    var altUrl = element.getAttribute('alt');
+
+    if(altSrcInclude) {
+      url = altUrl;
+    }
+    else {
+      if(whenCondition) {
+        url = whenFalseUrl;
       }
-    } 
+      if(mediaCondition) {
+        url = null;
+      }
+    }
+    return url;
+  };
+
+  var useAltSrcOnError = function(element, req) {
+    var altUrl = element.getAttribute('alt');
+    return req.status !== 200 && req.status !== 304 && altUrl && !altSrcInclude;
+  };
+
+  var include = function(element, includeCallback) {
+    var url = getUrl(element);
+    if(!url) {
+      return;
+    }
 
     var scheme = url.substring(0, url.indexOf(':'));
     if (scheme.toLowerCase() === 'data') {
@@ -136,7 +159,15 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
     outstanding += 1;
     req.onreadystatechange = function () {
-      includeCallback(element, req);
+      if (req.readyState === 4) {
+        if(useAltSrcOnError(element, req)) {
+          altSrcInclude = true;
+          outstanding -= 1;
+          include(element, includeCallback);
+        } else {
+          includeCallback(element, req);
+        }
+      }
     };
     try {
       req.open('GET', url, true);
@@ -157,8 +188,19 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
     return context[func];
   }
 
-  proto.conditionalInclusion = function() {
-    var when = this.getAttribute('when');
+  proto.conditionalInclusion = function(type) {
+    switch (type) {
+      case 'when':
+        return conditionalWhen(this);
+      case 'media':
+        return conditionalMedia(this);
+      default:
+        return false;
+    }
+  };
+
+  var conditionalWhen = function(element) {
+    var when = element.getAttribute('when');
     if(when) {
       var predicate = getPredicate(when, window);
       if(predicate) {
@@ -166,9 +208,11 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       } else {
         throw new Error('Predicate function not found');
       }
-    } 
-    
-    var media = this.getAttribute('media');
+    }
+  };
+
+  var conditionalMedia = function(element) {
+    var media = element.getAttribute('media');
     if (media && window.matchMedia && !window.matchMedia(media).matches) {
       return false;
     }
@@ -204,6 +248,8 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
     this.className = otherClasses + (otherClasses ? ' ' : '') +
       'included ' + classprefix + req.status;
+
+    altSrcInclude = false;
   };
 
   proto.connectedCallback = function() {
@@ -218,12 +264,12 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       setTimeout(showBufferedContent, timeout);
     }
 
-    include(this, this.getAttribute('src'), callback);
+    include(this, callback);
   };
 
   var refresh = function() {
     var callback = setContentBuffered;
-    include(this, this.getAttribute('src'), callback);
+    include(this, callback);
   };
 
   proto.refresh = refresh;
