@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "homepage": "https://github.com/gustafnk/h-include",
   "files": [
-    "dist"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
   },
   "author": "Gustaf Nilsson Kotte <gustaf.nk@gmail.com>",
   "description": "Declarative client-side inclusion for the web using Custom Elements",
-  "module": "dist/h-include.esm.js",
-  "browser": "dist/h-include.js",
+  "module": "lib/h-include.esm.js",
+  "browser": "lib/h-include.js",
   "keywords": [
     "web-components"
   ],
