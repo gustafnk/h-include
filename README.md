@@ -212,6 +212,69 @@ The alt attribute functions as an alternative source of inclusion should the url
 <h-include src="unavailable.html" alt="alternative.html"></h-include>
 ```
 
+### HTTP Headers
+
+Set custom request headers and subscribe to response headers by using the HIncludeConfig configuration, example:
+
+```js
+HIncludeConfig = {
+  setRequestHeaders: [{key, value}],
+  getResponseHeaderKeys: ['key'],
+  onGetResponseHeaders: function (responseHeaders) {
+    // responseHeaders: [{key, value}]
+  },
+  renderStatusCodes: [Number]
+};
+```
+
+#### HIncludeConfig.setRequestHeaders
+
+Array of headers you want to set, e.g:
+
+```js
+HIncludeConfig = {
+  setRequestHeaders: [{key: 'Cache-Control', value: 'max-age=10000, public'}]
+};
+```
+
+#### HIncludeConfig.getResponseHeaderKeys and onGetResponseHeaders callback
+
+You subscribe to reponse headers by providing an array of headers and a callback function (required).
+
+##### getResponseHeaderKeys
+Array of headers you want to listen to,  e.g:
+
+```js
+HIncludeConfig = {
+  getResponseHeaderKeys: ['Cache-Control', 'Content-Type']
+};
+```
+
+##### onGetResponseHeaders (required when using getResponseHeaderKeys)
+Returns an array of headers matching the header keys provided by getResponseHeaderKeys if available in response, e.g:
+
+```js
+HIncludeConfig = {
+  getResponseHeaderKeys: ['Cache-Control', 'Content-Type'],
+  onGetResponseHeaders: function (responseHeaders) {
+    // responseHeaders: [{key, value}]
+  },
+};
+```
+
+#### renderStatusCodes
+Array of status codes where h-include is allowed to render or refresh the element (defaults to 200 / 304 codes). 
+
+Providing `renderStatusCodes` will also partially override the behaviour where the status code of the request gets appended to the element class list given it falls under the 400 range.
+
+Client / server errors will still be provided (see Error Handling).
+
+```js
+HIncludeConfig = {
+  acceptedStatusCodes: [Number]
+};
+```
+
 ### Refresh method
 
 Refresh an element by using the `refresh()` method:
