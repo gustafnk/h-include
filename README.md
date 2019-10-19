@@ -100,7 +100,7 @@ Example usage, in summary:
 | ESI | ESI + h‑include‑lazy | Pages with *homogeneous* lists, lazy loaded on scroll below the fold |
 | ESI + h‑import‑lazy | ESI + h‑include‑lazy | Pages with *heterogeneous* content, lazy loaded on scroll below the fold together with resource fragments |
 | h‑import | h‑include (etc) | Sites without access to ESI |
-
+                                                                                                                                                   
 ### h-include-lazy
 
 Only includes the HTML resource if the element is about to enter the viewport, by default 400 pixels margin, using the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) (which needs to be polyfilled).
@@ -222,8 +222,7 @@ HIncludeConfig = {
   getResponseHeaderKeys: ['key'],
   onGetResponseHeaders: function (responseHeaders) {
     // responseHeaders: [{key, value}]
-  },
-  renderStatusCodes: [Number]
+  }
 };
 ```
 
@@ -259,19 +258,6 @@ HIncludeConfig = {
   onGetResponseHeaders: function (responseHeaders) {
     // responseHeaders: [{key, value}]
   },
-};
-```
-
-#### renderStatusCodes
-Array of status codes where h-include is allowed to render or refresh the element (defaults to 200 / 304 codes). 
-
-Providing `renderStatusCodes` will also partially override the behaviour where the status code of the request gets appended to the element class list given it falls under the 400 range.
-
-Client / server errors will still be provided (see Error Handling).
-
-```js
-HIncludeConfig = {
-  acceptedStatusCodes: [Number]
 };
 ```
 
@@ -336,6 +322,8 @@ If `checkRecursion` is `true`, h-include will traverse the DOM upwards to find a
 ## Error Handling
 
 If fetching the included URL results in a 404 Not Found status code, the class of the include element will be changed to include_404. Likewise, a 500 Server Error status code will result in the include element’s class being changed to include_500.
+
+Status 304 - Not Modified will not be reflected in the element class.
 
 ## Browser support
 
