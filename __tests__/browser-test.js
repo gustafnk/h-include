@@ -359,6 +359,90 @@ browsers.forEach(browser => {
       }
     });
 
+    it('honors both global base level configurations and individual configs per key', async () => {
+      await driver.get('http://localhost:8080/static/config-keys/global-and-fragment-configs.html');
+
+      const firstSelector = By.id('included-1');
+      const secondSelector = By.id('included-2');
+      const thirdSelector = By.id('included-3');
+
+      await driver.wait(until.elementLocated(firstSelector), timeout);
+      await driver.wait(until.elementLocated(secondSelector), timeout);
+      await driver.wait(until.elementLocated(thirdSelector), timeout);
+  
+      const firstElement = await driver.findElement(firstSelector);
+      const secondElement = await driver.findElement(secondSelector);
+      const thirdElement = await driver.findElement(thirdSelector);
+
+      // get parent h-include element
+      const firstElParent = await firstElement.findElement(By.xpath("./.."));
+      const secondElParent = await secondElement.findElement(By.xpath("./.."));
+      const thirdElParent = await thirdElement.findElement(By.xpath("./.."));
+
+      const expectedDefaultConfiguration = {
+        timeout: 200,
+        debug: true,
+        configKeys: {
+          secondEl: {
+            debug: true,
+            timeout: 20000
+          },
+          thirdEl: {
+            debug: true,
+            timeout: 500
+          }
+        }
+      }
+
+      // set expected config results for second and third configuration
+      const expectedSecondElConfig = expectedDefaultConfiguration.configKeys.secondEl;
+      const expectedThirdElConfig = expectedDefaultConfiguration.configKeys.thirdEl;
+
+      // get configurations from dataset
+      const firstElDatasetConfig = await firstElParent.getAttribute("data-config");
+      const secondElDatasetConfig = await secondElParent.getAttribute("data-config");
+      const thirdElDatasetConfig =  await thirdElParent.getAttribute("data-config"); 
+
+      expect(JSON.parse(firstElDatasetConfig)).toEqual(expectedDefaultConfiguration);
+      expect(JSON.parse(secondElDatasetConfig)).toEqual(expectedSecondElConfig);
+      expect(JSON.parse(thirdElDatasetConfig)).toEqual(expectedThirdElConfig);
+    });
+
+    it('doesnt add the data-config set on global / configKey level if debug key is either missing or set to false', async () => {
+      await driver.get('http://localhost:8080/static/config-keys/no-data.html');
+
+      const firstSelector = By.id('included-1');
+      const secondSelector = By.id('included-2');
+
+      await driver.wait(until.elementLocated(firstSelector), timeout);
+      await driver.wait(until.elementLocated(secondSelector), timeout);
+  
+      const firstElement = await driver.findElement(firstSelector);
+      const secondElement = await driver.findElement(secondSelector);
+
+      // get parent h-include element
+      const firstElParent = await firstElement.findElement(By.xpath("./.."));
+      const secondElParent = await secondElement.findElement(By.xpath("./.."));
+
+      const expectedDefaultConfiguration = {
+        configKeys: {
+          secondEl: {
+            debug: false
+          }
+        }
+      };
+
+      // set expected config results for second and third configuration
+      const expectedSecondElConfig = expectedDefaultConfiguration.configKeys.secondEl;
+
+      // get configurations from dataset
+      const firstElDatasetConfig = await firstElParent.getAttribute("data-config");
+      const secondElDatasetConfig = await secondElParent.getAttribute("data-config");
+
+      expect(JSON.parse(firstElDatasetConfig)).toBeNull();
+      expect(JSON.parse(secondElDatasetConfig)).toBeNull();
+    });
+
     if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
       it('loads small fragment for small viewport', async () => {
         const viewport = driver.manage().window();
