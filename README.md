@@ -249,6 +249,69 @@ Enable [XMLHttpRequest.withCredentials](https://developer.mozilla.org/en-US/docs
 
 ## Configuration
 
+Configuration can either be provided on a global level or for a specific fragment by specifying a configuration key.
+
+Global level
+
+```js
+HIncludeConfig = {
+  timeout: 1000 
+};
+```
+
+Fragment level
+
+```html
+<h-include src="fragment.html" config-key="fragment1"></h-include>
+<h-include src="fragment.html" config-key="fragment2"></h-include>
+```
+
+```js
+HIncludeConfig = {
+  configKeys: {
+    fragment1: {
+      timeout: 1000 
+    },
+    fragment2: {
+      timeout: 200
+    },
+  }
+};
+```
+
+Global / fragment level
+
+```js
+HIncludeConfig = {
+  timeout: 2000, 
+  configKeys: { 
+    fragment1: {
+      debug: true,
+      timeout: 500 
+    }
+  }
+};
+```
+
+### Debug configuration 
+
+By adding a key called ``debug`` and setting it to ``true`` in your configuration, h-include will add the stringified configuration in a dataset called data-config.
+
+```html
+<h-include src="fragment.html" config-key="fragment1" data-config="{'debug': true,'timeout': 500}">fragment body...</h-include>
+```
+
+```js
+HIncludeConfig = {
+  debug: false,
+  configKeys: {
+    fragment1: {
+      debug: true
+    }
+  }
+};
+```
+
 Set buffered include timeout (default is `2500` ms):
 
 ```js
