@@ -13,22 +13,28 @@
 	.error_text { display: none; }
 	.include_404 .error_404 { display: inline; text-decoration: underline; }
 	</style>
+
+  <script>
+    window.org = {
+      project: {
+        foo: function(fooArg) {
+          this.configVariable = 1000;
+          return false;
+        },
+        bar: function(barArg) {
+          this.configVariable = 2000;
+          return false;
+        }
+      }
+    }
+  </script>
 </head>
 <body>
 
+<h-include src="fragment.html" callback="org.project.foo"></h-include><br>
+<h-include src="fragment.html" callback="org.project.bar"></h-include><br>
+
 <h1>h-include.js test page</h1>
-
-<h2 id="h">Basic Include</h2>
-
-<p id="a" name="a"><h-include src="fragment.html"></h-include></p>
-
-<h2>Default Content</h2>
-
-<p id="b"><h-include src="fragment-2.html">this content will be overwritten by the included content</h-include>.</p>
-
-<h2>Error Handling</h2>
-
-<p id="c"><h-include src="nothing"><span class="error_text error_404">this content is shown because there was a 404</span><span class="error_text error_500">this content is shown because there was a 500</span></h-include>.</p>
 
 </body>
 </html>
