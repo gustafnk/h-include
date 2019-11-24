@@ -20,7 +20,7 @@ console.warn('Using h-include.js from the root folder is deprecated, please use 
 })();
 
 /*
-h-include.js -- HTML Includes (version 4.1.1)
+h-include.js -- HTML Includes (version 4.2.0)
 
 MIT Style License
 
@@ -49,7 +49,7 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
 
   function showContent(element, req){
     var fragment = element.getAttribute('fragment') || 'body';
-    if (req.status === 200 || req.status === 304) {
+    if (req.status === 200 || (req.status === 304 && !element.isRefreshing)) {
       var container = element.createContainer.call(element, req);
 
       if (config && config.checkRecursion) {
@@ -250,6 +250,7 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
       'included ' + classprefix + req.status;
 
     altSrcInclude = false;
+    this.isRefreshing = false;
   };
 
   proto.connectedCallback = function() {
@@ -268,6 +269,8 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
   };
 
   var refresh = function() {
+    this.isRefreshing = true;
+
     var callback = setContentBuffered;
     include(this, callback);
   };
