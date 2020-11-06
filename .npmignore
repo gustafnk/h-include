@@ -1,0 +1,9 @@
+__tests__
+static
+.jshintrc
+.travis.yml
+bower.json
+EXTENDING.md
+FAQ.md
+favicon.ico
+release-with-deprecation-warning.js
