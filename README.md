@@ -282,6 +282,14 @@ All modern browsers and IE down to IE10 are supported. If you find something qui
 
 Browsers with HTTP/2 are [using HTTP/2 for xhr requests as well](http://stackoverflow.com/questions/32592258/do-current-xhr-implementations-take-advantage-of-http-2). So, if both the server and the current browser supports HTTP/2, all requests made with h-include will go through the same TCP connection, given that they have the same origin.
 
+## Bundler 
+
+### Parcel
+
+With this plugin, Parcel searches and optimizes all h-include tags
+[https://github.com/joserochadocarmo/parcel-plugin-h-include](https://github.com/joserochadocarmo/parcel-plugin-h-include)
+
+
 ## FAQ
 
 Please see the [FAQ](FAQ.md) for some frequently asked questions.
