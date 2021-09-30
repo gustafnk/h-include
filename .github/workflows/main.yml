@@ -6,6 +6,9 @@ jobs:
         name: Action Test
         steps:
             # ...
+            - env:
+                SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+                SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
             - uses: saucelabs/sauce-connect-action@v2.0.0
               with:
                   username: ${{ secrets.SAUCE_USERNAME }}
