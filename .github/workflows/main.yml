@@ -19,4 +19,5 @@ jobs:
               uses: actions/checkout@v2
             - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
             - run: echo "🍏 This job's status is ${{ job.status }}."
+            - run: npm install
             - run: PORT=8080 npm run remote-tests
