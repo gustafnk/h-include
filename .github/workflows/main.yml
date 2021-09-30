@@ -6,9 +6,6 @@ jobs:
         name: Action Test
         steps:
             # ...
-            - env:
-                SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-                SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
             - uses: saucelabs/sauce-connect-action@v2.0.0
               with:
                   username: ${{ secrets.SAUCE_USERNAME }}
@@ -23,4 +20,7 @@ jobs:
             - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
             - run: echo "🍏 This job's status is ${{ job.status }}."
             - run: npm install
-            - run: PORT=8080 npm run remote-tests
+            - env:
+                SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+                SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+              run: PORT=8080 npm run remote-tests
