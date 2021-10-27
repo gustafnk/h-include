@@ -19,5 +19,16 @@
 
 <p id="a" name="a">1st para</p>
 
+
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('a');
+  const aText = a.innerHTML;
+
+  expect(aText === '1st para');
+}, 1000);
+</script>
 </body>
 </html>

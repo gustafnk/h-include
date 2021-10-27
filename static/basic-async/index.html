@@ -30,5 +30,20 @@
 
 <p id="c"><h-include src="nothing"><span class="error_text error_404">this content is shown because there was a 404</span><span class="error_text error_500">this content is shown because there was a 500</span></h-include>.</p>
 
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('included-1');
+  const b = document.getElementById('included-2');
+
+  const aText = a.innerHTML;
+  const bText = b.innerHTML;
+
+  expect(aText === 'this text is included');
+  expect(bText === 'this text overwrote what was just there');
+}, 1000);
+</script>
+
 </body>
 </html>

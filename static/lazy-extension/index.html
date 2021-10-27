@@ -87,5 +87,16 @@ Soon an explosion of includes....
 
 Fin.
 
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('included-3');
+  const aText = a.innerHTML;
+
+  expect(aText === 'this text is included 3');
+}, 1000);
+</script>
+
 </body>
 </html>

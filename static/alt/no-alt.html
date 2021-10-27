@@ -20,5 +20,15 @@
     <h2 id="h">Request error - Alt</h2>
 
     <h-include src="nothing"></h-include>
+
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('alt-included');
+
+  expect(!a);
+}, 1000);
+</script>
   </body>
 </html>

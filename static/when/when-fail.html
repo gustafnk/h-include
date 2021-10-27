@@ -29,6 +29,16 @@
 
   <h-include src="fragment.html" when="org.project.predicateFunction"></h-include>
 
+<!-- Legacy browser tests -->
+<!-- Seems to reveal a bug... -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('when-included');
+
+  expect(!a);
+}, 1000);
+</script>
 </body>
 
 </html>
