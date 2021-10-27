@@ -17,8 +17,18 @@
 
 <h2 id="h">Media Include</h2>
 
-<p id="a" name="a"><h-include media="screen and (max-width: 600px)" src="small.html"></h-include><h-include media="screen and (min-width: 601px)" src="large.html"></h-include></p>
+<p id="a" name="a"><h-include media="screen and (max-width: 1124px)" src="small.html"></h-include><h-include media="screen and (min-width: 1125px)" src="large.html"></h-include></p>
 
 
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('a');
+  const aText = a.textContent.trim();
+
+  expect(aText === 'Small viewport', aText);
+}, 1000);
+</script>
 </body>
 </html>

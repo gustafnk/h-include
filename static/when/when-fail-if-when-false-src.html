@@ -29,6 +29,16 @@
 
   <h-include src="fragment.html" when="org.project.predicateFunction" when-false-src="fragment2.html"></h-include>
 
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('when-false-src-included');
+  const aText = a.innerHTML;
+
+  expect(aText === 'when-false-src - this text is included');
+}, 1000);
+</script>
 </body>
 
 </html>

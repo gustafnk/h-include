@@ -15,6 +15,7 @@ const caps = {};
 let browsers;
 
 const timeout = 6000;
+const smallTimeout = 1000;
 const log = true;
 
 if (process.env.IS_LOCAL === 'true') {
@@ -43,6 +44,7 @@ if (process.env.IS_LOCAL === 'true') {
     build: buildId,
     username: username,
     accessKey: accessKey,
+    screenResolution: "1600x1200"
   });
 }
 
@@ -177,6 +179,7 @@ browsers.forEach(browser => {
       expect(cText).toBe('This is the last box. Goodbye.');
     });
 
+    // When
     it('does perform inclusion of src when predicate function succeeds', async () => {
       await driver.get('http://localhost:8080/static/when/when-pass-use-src.html');
 
@@ -189,7 +192,7 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/when/when-fail.html');
 
       try {
-        await driver.findElement(By.id('when-included'))
+        await driver.findElement(By.id('when-included'), smallTimeout)
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
       }
@@ -199,7 +202,7 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/when/when-fail.html');
 
       try {
-        await driver.findElement(By.id('when-false-src-included'))
+        await driver.findElement(By.id('when-false-src-included'), smallTimeout)
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
       }
@@ -209,7 +212,7 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/when/when-fail-if-when-false-src.html');
 
       try {
-        await driver.findElement(By.id('when-included'))
+        await driver.findElement(By.id('when-included'), smallTimeout)
       } catch (error) {
         expect(error.name).toBe('NoSuchElementError');
 
@@ -219,13 +222,14 @@ browsers.forEach(browser => {
       }
     });
 
+    // Alt
     it('uses alt attribute when forcing a 404', async () => {
       await driver.get('http://localhost:8080/static/alt/alt.html');
 
       try {
-        await driver.findElement(By.id('default-included'))
+        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
@@ -241,9 +245,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/no-alt.html');
 
       try {
-        await driver.findElement(By.id('alt-included'))
+        await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
       }
     });
 
@@ -251,9 +255,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-error.html');
 
       try {
-        await driver.findElement(By.id('alt-included'))
+        await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
       }
     });
 
@@ -261,9 +265,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-pass.html');
 
       try {
-        await driver.findElement(By.id('default-included'))
+        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
@@ -279,9 +283,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-error.html');
 
       try {
-        await driver.findElement(By.id('alt-included'))
+        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
       }
     });
 
@@ -289,9 +293,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-pass.html');
 
       try {
-        await driver.findElement(By.id('default-included'))
+        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
@@ -307,9 +311,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-error.html');
 
       try {
-        await driver.findElement(By.id('alt-included'))
+        await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
       }
     });
 
@@ -317,9 +321,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-pass.html');
 
       try {
-        await driver.findElement(By.id('default-included'))
+        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
@@ -335,9 +339,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-error.html');
 
       try {
-        await driver.findElement(By.id('alt-included'))
+        await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
       }
     });
 
@@ -345,9 +349,9 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-pass.html');
 
       try {
-        await driver.findElement(By.id('default-included'))
+        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
       } catch (error) {
-        expect(error.name).toBe('NoSuchElementError');
+        expect(error.name).toBe('TimeoutError');
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
@@ -359,11 +363,12 @@ browsers.forEach(browser => {
       }
     });
 
-    if (browser.browserName !== 'MicrosoftEdge' && browser.platform !== 'Windows 10') {
+    // Media
+    if (browser.browserName !== 'safari' && browser.version !== '10') {
       it('loads small fragment for small viewport', async () => {
         const viewport = driver.manage().window();
-        await viewport.setSize(480, 800); // width, height
-                await driver.get('http://localhost:8080/static/media/');
+        await viewport.setSize(1024, 768); // width, height
+        await driver.get('http://localhost:8080/static/media/');
 
         const a = await driver.findElement(By.id('a')).getText();
 

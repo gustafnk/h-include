@@ -32,7 +32,7 @@ Install [Sauce Connect Proxy](https://wiki.saucelabs.com/display/DOCS/Sauce+Conn
 
   > bin/sc -u [sauce username] -k [sauce access ke] -i tunnel1
 
-Open a new tab...
+Open a new terminal tab...
 
   > SAUCE_TUNNEL_ID=tunnel1 SAUCE_USERNAME=[sauce username] SAUCE_ACCESS_KEY=[sauce access key] npm run remote-tests
 
@@ -40,8 +40,15 @@ Open a new tab...
 CI Testing
 ----------
 
-Travis CI will automatically run the tests when commits are pushed to Github
-(assuming the account is registered with Travis and the repository is registered with Sauce Labs).
+TODO: Github Actions integration (work started).
+
+Today, tests need to be run at a local dev machine.
 
 Testing is done in the browser / OS environments defined in "__tests__/browsers.json".
+
+
+Manual Testing in IE11
+--------------
+
+IE11 is hard to reliably automate through Selenium. Therefore, use the links in the `static/index.html` page and (for each link) wait for the alerts to be shown.
 

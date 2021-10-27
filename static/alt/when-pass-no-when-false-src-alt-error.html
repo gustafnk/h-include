@@ -30,5 +30,15 @@
 
     <h-include
       src="nothing" when="org.project.predicateFunction" alt="nothing"></h-include>
+
+<!-- Legacy browser tests -->
+<script src="../expect.js"></script>
+<script type="text/javascript">
+setTimeout(function(){
+  const a = document.getElementById('alt-included');
+
+  expect(!a);
+}, 1000);
+</script>
   </body>
 </html>
