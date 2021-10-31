@@ -237,7 +237,14 @@ browsers.forEach(browser => {
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
+        const dSelector = By.id('alt-2-included');
+        await driver.wait(until.elementLocated(dSelector), timeout);
+
+        const d = await driver.findElement(dSelector);
+        const dText = await d.getText();
+
         expect(cText).toBe('alt - this text is included');
+        expect(dText).toBe('alt - this text is also included');
       }
     });
 
