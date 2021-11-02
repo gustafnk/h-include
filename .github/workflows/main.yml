@@ -23,4 +23,4 @@ jobs:
             - env:
                 SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
                 SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-              run: PORT=8080 npm run remote-tests
+              run: PORT=8080 SAUCE_TUNNEL_ID=github-action-tunnel npm run remote-tests
