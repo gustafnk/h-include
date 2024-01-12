@@ -37,12 +37,6 @@ Install using npm:
 $ npm install h-include
 ```
 
-Install using bower:
-
-```shell
-$ bower install h-include
-```
-
 ## Rendering Mode
 
 By default, each include is fetched in the background and the page is updated only when they all are available.
