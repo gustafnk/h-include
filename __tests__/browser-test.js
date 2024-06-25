@@ -78,7 +78,7 @@ browsers.forEach(browser => {
       }
     });
 
-    it.only('includes basic case', async () => {
+    it('includes basic case', async () => {
       await driver.get('http://tabby-prickly-rule.glitch.me/static/basic/');
 
       // Debugging
