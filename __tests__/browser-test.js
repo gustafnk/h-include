@@ -3,8 +3,10 @@ const fs = require('fs');
 
 const expect = require('expect');
 const { Builder, By, Key, until } = require('selenium-webdriver');
-const SauceLabs = require('saucelabs'),
-    username = process.env.SAUCE_USERNAME,
+
+const SauceLabs = require('saucelabs').default
+
+const username = process.env.SAUCE_USERNAME,
     accessKey = process.env.SAUCE_ACCESS_KEY,
     saucelabs = new SauceLabs({
       username: username,
@@ -217,7 +219,7 @@ browsers.forEach(browser => {
         expect(error.name).toBe('NoSuchElementError');
 
         const a = await driver.findElement(By.id('when-false-src-included')).getText();
-        
+
         expect(a.trim()).toBe('when-false-src - this text is included');
       }
     });
@@ -233,7 +235,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -278,7 +280,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -306,7 +308,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -334,7 +336,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -362,7 +364,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -402,7 +404,7 @@ browsers.forEach(browser => {
         var title = this.currentTest.title,
           passed = (this.currentTest.state === 'passed') ? true : false;
 
-        saucelabs.updateJob(driver.sessionID, {
+        saucelabs.updateJob('gustaf_nk', driver.sessionID, {
           name: title,
           passed: passed
         }, done);
