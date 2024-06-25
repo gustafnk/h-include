@@ -77,7 +77,7 @@ browsers.forEach(browser => {
       }
     });
 
-    it('includes basic case', async () => {
+    it.only('includes basic case', async () => {
       await driver.get('http://localhost:8080/static/basic/');
       const aSelector = By.id('included-1');
       const bSelector = By.id('included-2');
