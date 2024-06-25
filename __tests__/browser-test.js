@@ -155,7 +155,7 @@ browsers.forEach(browser => {
       expect(aText).toBe('1st para');
     });
 
-    it.only('does not allow recursion', async () => {
+    it('does not allow recursion', async () => {
       await driver.get('http://tabby-prickly-rule.glitch.me/static/recursion-not-allowed/');
 
       const aSelector = By.id('a');
