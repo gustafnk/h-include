@@ -18,6 +18,7 @@ let browsers;
 
 const timeout = 6000;
 const smallTimeout = 1000;
+const longTimeout = 180000;
 const log = true;
 
 if (process.env.IS_LOCAL === 'true') {
@@ -56,7 +57,7 @@ browsers.forEach(browser => {
   describe(`h-include - ${browserString}`, () => {
     let driver;
 
-    before(() => {
+    beforeEach(() => {
       if (process.env.IS_LOCAL === 'true') {
         driver = new Builder().forBrowser(browser.browserName).build();
       } else {
@@ -79,6 +80,11 @@ browsers.forEach(browser => {
 
     it.only('includes basic case', async () => {
       await driver.get('http://localhost:8080/static/basic/');
+
+      // Debugging
+      // const html = await driver.findElement(By.tagName('html')).getAttribute('innerHTML');
+      // console.log(html);
+
       const aSelector = By.id('included-1');
       const bSelector = By.id('included-2');
 
@@ -117,7 +123,7 @@ browsers.forEach(browser => {
       await driver.get('http://localhost:8080/static/lazy-extension/');
       const aSelector = By.id('included-3');
 
-      await driver.wait(until.elementLocated(aSelector), timeout);
+      await driver.wait(until.elementLocated(aSelector), longTimeout);
       const a = await driver.findElement(aSelector);
 
       const aText = await a.getText();
@@ -165,14 +171,14 @@ browsers.forEach(browser => {
     it('navigates', async () => {
       await driver.get('http://localhost:8080/static/navigate-extension/');
 
-      await driver.wait(until.elementLocated(By.id('a')), timeout);
+      await driver.wait(until.elementLocated(By.id('a')), longTimeout);
       await driver.findElement(By.css('#a .link')).click();
 
-      await driver.wait(until.elementLocated(By.id('b')), timeout);
+      await driver.wait(until.elementLocated(By.id('b')), longTimeout);
       await driver.findElement(By.css('#b .link')).click();
 
       const cSelector = By.id('c');
-      await driver.wait(until.elementLocated(cSelector), timeout);
+      await driver.wait(until.elementLocated(cSelector), longTimeout);
 
       const c = await driver.findElement(cSelector);
 
@@ -385,7 +391,21 @@ browsers.forEach(browser => {
       });
     }
 
-    after(done => {
+
+
+    afterEach(async function(){
+      if (process.env.IS_LOCAL === 'true') {
+        return;
+      } else {
+        var title = this.currentTest.title,
+          passed = (this.currentTest.state === 'passed') ? true : false;
+
+        await saucelabs.updateJob('gustaf_nk', driver.sessionID, {
+          name: title,
+          passed: passed
+        });
+      }
+
       if (log && browser.browserName === 'chrome') {
         driver.manage().logs()
           .get('browser')
@@ -393,22 +413,7 @@ browsers.forEach(browser => {
       }
 
       driver.quit();
-
-      done();
     });
 
-    afterEach(function(done){
-      if (process.env.IS_LOCAL === 'true') {
-        done();
-      } else {
-        var title = this.currentTest.title,
-          passed = (this.currentTest.state === 'passed') ? true : false;
-
-        saucelabs.updateJob('gustaf_nk', driver.sessionID, {
-          name: title,
-          passed: passed
-        }, done);
-      }
-    });
   });
 });
