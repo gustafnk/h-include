@@ -1,5 +1,5 @@
 name: browser test
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
     test:
         runs-on: ubuntu-latest

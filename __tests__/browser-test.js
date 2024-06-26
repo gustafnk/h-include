@@ -3,8 +3,10 @@ const fs = require('fs');
 
 const expect = require('expect');
 const { Builder, By, Key, until } = require('selenium-webdriver');
-const SauceLabs = require('saucelabs'),
-    username = process.env.SAUCE_USERNAME,
+
+const SauceLabs = require('saucelabs').default
+
+const username = process.env.SAUCE_USERNAME,
     accessKey = process.env.SAUCE_ACCESS_KEY,
     saucelabs = new SauceLabs({
       username: username,
@@ -16,6 +18,7 @@ let browsers;
 
 const timeout = 6000;
 const smallTimeout = 1000;
+const longTimeout = 180000;
 const log = true;
 
 if (process.env.IS_LOCAL === 'true') {
@@ -34,7 +37,7 @@ if (process.env.IS_LOCAL === 'true') {
     buildId = 0;
 
     Object.assign(caps, {
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 4445,
     });
   }
@@ -54,7 +57,7 @@ browsers.forEach(browser => {
   describe(`h-include - ${browserString}`, () => {
     let driver;
 
-    before(() => {
+    beforeEach(() => {
       if (process.env.IS_LOCAL === 'true') {
         driver = new Builder().forBrowser(browser.browserName).build();
       } else {
@@ -76,7 +79,12 @@ browsers.forEach(browser => {
     });
 
     it('includes basic case', async () => {
-      await driver.get('http://localhost:8080/static/basic/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/basic/');
+
+      // Debugging
+      // const html = await driver.findElement(By.tagName('html')).getAttribute('innerHTML');
+      // console.log(html);
+
       const aSelector = By.id('included-1');
       const bSelector = By.id('included-2');
 
@@ -94,7 +102,7 @@ browsers.forEach(browser => {
     });
 
     it('includes basic async case', async () => {
-      await driver.get('http://localhost:8080/static/basic-async/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/basic-async/');
       const aSelector = By.id('included-1');
       const bSelector = By.id('included-2');
 
@@ -112,10 +120,10 @@ browsers.forEach(browser => {
     });
 
     it('includes lazy', async () => {
-      await driver.get('http://localhost:8080/static/lazy-extension/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/lazy-extension/');
       const aSelector = By.id('included-3');
 
-      await driver.wait(until.elementLocated(aSelector), timeout);
+      await driver.wait(until.elementLocated(aSelector), longTimeout);
       const a = await driver.findElement(aSelector);
 
       const aText = await a.getText();
@@ -124,7 +132,7 @@ browsers.forEach(browser => {
     });
 
     it('includes fragment with extraction', async () => {
-      await driver.get('http://localhost:8080/static/fragment-extraction/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/fragment-extraction/');
       const aSelector = By.id('a');
 
       await driver.wait(until.elementLocated(aSelector), timeout);
@@ -136,7 +144,7 @@ browsers.forEach(browser => {
     });
 
     it('does not modify the page if no includes', async () => {
-      await driver.get('http://localhost:8080/static/none/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/none/');
       const aSelector = By.id('a');
 
       await driver.wait(until.elementLocated(aSelector), timeout);
@@ -148,7 +156,7 @@ browsers.forEach(browser => {
     });
 
     it('does not allow recursion', async () => {
-      await driver.get('http://localhost:8080/static/recursion-not-allowed/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/recursion-not-allowed/');
 
       const aSelector = By.id('a');
 
@@ -161,16 +169,16 @@ browsers.forEach(browser => {
     });
 
     it('navigates', async () => {
-      await driver.get('http://localhost:8080/static/navigate-extension/');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/navigate-extension/');
 
-      await driver.wait(until.elementLocated(By.id('a')), timeout);
+      await driver.wait(until.elementLocated(By.id('a')), longTimeout);
       await driver.findElement(By.css('#a .link')).click();
 
-      await driver.wait(until.elementLocated(By.id('b')), timeout);
+      await driver.wait(until.elementLocated(By.id('b')), longTimeout);
       await driver.findElement(By.css('#b .link')).click();
 
       const cSelector = By.id('c');
-      await driver.wait(until.elementLocated(cSelector), timeout);
+      await driver.wait(until.elementLocated(cSelector), longTimeout);
 
       const c = await driver.findElement(cSelector);
 
@@ -181,7 +189,7 @@ browsers.forEach(browser => {
 
     // When
     it('does perform inclusion of src when predicate function succeeds', async () => {
-      await driver.get('http://localhost:8080/static/when/when-pass-use-src.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/when/when-pass-use-src.html');
 
       const a = await driver.findElement(By.id('when-included')).getText();
 
@@ -189,7 +197,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion of src when predicate function fails', async () => {
-      await driver.get('http://localhost:8080/static/when/when-fail.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/when/when-fail.html');
 
       try {
         await driver.findElement(By.id('when-included'), smallTimeout)
@@ -199,7 +207,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion of when-false-src when predicate function fails', async () => {
-      await driver.get('http://localhost:8080/static/when/when-fail.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/when/when-fail.html');
 
       try {
         await driver.findElement(By.id('when-false-src-included'), smallTimeout)
@@ -209,7 +217,7 @@ browsers.forEach(browser => {
     });
 
     it('does perform inclusion of when-false-src when predicate function fails', async () => {
-      await driver.get('http://localhost:8080/static/when/when-fail-if-when-false-src.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/when/when-fail-if-when-false-src.html');
 
       try {
         await driver.findElement(By.id('when-included'), smallTimeout)
@@ -217,14 +225,14 @@ browsers.forEach(browser => {
         expect(error.name).toBe('NoSuchElementError');
 
         const a = await driver.findElement(By.id('when-false-src-included')).getText();
-        
+
         expect(a.trim()).toBe('when-false-src - this text is included');
       }
     });
 
     // Alt
     it('uses alt attribute when forcing a 404', async () => {
-      await driver.get('http://localhost:8080/static/alt/alt.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/alt.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
@@ -233,7 +241,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -249,7 +257,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion when forcing a 404 and no alt attribute is present', async () => {
-      await driver.get('http://localhost:8080/static/alt/no-alt.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/no-alt.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
@@ -259,7 +267,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion when predicate fails, no when-false-src and forcing a 404 in alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-error.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-fail-no-when-false-src-alt-error.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
@@ -269,7 +277,7 @@ browsers.forEach(browser => {
     });
 
     it('does perform inclusion when predicate fails, no when-false-src and using a valid alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-fail-no-when-false-src-alt-pass.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-fail-no-when-false-src-alt-pass.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
@@ -278,7 +286,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -287,7 +295,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion when predicate fails, when-false-src fails and alt src fails', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-error.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-fail-when-false-src-fail-alt-error.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
@@ -297,7 +305,7 @@ browsers.forEach(browser => {
     });
 
     it('does perform inclusion when predicate fails, when-false-src fails and using a valid alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-fail-when-false-src-fail-alt-pass.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-fail-when-false-src-fail-alt-pass.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
@@ -306,7 +314,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -315,7 +323,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion when predicate is met, no when-false-src and alt src fails', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-error.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-pass-no-when-false-src-alt-error.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
@@ -325,7 +333,7 @@ browsers.forEach(browser => {
     });
 
     it('does perform inclusion when predicate is met, no when-false-src and using a valid alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-pass-no-when-false-src-alt-pass.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-pass-no-when-false-src-alt-pass.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
@@ -334,7 +342,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -343,7 +351,7 @@ browsers.forEach(browser => {
     });
 
     it('does not perform inclusion when predicate is met, when-false-src fails and alt src fails', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-error.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-pass-when-false-src-fail-alt-error.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
@@ -353,7 +361,7 @@ browsers.forEach(browser => {
     });
 
     it('does perform inclusion when predicate is met, when-false-src fails and using a valid alt src', async () => {
-      await driver.get('http://localhost:8080/static/alt/when-pass-when-false-src-fail-alt-pass.html');
+      await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-pass-when-false-src-fail-alt-pass.html');
 
       try {
         await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
@@ -362,7 +370,7 @@ browsers.forEach(browser => {
 
         const cSelector = By.id('alt-included');
         await driver.wait(until.elementLocated(cSelector), timeout);
-    
+
         const c = await driver.findElement(cSelector);
         const cText = await c.getText();
 
@@ -375,7 +383,7 @@ browsers.forEach(browser => {
       it('loads small fragment for small viewport', async () => {
         const viewport = driver.manage().window();
         await viewport.setSize(1024, 768); // width, height
-        await driver.get('http://localhost:8080/static/media/');
+        await driver.get('http://tabby-prickly-rule.glitch.me/static/media/');
 
         const a = await driver.findElement(By.id('a')).getText();
 
@@ -383,7 +391,21 @@ browsers.forEach(browser => {
       });
     }
 
-    after(done => {
+
+
+    afterEach(async function(){
+      if (process.env.IS_LOCAL === 'true') {
+        return;
+      } else {
+        var title = this.currentTest.title,
+          passed = (this.currentTest.state === 'passed') ? true : false;
+
+        await saucelabs.updateJob('gustaf_nk', driver.sessionID, {
+          name: title,
+          passed: passed
+        });
+      }
+
       if (log && browser.browserName === 'chrome') {
         driver.manage().logs()
           .get('browser')
@@ -391,22 +413,7 @@ browsers.forEach(browser => {
       }
 
       driver.quit();
-
-      done();
     });
 
-    afterEach(function(done){
-      if (process.env.IS_LOCAL === 'true') {
-        done();
-      } else {
-        var title = this.currentTest.title,
-          passed = (this.currentTest.state === 'passed') ? true : false;
-
-        saucelabs.updateJob(driver.sessionID, {
-          name: title,
-          passed: passed
-        }, done);
-      }
-    });
   });
 });
