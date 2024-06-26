@@ -4,5 +4,10 @@
 {"browserName":"MicrosoftEdge","platform":"Windows 10","version":"latest"},
 {"browserName":"safari","platform":"macOS 10.15","version":"latest"},
 
+{"browserName":"chrome","platform":"Windows 10","version":"latest - 4"},
+{"browserName":"firefox","platform":"OS X 10.11","version":"latest - 4"},
+{"browserName":"MicrosoftEdge","platform":"Windows 10","version":"latest - 4"},
+{"browserName":"safari","platform":"macOS 10.15","version":"latest - 4"},
+
 {"browserName":"safari","platform":"macOS 10.12","version":"10"}
 ]
