@@ -1,7 +1,5 @@
 # h-include.js
 
-<a href="https://travis-ci.org/gustafnk/h-include"><img src="https://secure.travis-ci.org/gustafnk/h-include.svg?branch=master"></a>
-
 Declarative client-side transclusion, using [Custom Elements V1](https://developers.google.com/web/fundamentals/web-components/customelements). Perfect for [Microfrontend architectures](https://micro-frontends.org/), in combination with server-side transclusion technologies like [Edge-Side Includes](https://en.wikipedia.org/wiki/Edge_Side_Includes).
 
 Based on [hinclude.js](https://github.com/mnot/hinclude) by [@mnot](https://github.com/mnot/).
