@@ -108,7 +108,7 @@ window.HInclude.HIncludeElement = window.HIncludeElement = (function() {
   var getUrl = function(element) {
     var whenAttribute = element.getAttribute('when');
     var whenFalseUrl = element.getAttribute('when-false-src');
-    var whenCondition = whenAttribute && whenFalseUrl && !element.conditionalInclusion.call(element, 'when');
+    var whenCondition = whenAttribute && !element.conditionalInclusion.call(element, 'when');
     var mediaCondition = !element.conditionalInclusion.call(element, 'media');
 
     return getConditionalUrl(element, whenCondition, mediaCondition, element.altSrcInclude);
