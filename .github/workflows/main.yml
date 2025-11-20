@@ -10,7 +10,7 @@ jobs:
               with:
                   username: ${{ secrets.SAUCE_USERNAME }}
                   accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-                  tunnelIdentifier: github-action-tunnel
+                  tunnelName: github-action-tunnel
                   region: us-west-1
             # ...
             - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
