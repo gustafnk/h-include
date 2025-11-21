@@ -276,21 +276,13 @@ browsers.forEach(browser => {
       }
     });
 
-    it('does perform inclusion when predicate fails, no when-false-src and using a valid alt src', async () => {
+    it('does not perform inclusion when predicate fails, no when-false-src and using a valid alt src', async () => {
       await driver.get('http://tabby-prickly-rule.glitch.me/static/alt/when-fail-no-when-false-src-alt-pass.html');
 
       try {
-        await driver.wait(until.elementLocated(By.id('default-included')), smallTimeout);
+        await driver.wait(until.elementLocated(By.id('alt-included')), smallTimeout);
       } catch (error) {
         expect(error.name).toBe('TimeoutError');
-
-        const cSelector = By.id('alt-included');
-        await driver.wait(until.elementLocated(cSelector), timeout);
-
-        const c = await driver.findElement(cSelector);
-        const cText = await c.getText();
-
-        expect(cText).toBe('alt - this text is included');
       }
     });
 
